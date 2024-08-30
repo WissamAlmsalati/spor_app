@@ -1,0 +1,35 @@
+class AppPhotot {
+  static const logo = "assets/images/logo.png";
+  static const signLogo = "assets/photos/BallLoginPhoto.svg";
+  static const lCamIcon = "assets/icons/LCam.svg";
+  static const rCamIcon = "assets/icons/RCam.svg";
+  static const profileLogo = "assets/icons/profile.svg";
+  static const stadiumLogo = "assets/icons/stadium.svg";
+  static const bookingLogo = "assets/icons/booking.svg";
+  static const notificationLogo = "assets/icons/notification.svg";
+  static const cupLogo = "assets/icons/cup.svg";
+  static const hearth = "assets/icons/hearth.svg";
+  static const stadiumPh = "assets/photos/stadum.jpeg";
+  static const userAvatar = "assets/photos/ba3056d3427b0eb6db6f7c38f7a52a06.png";
+  static const profileLg = "assets/icons/Vector (9).svg";
+  static const startLg = "assets/icons/Vector (10).svg";
+  static const nighModLg = "assets/icons/Vector (11).svg";
+  static const logoutLg = "assets/icons/Vector (12).svg";
+  static const walletLg = "assets/icons/Vector (13).svg";
+  static const backArrow = "assets/icons/backarrow.svg";
+  static const changePass = "assets/icons/changePass.svg";
+  static const greenWallet = "assets/icons/wallet.svg";
+  static const optionlogo = "assets/icons/Group 5.svg";
+  static const starLogo = "assets/icons/star.svg";
+  static const noSearchResult ="assets/icons/Vector (1).svg";
+  static const favoriteBg = "assets/icons/favoriteLg.svg";
+  static const shareIco = "assets/icons/share.svg";
+  static const arrowBack = "assets/icons/arrowBack.svg";
+  static const locationIco = "assets/icons/location.svg";
+  static const starGroup = 'assets/icons/Group 42.svg';
+  static const arrowonboard = 'assets/icons/Arrow 14.svg';
+  static const reversarrowonboard = 'assets/icons/Arrow 18.svg';
+  static const ball = 'assets/photos/ball.png';
+  static const fillFav = 'assets/icons/filledFav.svg';
+  static const wifiDisconnected = 'assets/icons/wifi_diconected.svg';
+}

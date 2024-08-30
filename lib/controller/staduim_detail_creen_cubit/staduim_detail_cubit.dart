@@ -1,0 +1,59 @@
+import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../../models/avilable_sesion_model.dart';
+import '../../models/staduim_info.dart';
+import '../../repostry/staduim_repostry.dart';
+
+part 'staduim_detail_state.dart';
+
+class StadiumDetailCubit extends Cubit<StaduimDetailState> {
+  final StadiumRepository stadiumRepository;
+
+  StadiumDetailCubit(this.stadiumRepository) : super(StaduimDetailInitial());
+
+  String selectedDate = '';
+  int selectedSessionId = -1;
+
+  Future<void> fetchStadiumById(int stadiumId) async {
+    emit(StaduimDetailLoading());
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.sport.com.ly/player/stadium-info?stadium_id=$stadiumId'),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(utf8.decode(response.bodyBytes));
+        final stadiumInfo = StadiumInfo.fromJson(data['stadium_info']);
+        final availableSessions = (data['available_sessions'] as List)
+            .map((session) => AvailableSession.fromJson(session))
+            .toList();
+        selectedDate = availableSessions.first.date;
+        selectedSessionId = availableSessions.first.sessions.first.sessionId;
+        emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions));
+      } else {
+        emit(StaduimDetailError(message: 'Failed to load stadium details'));
+      }
+    } catch (e) {
+      emit(StaduimDetailError(message: e.toString()));
+    }
+  }
+
+  void setSelectedDate(String date) {
+    selectedDate = date;
+    emit(StaduimDetailLoaded(
+      stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
+      availableSessions: (state as StaduimDetailLoaded).availableSessions,
+    ));
+  }
+
+  void setSelectedSessionId(int sessionId) {
+    selectedSessionId = sessionId;
+    emit(StaduimDetailLoaded(
+      stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
+      availableSessions: (state as StaduimDetailLoaded).availableSessions,
+    ));
+  }
+}
