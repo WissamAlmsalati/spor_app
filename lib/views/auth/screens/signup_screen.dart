@@ -68,11 +68,12 @@ class SignUp extends StatelessWidget {
                             hintSize: Responsive.textSize(context, 8),
                           ),
                           CustomButton(
+                            fontWeight: FontWeight.w600,
                             width: Responsive.screenWidth(context) * 0.9,
                             height: Responsive.screenHeight(context) * 0.06,
                             text: 'انشاء حساب',
                             color: Constants.mainColor,
-                            textSize: Responsive.textSize(context, 10),
+                            textSize: Responsive.textSize(context, 16),
                             borderColor: Constants.secondaryColor,
                             onPress: () {},
                             textColor: Constants.secondaryColor,
@@ -80,7 +81,8 @@ class SignUp extends StatelessWidget {
                           CustomButton(
                             width: Responsive.screenWidth(context) * 0.9,
                             height: Responsive.screenHeight(context) * 0.06,
-                            textSize: Responsive.textSize(context, 10),
+                            textSize: Responsive.textSize(context, 16),
+                            fontWeight: FontWeight.w600,
                             text: 'تسجيل الدخول',
                             color: Constants.secondaryColor,
                             borderColor: Constants.secondaryColor,

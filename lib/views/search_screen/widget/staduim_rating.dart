@@ -22,10 +22,9 @@ class StadiumInfoSummary extends StatelessWidget {
       alignment: Alignment.center,
       child: Container(
         height: Responsive.screenHeight(context) * 0.08,
-        width: Responsive.screenWidth(context) * 1,
         decoration: BoxDecoration(
-          border: Border.all(color: Constants.txtColor, width: 1.5),
-          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Constants.txtColor, width: Responsive.screenWidth(context) * 0.004),
+          borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.03),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -36,7 +35,7 @@ class StadiumInfoSummary extends StatelessWidget {
                 Text(
                   totalReservations.toString(),
                   style: TextStyle(
-                    fontSize: Responsive.textSize(context, 10),
+                    fontSize: Responsive.textSize(context, 20),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -49,9 +48,12 @@ class StadiumInfoSummary extends StatelessWidget {
                 ),
               ],
             ),
-            VerticalDivider(
-              width: Responsive.screenWidth(context) * 0.003,
-              thickness: Responsive.screenWidth(context) * 0.003,
+            Padding(
+              padding:  EdgeInsets.symmetric(vertical: Responsive.screenHeight(context) * 0.0079),
+              child: VerticalDivider(
+                width: Responsive.screenWidth(context) * 0.004,
+                thickness: Responsive.screenWidth(context) * 0.005,
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -59,7 +61,8 @@ class StadiumInfoSummary extends StatelessWidget {
                 Text(
                   avgReviews,
                   style: TextStyle(
-                    fontSize: Responsive.textSize(context, 10),
+                    fontWeight: FontWeight.w700,
+                    fontSize: Responsive.textSize(context, 20),
                   ),
                 ),
                 StarRating(
@@ -68,9 +71,12 @@ class StadiumInfoSummary extends StatelessWidget {
                 ),
               ],
             ),
-            VerticalDivider(
-              width: Responsive.screenWidth(context) * 0.003,
-              thickness: Responsive.screenWidth(context) * 0.003,
+            Padding(
+              padding:  EdgeInsets.symmetric(vertical: Responsive.screenHeight(context) * 0.0079),
+              child: VerticalDivider(
+                width: Responsive.screenWidth(context) * 0.004,
+                thickness: Responsive.screenWidth(context) * 0.005,
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -78,7 +84,8 @@ class StadiumInfoSummary extends StatelessWidget {
                 Text(
                   totalReviews.toString(),
                   style: TextStyle(
-                    fontSize: Responsive.textSize(context, 10),
+                    fontWeight: FontWeight.w700,
+                    fontSize: Responsive.textSize(context, 20),
                   ),
                 ),
                 Text(

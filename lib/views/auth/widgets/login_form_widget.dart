@@ -32,8 +32,9 @@ class LoginFormWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomTextField(
-                lableSize: Responsive.textSize(context, 8),
-                hintSize: Responsive.textSize(context, 8),
+
+                lableSize: Responsive.textSize(context, 6),
+                hintSize: Responsive.textSize(context, 10),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: firstname,
                 labeltext: 'رقم الهاتف',
@@ -61,9 +62,10 @@ class LoginFormWidget extends StatelessWidget {
                 },
               ),
               CustomButton(
+                fontWeight: FontWeight.w600,
+                textSize: Responsive.textSize(context, 16),
                 width: Responsive.screenWidth(context) * 0.9,
                 height: Responsive.screenHeight(context) * 0.06,
-                textSize: Responsive.textSize(context, 10),
                 text: 'انشاء حساب',
                 color: Constants.mainColor,
                 borderColor: Constants.secondaryColor,
@@ -74,10 +76,11 @@ class LoginFormWidget extends StatelessWidget {
                 builder: (context, state) {
                   if (state is AuthenticationLoading) {
                     return CustomButton(
+                      fontWeight: FontWeight.w600,
+                      textSize: Responsive.textSize(context, 16),
                       width: Responsive.screenWidth(context) * 0.9,
                       height: Responsive.screenHeight(context) * 0.06,
                       isLoading: true,
-                      textSize: Responsive.textSize(context, 4),
                       loadingSize: Responsive.screenHeight(context) * 0.04,
                       loadingColor: Constants.mainColor,
                       text: 'جاري التحميل...',
@@ -94,10 +97,11 @@ class LoginFormWidget extends StatelessWidget {
                     );
                   }
                   return CustomButton(
+                    fontWeight: FontWeight.w600,
+                    textSize: Responsive.textSize(context, 16),
                     width: Responsive.screenWidth(context) * 0.9,
                     height: Responsive.screenHeight(context) * 0.06,
                     text: 'تسجيل الدخول',
-                    textSize: Responsive.textSize(context, 10),
                     color: Constants.secondaryColor,
                     borderColor: Constants.secondaryColor,
                     onPress: () {

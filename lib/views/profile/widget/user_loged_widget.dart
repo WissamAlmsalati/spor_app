@@ -15,7 +15,7 @@ class UserLogged extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Responsive.screenHeight(context) * 0.40,
+      height: Responsive.screenHeight(context) * 0.30,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

@@ -47,5 +47,10 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<!-- Add the following keys for camera and microphone usage -->
+		<key>NSCameraUsageDescription</key>
+		<string>We need access to your camera for barcode scanning.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>We need access to your microphone for barcode scanning.</string>
 	</dict>
 </plist>

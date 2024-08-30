@@ -39,9 +39,9 @@ class SelectableTimeTile extends StatelessWidget {
           child: Text(
             formattedTime,
             style: TextStyle(
-              fontSize: Responsive.textSize(context, 9),
+              fontSize: Responsive.textSize(context, 15),
               color: isSelected ? Colors.white : Colors.black,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),

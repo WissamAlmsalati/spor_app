@@ -13,6 +13,7 @@ class Apis {
   static const String stadiumsSearch = "${BaseUrl.baseUrl}/stadium/search";
   static const String addToFavorite = "${BaseUrl.baseUrl}/player/favorite";
   static const String comments = "${BaseUrl.baseUrl}/stadium/comment";
+  static const String removeFavorite = "${BaseUrl.baseUrl}/player/favorite";
   static const String oldReservations = "${BaseUrl.baseUrl}/player/reservation-history";
   static const String rechargeBalance = "${BaseUrl.baseUrl}/player/top-up";
   static const String startReservation = "${BaseUrl.baseUrl}/player/reserve";
@@ -22,6 +23,7 @@ class Apis {
   static String stadiumInfo(int stadiumId) {
     return "$staduimDetail?stadium_id=$stadiumId";
   }
+
 
   Future<Map<String, dynamic>> fetchStadiumInfo(int stadiumId) async {
     final response = await http.get(Uri.parse(stadiumInfo(stadiumId)));

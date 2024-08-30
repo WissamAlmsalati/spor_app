@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sport/utilits/constants.dart';
@@ -8,6 +9,7 @@ import 'package:sport/views/search_screen/staduim_screen.dart';
 import 'package:sport/views/search_screen/widget/staduim_search_result.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../controller/region_search_controler/region_search_cubit.dart';
 import '../../controller/steduim_search_cubit/stidum_search_cubit.dart';
 
 class StadiumSearchScreen extends StatelessWidget {
@@ -62,7 +64,7 @@ class StadiumSearchScreen extends StatelessWidget {
                 child: SizedBox(
                   height: Responsive.blockHeight(context) * 10,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         onPressed: () {
@@ -75,22 +77,17 @@ class StadiumSearchScreen extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: SearchFieldWidget(
-                          controller: searchController,
-                          onChanged: (String text) {
-                            context
-                                .read<StadiumSearchCubit>()
-                                .updateSearchText(text);
-                          },
-                          onSubmitted: (String text) {
-                            context
-                                .read<StadiumSearchCubit>()
-                                .updateSearchText(text);
-                            context
-                                .read<StadiumSearchCubit>()
-                                .searchStadiums(name: text);
-                          },
-                          enabled: true,
+                        child: Center(
+                          child: SearchFieldWidget(
+                            controller: searchController,
+                            onChanged: (String text) {
+                              context.read<RegionSearchCubit>().searchRegions(text);
+                            },
+                            onSubmitted: (String text) {
+                              context.read<StadiumSearchCubit>().searchStadiums(name: text);
+                            },
+                            enabled: true,
+                          ),
                         ),
                       ),
                       IconButton(
@@ -106,11 +103,38 @@ class StadiumSearchScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+            BlocBuilder<RegionSearchCubit, RegionSearchState>(
+              builder: (context, state) {
+                if (state is RegionSearchLoading) {
+                  return  Center(child:Container());
+                } else if (state is RegionSearchLoaded) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state.regions.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+
+                        title: Text(state.regions[index]),
+                        onTap: () {
+                          searchController.text = state.regions[index];
+                          context.read<StadiumSearchCubit>().searchStadiums(name: state.regions[index]);
+                          context.read<RegionSearchCubit>().emit(RegionSearchInitial()); // Clear region search results
+                        },
+                      );
+                    },
+                  );
+                } else if (state is RegionSearchError) {
+                  return Center(child: Text(state.message));
+                }
+                return Container();
+              },
+            ),
+            const SizedBox(height: 10),
             Expanded(
               child: BlocBuilder<StadiumSearchCubit, StadiumSearchState>(
                 builder: (context, state) {
                   if (state is StadiumSearchLoading) {
-                    return Center(child: LoadingAnimation(size: Responsive.screenHeight(context)*0.08));
+                    return Center(child: LoadingAnimation(size: Responsive.screenHeight(context) * 0.08));
                   } else if (state is StadiumSearchLoaded) {
                     if (state.stadiums.isEmpty) {
                       return Center(
@@ -146,9 +170,7 @@ class StadiumSearchScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => StadiumDetailScreen(stadiumId: stadium.id,
-
-                                      ),
+                                      builder: (context) => StadiumDetailScreen(stadiumId: stadium.id),
                                     ),
                                   );
                                 },
@@ -186,3 +208,4 @@ class StadiumSearchScreen extends StatelessWidget {
     );
   }
 }
+

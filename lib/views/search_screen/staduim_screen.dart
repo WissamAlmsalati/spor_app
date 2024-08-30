@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport/utilits/loading_animation.dart';
+import 'package:sport/views/auth/widgets/coustom_button.dart';
 import 'package:sport/views/search_screen/widget/HorizontalCalendar.dart';
+import 'package:sport/views/search_screen/widget/screen_detail_shimmer.dart';
 import 'package:sport/views/search_screen/widget/session_list.dart';
 import 'package:sport/views/search_screen/widget/staduim_photo_stack.dart';
 import 'package:sport/views/search_screen/widget/staduim_rating.dart';
@@ -25,7 +28,7 @@ class StadiumDetailScreen extends StatelessWidget {
         child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
           builder: (context, state) {
             if (state is StaduimDetailLoading) {
-              return StadiumDetailShimmer(); // Use the new shimmer class
+              return StadiumDetailShimmerLoading(); // Use the new shimmer class
             } else if (state is StaduimDetailLoaded) {
               final stadium = state.stadiumInfo;
               final sessions = state.availableSessions;
@@ -34,8 +37,7 @@ class StadiumDetailScreen extends StatelessWidget {
               return NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   SliverToBoxAdapter(
-                    child: StaduimPhotoStack(
-                        StdPhoto: stadium.images[0], stdId: stadium.id),
+                    child: StaduimPhotoStack(StdPhoto: stadium.images[0], stdId: stadium.id),
                   ),
                 ],
                 body: Column(
@@ -43,57 +45,55 @@ class StadiumDetailScreen extends StatelessWidget {
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(stadium.name,
-                                  style: TextStyle(
-                                      fontSize: Responsive.textSize(context, 12),
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.015,
+                              Text(stadium.name, style: TextStyle(fontSize: Responsive.textSize(context, 18), fontWeight: FontWeight.bold)),
+                              SizedBox(height: Responsive.screenHeight(context) * 0.015),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(AppPhotot.locationIco),
+                                  SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                                  Text(stadium.address, style: TextStyle(fontSize: Responsive.textSize(context, 14))),
+                                ],
                               ),
-                              Text(stadium.address,
-                                  style: TextStyle(
-                                      fontSize: Responsive.textSize(context, 8))),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.02,
-                              ),
+                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
                               StadiumInfoSummary(
-                                totalReservations: stadium.totalReservations, // Replace with actual value
-                                avgReviews: stadium.avgReviews, // Replace with actual value
-                                totalReviews: stadium.totalReviews, // Replace with actual value
+                                totalReservations: stadium.totalReservations,
+                                avgReviews: stadium.avgReviews,
+                                totalReviews: stadium.totalReviews,
                               ),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.02,
+                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("اختيار اليوم", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
+                                  BlocBuilder<CheckboxCubit, bool>(
+                                    builder: (context, isChecked) {
+                                      return Checkbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Constants.mainColor,
+                                        value: isChecked,
+                                        onChanged: (value) {
+                                          context.read<CheckboxCubit>().toggle();
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                              Text("اختيار اليوم",
-                                  style: TextStyle(
-                                      fontSize: Responsive.textSize(context, 10),
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.02,
-                              ),
+                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
                               DateSelector(
-                                dates: sessions
-                                    .map((session) => session.date)
-                                    .toList(),
+                                dates: sessions.map((session) => session.date).toList(),
                                 selectedDate: cubit.selectedDate,
                                 onDateSelected: (date) {
                                   cubit.setSelectedDate(date);
                                 },
                               ),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.02,
-                              ),
-                              Text("اختيار التوقيت",
-                                  style: TextStyle(
-                                      fontSize: Responsive.textSize(context, 10),
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.02,
-                              ),
+                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                              Text("اختيار التوقيت", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
+                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
                               SessionList(
                                 availableSession: selectedSession,
                                 selectedSessionId: cubit.selectedSessionId,
@@ -101,76 +101,72 @@ class StadiumDetailScreen extends StatelessWidget {
                                   cubit.setSelectedSessionId(sessionId);
                                 },
                               ),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.02,
-                              ),
-                              Text("التعليقات",
-                                  style: TextStyle(
-                                      fontSize: Responsive.textSize(context, 10),
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                height: Responsive.screenHeight(context) * 0.02,
-                              ),
+                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                              Text("التعليقات", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
+                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
                               Container(
-                                  height: Responsive.screenHeight(context) * 0.47,
-                                  child: CommentsWidget(stadiumId: stadium.id)),
+                                height: Responsive.screenHeight(context) * 0.47,
+                                child: CommentsWidget(stadiumId: stadium.id),
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
                     Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Price: \$100', // Replace with actual price
-                            style: TextStyle(
-                              fontSize: Responsive.textSize(context, 10),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          BlocConsumer<ReverseRequestCubit, ReverseRequestState>(
-                            listener: (context, state) {
-                              if (state is ReverseRequestSuccess) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Request sent successfully')));
-                              } else if (state is ReverseRequestError) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(state.message)));
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is ReverseRequestLoading) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              return ElevatedButton(
-                                onPressed: () {
-                                  print('Send Reverse Request');
-                                  print('Stadium ID: $stadiumId');
-                                  print('Date: ${cubit.selectedDate}');
-                                  print('Session ID: ${cubit.selectedSessionId}');
-                                  print('Is Monthly Reservation: true');
-                                  print('Payment Type: 2');
-                                  context
-                                      .read<ReverseRequestCubit>()
-                                      .sendReverseRequest(
-                                    stadiumId,
-                                    cubit.selectedDate,
-                                    cubit.selectedSessionId,
-                                    true,
-                                    2,
+                      width: double.infinity,
+                      height: Responsive.screenHeight(context) * 0.1,
+                      child: Card(
+                        margin: EdgeInsets.zero,
+                        borderOnForeground: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0), // Remove default border radius
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              BlocConsumer<ReverseRequestCubit, ReverseRequestState>(
+                                listener: (context, state) {
+                                  if (state is ReverseRequestSuccess) {
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Request sent successfully')));
+                                  } else if (state is ReverseRequestError) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is ReverseRequestLoading) {
+                                    return Container(
+                                      margin: EdgeInsets.only(right: Responsive.screenWidth(context) * 0.13),
+                                      child: LoadingAnimation(size: Responsive.screenWidth(context) * 0.11),
+                                    );
+                                  }
+                                  return CustomButton(
+                                    onPress: () {
+                                      context.read<ReverseRequestCubit>().sendReverseRequest(
+                                        stadiumId,
+                                        cubit.selectedDate,
+                                        cubit.selectedSessionId,
+                                        true,
+                                        2,
+                                      );
+                                    },
+                                    text: "حجز",
+                                    color: Constants.mainColor,
+                                    textColor: Colors.white,
+                                    height: Responsive.screenHeight(context) * 0.06,
+                                    width: Responsive.screenWidth(context) * 0.4,
                                   );
                                 },
-                                child: const Text('Send Reverse Request'),
-                              );
-                            },
+                              ),
+                              Text(
+                                "${stadium.sessionPrice}دينار",
+                                style: TextStyle(fontSize: Responsive.textSize(context, 22), fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
@@ -188,84 +184,3 @@ class StadiumDetailScreen extends StatelessWidget {
 }
 
 
-
-class StadiumDetailShimmer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Stadium image placeholder
-            Container(
-              width: double.infinity,
-              height: Responsive.screenHeight(context) * 0.22,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            SizedBox(height: 8.0),
-
-            // Stadium name placeholder
-            Container(
-              width: double.infinity,
-              height: Responsive.screenHeight(context) * 0.02,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(Responsive.screenHeight(context) * 0.01),
-              ),
-            ),
-            SizedBox(height: Responsive.screenHeight(context) * 0.022),
-
-            // Stadium address placeholder
-            Container(
-              width: double.infinity,
-              height: Responsive.screenHeight(context) * 0.02,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(Responsive.screenHeight(context) * 0.01),
-              ),
-            ),
-            SizedBox(height: Responsive.screenHeight(context) * 0.022),
-
-            // Date selector placeholders
-            Row(
-              children: List.generate(3, (index) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 8),
-                  width: Responsive.screenWidth(context) * 0.2,
-                  height: Responsive.screenHeight(context) * 0.1,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.05),
-                  ),
-                );
-              }),
-            ),
-            SizedBox(height: Responsive.screenHeight(context) * 0.02),
-
-            // Time selector placeholders
-            Row(
-              children: List.generate(3, (index) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 8),
-                  width: Responsive.screenWidth(context) * 0.2,
-                  height: Responsive.screenHeight(context) * 0.1,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.05),
-                  ),
-                );
-              }),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

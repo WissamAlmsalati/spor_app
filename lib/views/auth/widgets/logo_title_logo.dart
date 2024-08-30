@@ -34,9 +34,9 @@ class TitleLogoTitle extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                  fontSize: Responsive.textSize(context, 14),
+                  fontSize: Responsive.textSize(context, 24),
                   color: Constants.mainColor,
-                  fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.w700,),
             ),
             SizedBox(
               width: Responsive.screenWidth(context) * 0.02,
@@ -47,10 +47,14 @@ class TitleLogoTitle extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(
+          height: Responsive.screenHeight(context) * 0.002,
+        ),
         Text(description,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: Responsive.textSize(context, 10),
+              fontWeight: FontWeight.w500,
+              fontSize: Responsive.textSize(context, 14),
               color: Constants.thirdColor.withOpacity(0.6),
             )),
       ],

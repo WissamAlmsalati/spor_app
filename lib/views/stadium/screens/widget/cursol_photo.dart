@@ -37,7 +37,7 @@ class CarouselPhoto extends StatelessWidget {
           }).toList(),
           carouselController: _controller,
           options: CarouselOptions(
-            height: Responsive.screenHeight(context) * 0.18,
+            height: Responsive.screenHeight(context) * 0.2,
             enlargeCenterPage: true,
             autoPlay: true,
             aspectRatio: 16 / 9,

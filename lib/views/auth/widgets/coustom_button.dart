@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import the flutter/services.dart package
 import 'package:sport/app/app_packges.dart';
 import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/stadium/widget/coustom_appbar.dart';
@@ -43,7 +44,14 @@ class CustomButton extends StatelessWidget {
       width: width,
       height: height,
       child: ElevatedButton(
-        onPressed: onPress,
+        onPressed: () {
+          // Trigger haptic feedback
+          HapticFeedback.mediumImpact();
+          // Call the provided onPress callback
+          if (onPress != null) {
+            onPress!();
+          }
+        },
         style: ElevatedButton.styleFrom(
           elevation: 0,
           backgroundColor: color,

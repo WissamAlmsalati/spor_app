@@ -16,7 +16,8 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
 
-  const CustomTextField({
+  const
+  CustomTextField({
     super.key,
     required this.controller,
     required this.labeltext,
@@ -34,64 +35,70 @@ class CustomTextField extends StatelessWidget {
         Text(
           labeltext,
           style: TextStyle(
+            color: Constants.txtColor,
+            fontWeight: FontWeight.w500,
             fontSize: lableSize ?? 18,
           ),
         ),
         SizedBox(height: Responsive.screenHeight(context) * 0.01),
-        TextFormField(
-          keyboardType: keyboardType ?? TextInputType.text,
-          controller: controller,
-          obscureText: isPasswordField,
-          decoration: InputDecoration(
-            filled: true,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(
-                color: Constants.thirdColor,
-                width: 0.5,
-              ),
+        Container(
+          height: Responsive.screenHeight(context) * 0.06,
 
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(
-                color: Constants.mainColor,
-                width: 1.2,
+          child: TextFormField(
+            keyboardType: keyboardType ?? TextInputType.text,
+            controller: controller,
+            obscureText: isPasswordField,
+            decoration: InputDecoration(
+              filled: true,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.02),
+                borderSide: const BorderSide(
+                  color: Constants.thirdColor,
+                  width: 0.5,
+                ),
+
               ),
-            ),
-            hintText: labeltext,
-            hintStyle: TextStyle(
-              color: Constants.thirdColor,
-              fontSize: hintSize ?? 14,
-              fontFamily: GoogleFonts.cairo().fontFamily,
-            ),
-            errorBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              borderSide: BorderSide(
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: const BorderSide(
+                  color: Constants.mainColor,
+                  width: 1.2,
+                ),
+              ),
+              hintText: labeltext,
+              hintStyle: TextStyle(
+                color: Constants.thirdColor,
+                fontSize: hintSize ?? 14,
+                fontFamily: GoogleFonts.cairo().fontFamily,
+              ),
+              errorBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                  width: 1.1,
+                ),
+              ),
+              errorStyle: GoogleFonts.cairo(
                 color: Colors.red,
-                width: 1.1,
+                fontSize: validatorSize,
+                fontWeight: FontWeight.bold, // Custom style for validator text
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 2.0,
+                horizontal: 8.0,
               ),
             ),
-            errorStyle: GoogleFonts.cairo(
-              color: Colors.red,
-              fontSize: validatorSize,
-              fontWeight: FontWeight.bold, // Custom style for validator text
+            style:  TextStyle(
+              color: Colors.black,
+              fontSize: hintSize,
             ),
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 2.0,
-              horizontal: 8.0,
-            ),
+            validator: validator ?? (value) {
+              if (value == null || value.isEmpty) {
+                return validatorText;
+              }
+              return null;
+            },
           ),
-          style:  TextStyle(
-            color: Colors.black,
-            fontSize: hintSize,
-          ),
-          validator: validator ?? (value) {
-            if (value == null || value.isEmpty) {
-              return validatorText;
-            }
-            return null;
-          },
         ),
       ],
     );

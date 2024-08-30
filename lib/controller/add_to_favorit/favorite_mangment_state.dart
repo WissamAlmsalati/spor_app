@@ -11,7 +11,6 @@ class AdedToFavorite extends AddToFavoriteState {}
 
 class RemovedFromFavorite extends AddToFavoriteState {}
 
-
 class AddToFavoriteError extends AddToFavoriteState {
   final String message;
   AddToFavoriteError(this.message);

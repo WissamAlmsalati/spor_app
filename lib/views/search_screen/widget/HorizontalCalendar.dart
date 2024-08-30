@@ -41,15 +41,16 @@ class DateSelector extends StatelessWidget {
                     Text(
                       dayName,
                       style: TextStyle(
-                        fontSize: Responsive.textSize(context, 9),
+                        fontWeight: FontWeight.w600,
+                        fontSize: Responsive.textSize(context, 16),
                         color: isSelected ? Colors.white : Colors.black,
                       ),
                     ),
                     Text(
                       dayNumber,
                       style: TextStyle(
-                        fontSize: Responsive.textSize(context, 9),
-
+                        fontSize: Responsive.textSize(context, 20),
+fontWeight: FontWeight.w500,
                         color: isSelected ? Colors.white : Colors.black,
                       ),
                     ),

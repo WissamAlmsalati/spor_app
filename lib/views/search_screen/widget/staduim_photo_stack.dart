@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../../utilits/images.dart';
@@ -23,25 +24,37 @@ class StaduimPhotoStack extends StatelessWidget {
     return BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
       listener: (context, state) {
         if (state is AdedToFavorite) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Added to favorite successfully!')),
+          Fluttertoast.showToast(
+            msg: 'Added to favorite successfully!',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
           );
-          context
-              .read<FetchFavoriteCubit>()
-              .fetchFavoriteStadiums(); // Refresh favorite stadiums list
+          context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
         } else if (state is AddToFavoriteError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+          Fluttertoast.showToast(
+            msg: state.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
           );
+        } else if (state is RemovedFromFavorite) {
+          Fluttertoast.showToast(
+            msg: 'Removed from favorite successfully!',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+          context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
         }
       },
       child: Stack(
         children: [
-          Image.network(
-            StdPhoto,
-            fit: BoxFit.fill,
-            width: double.infinity,
-            height: Responsive.screenHeight(context) * 0.23,
+          Container(
+            height: Responsive.screenHeight(context) * 0.25,
+            child: Image.network(
+              StdPhoto,
+              fit: BoxFit.fill,
+              width: double.infinity,
+              height: Responsive.screenHeight(context) * 0.23,
+            ),
           ),
           Positioned(
             top: Responsive.screenHeight(context) * 0.01,
@@ -89,11 +102,14 @@ class StaduimPhotoStack extends StatelessWidget {
             right: 0,
             child: BlocBuilder<AddToFavoriteCubit, AddToFavoriteState>(
               builder: (BuildContext context, state) {
+                final isFavorite = state is AdedToFavorite;
                 return IconButton(
                   onPressed: () {
-                    context
-                        .read<AddToFavoriteCubit>()
-                        .addToFavorite(stdId, context);
+                    if (isFavorite) {
+                      context.read<AddToFavoriteCubit>().removeFromFavorite(stdId, context);
+                    } else {
+                      context.read<AddToFavoriteCubit>().addToFavorite(stdId, context);
+                    }
                   },
                   icon: SizedBox(
                     height: Responsive.screenHeight(context) * 0.070,
@@ -102,9 +118,11 @@ class StaduimPhotoStack extends StatelessWidget {
                         elevation: 2,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(AppPhotot.favoriteBg,
-                              height:
-                                  Responsive.screenHeight(context) * 0.05),
+                          child: SvgPicture.asset(
+                            isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
+                            color: isFavorite ? Colors.red : Colors.black,
+                            height: Responsive.screenHeight(context) * 0.05,
+                          ),
                         )),
                   ),
                 );

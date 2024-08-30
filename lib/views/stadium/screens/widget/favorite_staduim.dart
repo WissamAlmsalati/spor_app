@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sport/controller/fetch_favorite/fetch_favorite_cubit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport/utilits/loading_animation.dart';
+import 'package:sport/views/auth/widgets/coustom_button.dart';
+import 'package:sport/views/search_screen/widget/HorizontalCalendar.dart';
+import 'package:sport/views/search_screen/widget/session_list.dart';
+import 'package:sport/views/search_screen/widget/staduim_photo_stack.dart';
+import 'package:sport/views/search_screen/widget/staduim_rating.dart';
+import 'package:sport/views/stadium/screens/widget/comments_widget.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:sport/utilits/constants.dart';
-import 'package:sport/utilits/images.dart';
-import '../../../../controller/add_to_favorit/favorite_mangment_cubit.dart';
-import '../../../../utilits/responsive.dart';
-import '../../../search_screen/search_screen.dart';
+import '../../../../app/app_packges.dart';
 import '../../../search_screen/staduim_screen.dart';
 
 class FavoriteStadium extends StatelessWidget {
@@ -46,7 +46,7 @@ class FavoriteStadium extends StatelessWidget {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                   SvgPicture.asset(
+                    SvgPicture.asset(
                       AppPhotot.wifiDisconnected,
                       height: Responsive.screenHeight(context) * 0.14,
                     ),
@@ -65,7 +65,7 @@ class FavoriteStadium extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Icon(Icons.heart_broken_outlined,color: Constants.mainColor,size: Responsive.screenHeight(context)*0.2,),
+                        Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
                         Text(
                           'لا توجد ملاعب مفضلة',
                           style: TextStyle(
@@ -88,28 +88,19 @@ class FavoriteStadium extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        if (kDebugMode) {
-                          print('Stadium ID: ${state.stadiums[index].id}');
-                        }
-                        if (kDebugMode) {
-                          print('Stadium Name: ${state.stadiums[index].name}');
-                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => StadiumDetailScreen(stadiumId: state.stadiums[index].id,),
+                            builder: (context) => StadiumDetailScreen(stadiumId: state.stadiums[index].id),
                           ),
-                        ).then((_) {
-                          context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
-                        });
+                        );
                       },
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         child: Card(
                           elevation: 1,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                Responsive.screenWidth(context) * 0.04),
+                            borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.04),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,19 +108,15 @@ class FavoriteStadium extends StatelessWidget {
                               Stack(
                                 children: [
                                   Container(
-                                    height: Responsive.screenHeight(context) * 0.11,
+                                    height: Responsive.screenHeight(context) * 0.12,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(
-                                            Responsive.screenWidth(context) * 0.04),
-                                        topRight: Radius.circular(
-                                            Responsive.screenWidth(context) * 0.04),
+                                        topLeft: Radius.circular(Responsive.screenWidth(context) * 0.04),
+                                        topRight: Radius.circular(Responsive.screenWidth(context) * 0.04),
                                       ),
                                       image: DecorationImage(
-                                        image: NetworkImage(
-                                          state.stadiums[index].image,
-                                        ),
+                                        image: NetworkImage(state.stadiums[index].image),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -153,27 +140,25 @@ class FavoriteStadium extends StatelessWidget {
                                 ),
                                 child: Text(
                                   state.stadiums[index].name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.cairo(
-                                    fontSize: Responsive.textSize(context, 8),
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: Responsive.textSize(context, 14),
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
-                                  top: Responsive.screenHeight(context) * 0.01,
+                                  top: Responsive.screenHeight(context) * 0.008,
                                   right: Responsive.screenWidth(context) * 0.018,
                                 ),
                                 child: Text(
-                                  state.stadiums[index].isAvailable
-                                      ? 'متوفر للحجز'
-                                      : 'غير متوفر للحجز',
+                                  state.stadiums[index].isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
                                   style: GoogleFonts.cairo(
                                     fontSize: Responsive.textSize(context, 10),
                                     fontWeight: FontWeight.w500,
-                                    color: state.stadiums[index].isAvailable
-                                        ? Colors.green
-                                        : Colors.red,
+                                    color: state.stadiums[index].isAvailable ? Colors.green : Colors.red,
                                   ),
                                 ),
                               ),
@@ -186,13 +171,14 @@ class FavoriteStadium extends StatelessWidget {
                 );
               } else if (state is UnAuthorizedError) {
                 return Center(
-                    child: Text(
-                      'قم ب انشاء حساب لعرض الملاعب المفضلة',
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 8),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ));
+                  child: Text(
+                    'قم ب انشاء حساب لعرض الملاعب المفضلة',
+                    style: TextStyle(
+                      fontSize: Responsive.textSize(context, 8),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
               } else if (state is FetchFavoriteError) {
                 return Center(child: Text(state.message));
               } else if (state is FavoriteSocketExceptionError) {
@@ -207,6 +193,7 @@ class FavoriteStadium extends StatelessWidget {
     );
   }
 }
+
 class ShimmerPlaceholder extends StatelessWidget {
   const ShimmerPlaceholder({super.key});
 

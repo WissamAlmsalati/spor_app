@@ -37,8 +37,8 @@ class WalletScreen extends StatelessWidget {
                         logo: AppPhotot.backArrow,
                         title: "المحفظة",
                         color: Constants.mainColor,
-                        height: Responsive.screenHeight(context) * 0.08,
-                        width: Responsive.screenHeight(context) * 0.08,
+                        height: Responsive.screenHeight(context) * 0.070,
+                        width: Responsive.screenHeight(context) * 0.070,
                       ),
                       Padding(
                         padding: EdgeInsets.only(
@@ -65,8 +65,9 @@ class WalletScreen extends StatelessWidget {
                                     return Text(
                                       '${state.userInfo.balance} LYD',
                                       style: TextStyle(
+                                        fontWeight: FontWeight.w600,
                                         fontSize:
-                                            Responsive.textSize(context, 14),
+                                            Responsive.textSize(context, 30),
                                         color: Colors.black,
                                       ),
                                     );
@@ -90,7 +91,7 @@ class WalletScreen extends StatelessWidget {
                               Text(
                                 "الرصيد الحالي",
                                 style: TextStyle(
-                                  fontSize: Responsive.textSize(context, 12),
+                                  fontSize: Responsive.textSize(context, 24),
                                   color: Constants.txtColor,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -146,15 +147,16 @@ class WalletScreen extends StatelessWidget {
                   width: double.infinity,
                 ),
                 CustomButton(
-                  text: 'قراءة الكود',
-                  onPress: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const BarcodeScannerScreen(),
-                      ),
-                    );
-                  },
+  text: 'قراءة الكود',
+  onPress: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const BarcodeScannerScreen(),
+      ),
+    );
+  },
+
                   color: Colors.white,
                   textColor: Constants.txtColor,
                   textSize: Responsive.textSize(context, 12),

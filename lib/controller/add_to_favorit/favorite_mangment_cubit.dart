@@ -8,7 +8,6 @@ import '../../services/apis.dart';
 import '../../app/app_cubits.dart';
 import '../../utilits/secure_data.dart';
 
-
 part 'favorite_mangment_state.dart';
 
 class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
@@ -22,52 +21,77 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
     try {
       if (kDebugMode) {
         print('Adding to favorite: $stadiumId');
-      } // Debug print to verify method call
+      }
 
       final response = await http.post(
-        Uri.parse(Apis.addToFavorite),
+        Uri.parse('${Apis.addToFavorite}?stadium=$stadiumId'),
         headers: {
           'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json', // Ensure the Content-Type is set to application/json
+          'Content-Type': 'application/json',
         },
-        body: jsonEncode({'stadium': stadiumId}),
+        body: json.encode({'stadium': stadiumId}),
       );
 
-      // Debugging information
-      if (kDebugMode) {
-        print('Request body: ${jsonEncode({'stadium_id': stadiumId})}');
-      }
-      if (kDebugMode) {
-        print('Response status: ${response.statusCode}');
-      }
-      if (kDebugMode) {
-        print('Response headers: ${response.headers}');
-      }
-      if (kDebugMode) {
-        print('Response body: ${response.body}');
-      }
+      final decodedResponse = utf8.decode(response.bodyBytes);
 
       if (response.statusCode == 200) {
-        emit(AdedToFavorite());
-        RefreshCubit.refreshFavoriteStadiums(context); // Refresh favorite stadiums list
-      } else {
-        // Handle error responses
-        String errorMessage = 'Failed to add to favorite: ${response.reasonPhrase}';
-        try {
-          var errorResponse = jsonDecode(response.body);
-          if (errorResponse is Map && errorResponse.containsKey('detail')) {
-            errorMessage = utf8.decode(response.bodyBytes); // Decode UTF-8 encoded response
-          }
-        } catch (e) {
-          // Failed to parse error response
-          if (kDebugMode) {
-            print('Failed to decode error response: ${response.body}');
-          }
+        if (kDebugMode) {
+          print('Successfully added to favorite: $stadiumId');
         }
-
-        emit(AddToFavoriteError(errorMessage));
+        emit(AdedToFavorite());
+        RefreshCubit.refreshFavoriteStadiums(context);
+      } else {
+        if (kDebugMode) {
+          print('Failed to add to favorite: ${response.reasonPhrase}');
+          print('Response body: $decodedResponse');
+        }
+        emit(AddToFavoriteError('Failed to add to favorite'));
       }
     } catch (e) {
+      if (kDebugMode) {
+        print('An error occurred while adding to favorite: $e');
+      }
+      emit(AddToFavoriteError('An error occurred: $e'));
+    }
+  }
+
+  Future<void> removeFromFavorite(int stadiumId, BuildContext context) async {
+    final token = await SecureStorageData.getToken();
+
+    emit(AddToFavoriteLoading());
+
+    try {
+      if (kDebugMode) {
+        print('Removing from favorite: $stadiumId');
+      }
+
+      final response = await http.delete(
+        Uri.parse('${Apis.removeFavorite}?stadium=$stadiumId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      final decodedResponse = utf8.decode(response.bodyBytes);
+
+      if (response.statusCode == 200) {
+        if (kDebugMode) {
+          print('Successfully removed from favorite: $stadiumId');
+        }
+        emit(RemovedFromFavorite());
+        RefreshCubit.refreshFavoriteStadiums(context);
+      } else {
+        if (kDebugMode) {
+          print('Failed to remove from favorite: ${response.reasonPhrase}');
+          print('Response body: $decodedResponse');
+        }
+        emit(AddToFavoriteError('Failed to remove from favorite'));
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('An error occurred while removing from favorite: $e');
+      }
       emit(AddToFavoriteError('An error occurred: $e'));
     }
   }

@@ -1,22 +1,30 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
 import 'package:sport/views/naviggation/home_navigation.dart';
+import '../controller/region_search_controler/region_search_cubit.dart';
 import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../repostry/staduim_repostry.dart';
 import 'app_packges.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  final Dio dio = Dio(); // Initialize Dio instance
+  runApp(MyApp(dio: dio));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Dio dio;
+
+  const MyApp({super.key, required this.dio});
 
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => FetchCommentsCubit()),
@@ -38,6 +46,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ReverseRequestCubit(StadiumRepository())),
         BlocProvider(create: (context) => StadiumDetailCubit(StadiumRepository())),
         BlocProvider(create: (context) => ReverseRequestCubit(StadiumRepository())),
+        BlocProvider(create: (context) => RegionSearchCubit()), // Pass token to RegionSearchCubit
       ],
       child: Builder(
         builder: (context) {
@@ -91,7 +100,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 class AuthenticationWrapper extends StatelessWidget {
   const AuthenticationWrapper({super.key});

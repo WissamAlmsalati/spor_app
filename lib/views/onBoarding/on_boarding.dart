@@ -77,7 +77,7 @@ class OnboardingScreen extends StatelessWidget {
                                         style: TextStyle(
                                           color: Constants.secondaryColor,
                                           fontSize:
-                                          Responsive.textSize(context, 17),
+                                          Responsive.textSize(context, 25),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -104,16 +104,9 @@ class OnboardingScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        width:
-                                        MediaQuery.of(context).size.width,
-                                        height:
-                                        MediaQuery.of(context).size.height *
-                                            0.70,
-                                        child: Image.asset(
-                                          pages[index]["photoPath"]!,
-                                          fit: BoxFit.cover,
-                                        ),
+                                      Image.asset(
+                                        pages[index]["photoPath"]!,
+                                        fit: BoxFit.fill,
                                       ),
                                     ],
                                   ),
@@ -144,7 +137,8 @@ class OnboardingScreen extends StatelessWidget {
                       children: [
                         _buildPageIndicators(context),
                         CustomButton(
-                          textSize: Responsive.textSize(context, 10),
+                          fontWeight: FontWeight.w600,
+                          textSize: Responsive.textSize(context, 16),
                           height: Responsive.screenHeight(context) * 0.06,
                           text: "انشاء حساب",
                           color: Constants.mainColor,
@@ -157,7 +151,8 @@ class OnboardingScreen extends StatelessWidget {
                         CustomButton(
                           width: MediaQuery.of(context).size.width * 0.9,
                           text: "تسجيل الدخول",
-                          textSize: Responsive.textSize(context, 10),
+                          fontWeight: FontWeight.w600,
+                          textSize: Responsive.textSize(context, 16),
                           color: Constants.secondaryColor,
                           borderColor: Constants.mainColor,
                           height: Responsive.screenHeight(context) * 0.060,
@@ -170,7 +165,8 @@ class OnboardingScreen extends StatelessWidget {
                         CustomButton(
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: Responsive.screenHeight(context) * 0.06,
-                          textSize: Responsive.textSize(context, 10),
+                          fontWeight: FontWeight.w600,
+                          textSize: Responsive.textSize(context, 16),
                           text: "دخول كزائر",
                           color: Constants.secondaryColor,
                           borderColor: Constants.secondaryColor,
@@ -202,11 +198,11 @@ class OnboardingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List<Widget>.generate(pages.length, (index) {
               return Container(
-                height: 10,
-                width: 10,
+                height: Responsive.screenHeight(context)*0.015,
+                width: Responsive.screenWidth(context)*0.07,
                 margin: const EdgeInsets.symmetric(horizontal: 5.2),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(Responsive.screenWidth(context)*0.02),
                   color: currentPage == index
                       ? Constants.mainColor
                       : Constants.thirdColor.withOpacity(0.5),

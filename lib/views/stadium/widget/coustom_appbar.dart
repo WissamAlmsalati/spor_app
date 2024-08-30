@@ -53,7 +53,7 @@ class CoustomAppBr extends StatelessWidget {
               : Text(
                   title,
                   style: TextStyle(
-                      fontSize: Responsive.textSize(context, 14), color: color),
+                      fontSize: Responsive.textSize(context, 20), color: color),
                 ),
 
           loadingWidget ??
