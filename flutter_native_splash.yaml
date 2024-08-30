@@ -1,5 +1,16 @@
 flutter_native_splash:
   android: true
+<<<<<<< HEAD
+  ios: true
+  web: false
+  color: "#FFFFFF"
+  image: assets/photos/logo.png
+  android_gravity: fill
+  ios_content_mode: scaleAspectFill
+  android_12:
+    image: assets/photos/logo.png
+    icon_background_color: "#ffffff"
+=======
   ios: false
   web: false
   color: "#ffffff"
@@ -10,3 +21,4 @@ flutter_native_splash:
     image: assets/splash.png
     icon_background_color: "#ffffff"
     icon_gravity: fill
+>>>>>>> bcd9d92a8392a0f3032409424ef1f5b339b87542
