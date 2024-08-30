@@ -4,9 +4,9 @@ import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit
 import 'package:sport/views/onBoarding/on_boarding.dart';
 import 'package:sport/views/naviggation/home_navigation.dart';
 import 'package:sport/utilits/secure_data.dart';
-import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
-import '../repostry/staduim_repostry.dart';
-import 'app_packges.dart';
+import 'controller/reverse_request/reverse_requestt_dart__cubit.dart';
+import 'repostry/staduim_repostry.dart';
+import 'app/app_packges.dart';
 
 
 void main() async {
