@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import '../../../app/app_packges.dart';
 import '../../../utilits/texts.dart';
 import '../widgets/login_form_widget.dart';
 import '../widgets/logo_title_logo.dart';
-
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
@@ -12,6 +13,12 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final statusBarTheme = CustomThemeData.getStatusBarTheme(context, isDarkMode);
+
+    // Set the status bar color
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: isDarkMode ? Colors.black : Colors.white, // Set to transparent or desired color
+      statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+    ));
 
     return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {

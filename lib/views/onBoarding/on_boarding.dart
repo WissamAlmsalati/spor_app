@@ -45,7 +45,6 @@ class OnboardingScreen extends StatelessWidget {
               Positioned.fill(
                 child: SvgPicture.asset(
                   'assets/photos/appBackground.svg',
-                  // Replace with your SVG background path
                   fit: BoxFit.cover,
                 ),
               ),
@@ -78,39 +77,39 @@ class OnboardingScreen extends StatelessWidget {
                                         style: TextStyle(
                                           color: Constants.secondaryColor,
                                           fontSize:
-                                              Responsive.textSize(context, 17),
+                                          Responsive.textSize(context, 17),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                         children: [
                                           SvgPicture.asset(
                                             pages[index]["arrow"]!,
                                             height: Responsive.screenHeight(
-                                                    context) *
+                                                context) *
                                                 0.1,
                                           ),
                                           SizedBox(
                                             width: Responsive.screenHeight(
-                                                    context) *
+                                                context) *
                                                 0.13,
                                           ),
                                           SvgPicture.asset(
                                             pages[index]["reversArrow"]!,
                                             height: Responsive.screenHeight(
-                                                    context) *
+                                                context) *
                                                 0.1,
                                           ),
                                         ],
                                       ),
                                       SizedBox(
                                         width:
-                                            MediaQuery.of(context).size.width,
+                                        MediaQuery.of(context).size.width,
                                         height:
-                                            MediaQuery.of(context).size.height *
-                                                0.70,
+                                        MediaQuery.of(context).size.height *
+                                            0.70,
                                         child: Image.asset(
                                           pages[index]["photoPath"]!,
                                           fit: BoxFit.cover,
@@ -163,7 +162,7 @@ class OnboardingScreen extends StatelessWidget {
                           borderColor: Constants.mainColor,
                           height: Responsive.screenHeight(context) * 0.060,
                           onPress: () {
-                            Navigator.pushNamed(context, '/login');
+                            Navigator.pushNamedAndRemoveUntil(context, '/login' , (route) => false);
                           },
                           textColor: Constants.mainColor,
                           hasBorder: true,

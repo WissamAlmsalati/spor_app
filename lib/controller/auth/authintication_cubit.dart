@@ -20,6 +20,8 @@ part 'authintication_state.dart';
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit() : super(AuthenticationInitial());
 
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
   Future<void> checkUserStatus() async {
     emit(AuthenticationLoading());
 
@@ -30,6 +32,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       emit(AuthenticationAuthenticated());
     } else {
       emit(AuthenticationUnauthenticated());
+    }
+  }
+  Future<void> checkAuthentication() async {
+    String? token = await _secureStorage.read(key: 'accessToken');
+    if (token != null && token.isNotEmpty) {
+      emit(AuthenticationAuthenticated());  // User is authenticated
+    } else {
+      emit(AuthenticationUnauthenticated()); // User is not authenticated
     }
   }
 
