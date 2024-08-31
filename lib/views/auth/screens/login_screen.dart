@@ -11,14 +11,7 @@ class SignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final statusBarTheme = CustomThemeData.getStatusBarTheme(context, isDarkMode);
 
-    // Set the status bar color
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: isDarkMode ? Colors.black : Colors.white, // Set to transparent or desired color
-      statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
-    ));
 
     return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
@@ -52,27 +45,24 @@ class SignIn extends StatelessWidget {
           );
         }
       },
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: statusBarTheme,
-        child: SafeArea(
-          child: Scaffold(
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: Responsive.screenWidth(context) * 0.07,
-                    right: Responsive.screenWidth(context) * 0.07,
-                    top: Responsive.screenHeight(context) * 0.10),
-                child: Column(
-                  children: [
-                    const TitleLogoTitle(
-                      logo: AppPhotot.signLogo,
-                      title: AppText.signInTxt,
-                      description: AppText.signInDes,
-                    ),
-                    SizedBox(height: Responsive.screenHeight(context) * 0.05),
-                    const LoginFormWidget(),
-                  ],
-                ),
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: Responsive.screenWidth(context) * 0.07,
+                  right: Responsive.screenWidth(context) * 0.07,
+                  top: Responsive.screenHeight(context) * 0.10),
+              child: Column(
+                children: [
+                  const TitleLogoTitle(
+                    logo: AppPhotot.signLogo,
+                    title: AppText.signInTxt,
+                    description: AppText.signInDes,
+                  ),
+                  SizedBox(height: Responsive.screenHeight(context) * 0.05),
+                  const LoginFormWidget(),
+                ],
               ),
             ),
           ),

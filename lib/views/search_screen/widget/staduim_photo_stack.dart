@@ -4,10 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../../utilits/images.dart';
@@ -47,7 +46,7 @@ class StaduimPhotoStack extends StatelessWidget {
       },
       child: Stack(
         children: [
-          Container(
+          SizedBox(
             height: Responsive.screenHeight(context) * 0.25,
             child: Image.network(
               StdPhoto,
@@ -134,29 +133,34 @@ class StaduimPhotoStack extends StatelessWidget {
     );
   }
 
-  String generateCustomUrl(int stadiumId) {
-    return 'https://66c1376bf0169fe9bd266060--sensational-paletas-ef1ee0.netlify.app//stadium/$stadiumId';
+  Future<String> generateSecureLink(int stadiumId) async {
+    final response = await http.post(
+      Uri.parse('https://your-backend-api.com/generateLink'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{
+        'stadiumId': stadiumId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['link'];
+    } else {
+      throw Exception('Failed to generate link');
+    }
   }
 
   Future<void> _shareStadium(BuildContext context) async {
-    const String stadiumName = 'Stadium Name'; // Replace with actual stadium name
-    final String imageUrl = StdPhoto;
-    final String customUrl = generateCustomUrl(stdId);
-
     try {
-      // Download the image
-      final response = await http.get(Uri.parse(imageUrl));
-      final documentDirectory = (await getApplicationDocumentsDirectory()).path;
-      final file = File('$documentDirectory/stadium_image.png');
-      file.writeAsBytesSync(response.bodyBytes);
-
-      // Share the image and custom URL
-      final String shareText = 'Check out this stadium: $stadiumName\n$customUrl';
-      Share.shareXFiles([XFile(file.path)], text: shareText);
+      final String secureLink = await generateSecureLink(stdId);
+      await Share.share('Check out this stadium: $secureLink');
     } catch (e) {
-      if (kDebugMode) {
-        print('Error sharing stadium: $e');
-      }
+      Fluttertoast.showToast(
+        msg: 'Error sharing stadium link.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
     }
   }
 }

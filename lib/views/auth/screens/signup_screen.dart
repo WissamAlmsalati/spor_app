@@ -30,7 +30,7 @@ class SignUp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,  // Center vertically
                 crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
                 children: [
-                  TitleLogoTitle(
+                  const TitleLogoTitle(
                     logo: AppPhotot.signLogo,
                     title: AppText.signUptxt,
                     description: AppText.signUpdes,

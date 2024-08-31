@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sport/app/app_cubits.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/utilits/secure_data.dart';
+import '../../app/app_packges.dart';
 import '../../controller/onboarding_cubit/onboarding_cubit.dart';
 import '../../utilits/constants.dart';
 import '../auth/widgets/coustom_button.dart';
@@ -35,10 +36,11 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider(
       create: (_) => OnboardingCubit(),
       child: Scaffold(
-        backgroundColor: Constants.mainColor,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Stack(
             children: [

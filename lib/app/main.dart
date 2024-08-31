@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
@@ -11,16 +8,16 @@ import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../repostry/staduim_repostry.dart';
 import 'app_packges.dart';
 
-void main() async {
+Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final Dio dio = Dio(); // Initialize Dio instance
-  runApp(MyApp(dio: dio));
+  await SecureStorageData.getIsSign();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Dio dio;
 
-  const MyApp({super.key, required this.dio});
+
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

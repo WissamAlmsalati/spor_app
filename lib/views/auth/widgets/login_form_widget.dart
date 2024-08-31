@@ -15,15 +15,14 @@ class LoginFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController firstname = TextEditingController();
+    final TextEditingController firstnameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
     return FormDecoration(
       height: Responsive.screenHeight(context) * 0.47,
       child: Padding(
-        padding: EdgeInsets.only(
-          left: Responsive.screenWidth(context) * 0.05,
-          right: Responsive.screenWidth(context) * 0.05,
+        padding: EdgeInsets.symmetric(
+          horizontal: Responsive.screenWidth(context) * 0.05,
         ),
         child: Form(
           key: formKey,
@@ -32,20 +31,14 @@ class LoginFormWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomTextField(
-
                 lableSize: Responsive.textSize(context, 6),
                 hintSize: Responsive.textSize(context, 10),
                 validatorSize: Responsive.textSize(context, 6),
-                controller: firstname,
+                controller: firstnameController,
                 labeltext: 'رقم الهاتف',
                 validatorText: 'ادخل رقم الهاتف',
                 keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'ادخل رقم الهاتف';
-                  }
-                  return null;
-                },
+                validator: (value) => (value == null || value.isEmpty) ? 'ادخل رقم الهاتف' : null,
               ),
               CustomTextField(
                 lableSize: Responsive.textSize(context, 8),
@@ -54,12 +47,7 @@ class LoginFormWidget extends StatelessWidget {
                 controller: passwordController,
                 labeltext: 'كلمة المرور',
                 validatorText: 'ادخل كلمة المرور',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'ادخل كلمة المرور';
-                  }
-                  return null;
-                },
+                validator: (value) => (value == null || value.isEmpty) ? 'ادخل كلمة المرور' : null,
               ),
               CustomButton(
                 fontWeight: FontWeight.w600,
@@ -74,42 +62,22 @@ class LoginFormWidget extends StatelessWidget {
               ),
               BlocBuilder<AuthenticationCubit, AuthenticationState>(
                 builder: (context, state) {
-                  if (state is AuthenticationLoading) {
-                    return CustomButton(
-                      fontWeight: FontWeight.w600,
-                      textSize: Responsive.textSize(context, 16),
-                      width: Responsive.screenWidth(context) * 0.9,
-                      height: Responsive.screenHeight(context) * 0.06,
-                      isLoading: true,
-                      loadingSize: Responsive.screenHeight(context) * 0.04,
-                      loadingColor: Constants.mainColor,
-                      text: 'جاري التحميل...',
-                      color: Constants.secondaryColor,
-                      borderColor: Constants.secondaryColor,
-                      onPress: () {
-                        if (kDebugMode) {
-                          print('Login button pressed');
-                        }
-                        SubmitFormFun.trySubmitForm(
-                            context, formKey, firstname, passwordController);
-                      },
-                      textColor: Constants.thirdColor,
-                    );
-                  }
                   return CustomButton(
                     fontWeight: FontWeight.w600,
                     textSize: Responsive.textSize(context, 16),
                     width: Responsive.screenWidth(context) * 0.9,
                     height: Responsive.screenHeight(context) * 0.06,
-                    text: 'تسجيل الدخول',
+                    isLoading: state is AuthenticationLoading,
+                    loadingSize: Responsive.screenHeight(context) * 0.04,
+                    loadingColor: Constants.mainColor,
+                    text: state is AuthenticationLoading ? 'جاري التحميل...' : 'تسجيل الدخول',
                     color: Constants.secondaryColor,
                     borderColor: Constants.secondaryColor,
                     onPress: () {
                       if (kDebugMode) {
                         print('Login button pressed');
                       }
-                      SubmitFormFun.trySubmitForm(
-                          context, formKey, firstname, passwordController);
+                      SubmitFormFun.trySubmitForm(context, formKey, firstnameController, passwordController);
                     },
                     textColor: Constants.thirdColor,
                   );
