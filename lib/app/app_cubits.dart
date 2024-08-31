@@ -1,3 +1,4 @@
+import '../controller/ads_controler/ads_photos_cubit.dart';
 import 'app_packges.dart';
 
 
@@ -10,6 +11,7 @@ class RefreshCubit {
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
     context.read<AuthenticationCubit>().checkUserStatus();
     context.read<OldReservationFetchCubit>().fetchOldReservations();
+    context.read<AdsPhotosCubit>().fetchAdsPhotos();
   }
 
   static void refreshBalance(BuildContext context) {

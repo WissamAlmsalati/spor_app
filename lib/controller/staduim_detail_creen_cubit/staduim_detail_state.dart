@@ -20,6 +20,12 @@ class StaduimDetailLoaded extends StaduimDetailState {
   });
 }
 
+class StaduimDetailLoadedEmptySession extends StaduimDetailState {
+  final StadiumInfo stadiumInfo;
+
+  StaduimDetailLoadedEmptySession({required this.stadiumInfo});
+}
+
 class StaduimDetailError extends StaduimDetailState {
   final String message;
 

@@ -12,34 +12,32 @@ class Visitor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: Responsive.screenHeight(context) * 0.17,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          ProfileButton(
-            icon: AppPhotot.startLg,
-            text: 'قيم التطبيق',
-            onPressed: () {},
-            fontsize: Responsive.textSize(context, 8),
-          ),
-          ProfileButton(
-            icon: AppPhotot.nighModLg,
-            text: 'الوضع الليلي',
-            hasLeading: true,
-            fontsize: Responsive.textSize(context, 8),
-            leadingIcon: AppPhotot.cupLogo,
-            onSwitchToggle: () {
-              BlocProvider.of<ThemeCubit>(context).toggleTheme(
-                context,
-                !(BlocProvider.of<ThemeCubit>(context).state.brightness ==
-                    Brightness.dark),
-              );
-            },
-            onPressed: () {},
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        ProfileButton(
+          icon: AppPhotot.startLg,
+          text: 'قيم التطبيق',
+          onPressed: () {},
+          fontsize: Responsive.textSize(context, 8),
+        ),
+    //ميزة للاصدار القادم
+    //    ProfileButton(
+    //      icon: AppPhotot.nighModLg,
+    //      text: 'الوضع الليلي',
+    //      hasLeading: true,
+    //      fontsize: Responsive.textSize(context, 8),
+    //      leadingIcon: AppPhotot.cupLogo,
+    //      onSwitchToggle: () {
+    //        BlocProvider.of<ThemeCubit>(context).toggleTheme(
+    //          context,
+    //          !(BlocProvider.of<ThemeCubit>(context).state.brightness ==
+    //              Brightness.dark),
+    //        );
+    //      },
+    //      onPressed: () {},
+    //    ),
+      ],
     );
   }
 }

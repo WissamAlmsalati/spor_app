@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../../../models/avilable_sesion_model.dart';
 import '../../../models/session_model.dart';
 import 'hour_pricker.dart';
 
@@ -9,7 +7,8 @@ class TimeSelector extends StatelessWidget {
   final int selectedSessionId;
   final ValueChanged<int> onTimeSelected;
 
-  TimeSelector({super.key,
+  TimeSelector({
+    super.key,
     required this.sessions,
     required this.selectedSessionId,
     required this.onTimeSelected,
@@ -25,6 +24,8 @@ class TimeSelector extends StatelessWidget {
           return SelectableTimeTile(
             time: session.startTime,
             isSelected: isSelected,
+            isReserved: session.isReserved,
+            isLocked: session.isLocked,
             onTap: () => onTimeSelected(session.sessionId),
           );
         }).toList(),

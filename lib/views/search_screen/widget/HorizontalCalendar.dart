@@ -50,7 +50,7 @@ class DateSelector extends StatelessWidget {
                       dayNumber,
                       style: TextStyle(
                         fontSize: Responsive.textSize(context, 20),
-fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w500,
                         color: isSelected ? Colors.white : Colors.black,
                       ),
                     ),

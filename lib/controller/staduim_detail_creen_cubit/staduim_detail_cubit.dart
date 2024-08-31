@@ -30,9 +30,14 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
         final availableSessions = (data['available_sessions'] as List)
             .map((session) => AvailableSession.fromJson(session))
             .toList();
-        selectedDate = availableSessions.first.date;
-        selectedSessionId = availableSessions.first.sessions.first.sessionId;
-        emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions));
+
+        if (availableSessions.isEmpty) {
+          emit(StaduimDetailLoadedEmptySession(stadiumInfo: stadiumInfo));
+        } else {
+          selectedDate = availableSessions.first.date;
+          selectedSessionId = availableSessions.first.sessions.first.sessionId;
+          emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions));
+        }
       } else {
         emit(StaduimDetailError(message: 'Failed to load stadium details'));
       }
@@ -43,17 +48,21 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
 
   void setSelectedDate(String date) {
     selectedDate = date;
-    emit(StaduimDetailLoaded(
-      stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
-      availableSessions: (state as StaduimDetailLoaded).availableSessions,
-    ));
+    if (state is StaduimDetailLoaded) {
+      emit(StaduimDetailLoaded(
+        stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
+        availableSessions: (state as StaduimDetailLoaded).availableSessions,
+      ));
+    }
   }
 
   void setSelectedSessionId(int sessionId) {
     selectedSessionId = sessionId;
-    emit(StaduimDetailLoaded(
-      stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
-      availableSessions: (state as StaduimDetailLoaded).availableSessions,
-    ));
+    if (state is StaduimDetailLoaded) {
+      emit(StaduimDetailLoaded(
+        stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
+        availableSessions: (state as StaduimDetailLoaded).availableSessions,
+      ));
+    }
   }
 }

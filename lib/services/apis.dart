@@ -18,6 +18,7 @@ class Apis {
   static const String rechargeBalance = "${BaseUrl.baseUrl}/player/top-up";
   static const String startReservation = "${BaseUrl.baseUrl}/player/reserve";
   static const String staduimDetail = "${BaseUrl.baseUrl}/player/stadium-info";
+  static const String AdsPhotos = "${BaseUrl.baseUrl}/management/ads-images";
 
   // Add the new endpoint for fetching stadium info
   static String stadiumInfo(int stadiumId) {

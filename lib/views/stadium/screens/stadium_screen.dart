@@ -42,12 +42,14 @@ class StadiumScreen extends StatelessWidget {
                     ),
 
                     child: OpenContainer(
+                      closedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.022),
+                      ),
                       openShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.05),
                       ),
-                        closedColor: Colors.white,
                       transitionType: ContainerTransitionType.fadeThrough,
-                      transitionDuration: const Duration(milliseconds: 500), // Adjust duration for smoothness
+                      transitionDuration: const Duration(milliseconds: 300), // Adjust duration for smoothness
                       openBuilder: (context, _) => StadiumSearchScreen(),
                       closedBuilder: (context, openContainer) => SearchFieldWidget(
                         controller: null,

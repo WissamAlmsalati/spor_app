@@ -32,8 +32,8 @@ class ProfileScreen extends StatelessWidget {
                       logo: AppPhotot.notificationLogo,
                       title: 'الحساب',
                       color: Constants.mainColor,
-                      height: Responsive.screenHeight(context) * 0.070,
-                      width: Responsive.screenHeight(context) * 0.070,
+                      height: Responsive.screenHeight(context) * 0.045,
+                      width: Responsive.screenHeight(context) * 0.045,
                     ),
                     SizedBox(
                       height: Responsive.screenHeight(context) * 0.01,

@@ -37,15 +37,14 @@ class AccountDetailsState extends State<AccountDetails> {
           ),
           child: Column(
             children: [
-              CoustomAppBr(
-                height: 20,
-                width: 20,
-                logo: AppPhotot.backArrow,
-                title: "الحساب",
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+              CoustomAppBr(onPressed: () {
+                Navigator.pop(context);
+              },
+                logo: AppPhotot.arrowBack,
+                title: 'الحساب',
                 color: Constants.mainColor,
+                height: Responsive.screenHeight(context) * 0.045,
+                width: Responsive.screenHeight(context) * 0.045,
               ),
               Stack(
                 alignment: Alignment.topCenter,
@@ -56,11 +55,11 @@ class AccountDetailsState extends State<AccountDetails> {
                     ),
                     child: FormDecoration(
                       height: Responsive.screenHeight(context) * 0.37,
+                      width: Responsive.screenWidth(context) * 0.9,
                       child: Padding(
                         padding: EdgeInsets.only(
                           top:Responsive.screenHeight(context) * 0.0254,
-
-                          right: Responsive.screenWidth(context) * 0.054,
+                          right: Responsive.screenWidth(context) * 0.0544,
                           left: Responsive.screenWidth(context) * 0.054,
                         ),
                         child: SizedBox(
@@ -102,7 +101,8 @@ class AccountDetailsState extends State<AccountDetails> {
                               CustomButton(
                                 text: 'تاكيد التغييرات',
                                 onPress: () {},
-                                textSize: Responsive.textSize(context, 3.5),
+                                textSize: Responsive.textSize(context, 14),
+                                fontWeight: FontWeight.w400,
                                 color: Colors.white,
                                 textColor: Colors.black,
                                 height: Responsive.screenHeight(context) * 0.053,
@@ -135,6 +135,7 @@ class AccountDetailsState extends State<AccountDetails> {
                 },
                 child: FormDecoration(
                   height: Responsive.blockHeight(context) * 7,
+                  width: Responsive.screenWidth(context) * 0.99,
                   child: Row(
                     children: [
                       Padding(
@@ -148,7 +149,8 @@ class AccountDetailsState extends State<AccountDetails> {
                       Text(
                         'تغيير كلمة المرور',
                         style: TextStyle(
-                          fontSize: Responsive.textSize(context, 3.4),
+                          fontSize: Responsive.textSize(context, 14),
+                          fontWeight: FontWeight.w400,
                           color: Colors.black,
                         ),
                       ),

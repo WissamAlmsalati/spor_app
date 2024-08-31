@@ -13,10 +13,11 @@ class FormDecoration extends StatelessWidget {
       elevation: 2,
 
       child: Container(
+        margin: EdgeInsets.zero,
         width:width?? Responsive.screenWidth(context) * 0.810,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.04),
         ),
         child: child,
       ),

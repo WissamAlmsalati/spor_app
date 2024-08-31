@@ -28,15 +28,15 @@ class ChangePasswordScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                CoustomAppBr(
-                  height: 20,
-                  width: 20,
-                    logo: AppPhotot.backArrow ,
-                    title: "كلمة المرور",
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: Constants.mainColor),
+                CoustomAppBr(onPressed: () {
+                  Navigator.pop(context);
+                },
+                  logo: AppPhotot.arrowBack,
+                  title: 'الحساب',
+                  color: Constants.mainColor,
+                  height: Responsive.screenHeight(context) * 0.045,
+                  width: Responsive.screenHeight(context) * 0.045,
+                ),
                 SizedBox(
                   height: Responsive.screenHeight(context) * 0.03,
                 ),
@@ -51,7 +51,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 Text(
                   'تغيير كلمة المرور',
                   style: TextStyle(
-                    fontSize: Responsive.textSize(context, 6),
+                    fontSize: Responsive.textSize(context, 24),
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
@@ -72,23 +72,29 @@ class ChangePasswordScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           CustomTextField(
+                            lableSize: Responsive.textSize(context, 8),
+                            hintSize: Responsive.textSize(context, 8),
                             controller: _oldpassword,
-                            labeltext: "الاسم",
-                            validatorText: "الاسم مطلوب",
+                            labeltext: "كلمة السر القديمة",
+                            validatorText: "كلمة السر القديمة مطلوبة",
                           ),
                           CustomTextField(
+                            lableSize: Responsive.textSize(context, 8),
+                            hintSize: Responsive.textSize(context, 8),
                             controller: _newpassword,
-                            labeltext: "رقم الهاتف",
-                            validatorText: "رقم الهاتف مطلوب",
+                            labeltext: "كلمة السر الجديدة",
+                            validatorText: "ادخل كلمة السر الجديدة",
                           ),
                           CustomButton(
                             text: 'حفظ',
                             onPress: () {
                               Navigator.pushNamed(context, '/otp');
                             },
+                            textSize: Responsive.textSize(context, 14),
+                            fontWeight: FontWeight.w600,
                             color: Constants.mainColor,
                             textColor: Colors.white,
-                            height: Responsive.blockHeight(context) * 5.3,
+                            height: Responsive.screenHeight(context) * 0.048,
                             width: double.infinity,
                           ),
                           CustomButton(
@@ -97,8 +103,8 @@ class ChangePasswordScreen extends StatelessWidget {
                             color: Colors.white,
                             textColor: Constants.txtColor,
                             fontWeight: FontWeight.w600,
-                            textSize: 16,
-                            height: Responsive.blockHeight(context) * 5.3,
+                            textSize: Responsive.textSize(context, 14),
+                            height: Responsive.screenHeight(context) * 0.048,
                             width: double.infinity,
                           ),
                         ],

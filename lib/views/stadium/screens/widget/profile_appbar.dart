@@ -19,16 +19,20 @@ class ProfileAppBar {
             title: "انشئ حساب و استمتع",
             logo: AppPhotot.notificationLogo,
             isLoading: true,
-            height: Responsive.screenHeight(context) * 0.070,
-            width: Responsive.screenHeight(context) * 0.070,
+            height: Responsive.screenHeight(context) * 0.045,
+            width: Responsive.screenHeight(context) * 0.045,
           );
         } else if (state is FetchProfileError) {
-          return const CoustomAppBr(
+          return  CoustomAppBr(
+            height: Responsive.screenHeight(context) * 0.045,
+            width: Responsive.screenHeight(context) * 0.045,
             title: "انشئ حساب و استمتع",
             logo: AppPhotot.notificationLogo,
           );
         } else if (state is ProfileSocketExceptionError) {
-          return  const CoustomAppBr(
+          return   CoustomAppBr(
+            height: Responsive.screenHeight(context) * 0.045,
+            width: Responsive.screenHeight(context) * 0.045,
             title: "لا يوجد اتصال بالانترنت",
             logo: AppPhotot.notificationLogo,
           );
@@ -36,13 +40,16 @@ class ProfileAppBar {
           return CoustomAppBr(
             title: "اهلا وسهلا ${state.userInfo.firstName}",
             logo: AppPhotot.notificationLogo,
-            height: Responsive.screenHeight(context) * 0.070,
-            width: Responsive.screenHeight(context) * 0.070,
+            height: Responsive.screenHeight(context) * 0.045,
+            width: Responsive.screenHeight(context) * 0.045,
           );
         } else if (state is FetchProfileEmpty) {
-          return const CoustomAppBr(
+          return  CoustomAppBr(
+            height: Responsive.screenHeight(context) * 0.045,
+            width: Responsive.screenHeight(context) * 0.045,
             title: "انشئ حساب و استمتع",
             logo: AppPhotot.notificationLogo,
+
           );
         } else {
           return const Center(child: Text('Unknown state'));

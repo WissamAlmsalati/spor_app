@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
 import 'package:sport/views/naviggation/home_navigation.dart';
+import '../controller/ads_controler/ads_photos_cubit.dart';
 import '../controller/region_search_controler/region_search_cubit.dart';
 import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../repostry/staduim_repostry.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ReverseRequestCubit(StadiumRepository())),
         BlocProvider(create: (context) => StadiumDetailCubit(StadiumRepository())),
         BlocProvider(create: (context) => ReverseRequestCubit(StadiumRepository())),
-        BlocProvider(create: (context) => RegionSearchCubit()), // Pass token to RegionSearchCubit
+        BlocProvider(create: (context) => RegionSearchCubit()),
+        BlocProvider(create: (context) => AdsPhotosCubit()),
       ],
       child: Builder(
         builder: (context) {

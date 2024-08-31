@@ -9,13 +9,12 @@ import '../../../utilits/responsive.dart';
 import 'coustom_dialog.dart';
 
 class UserLogged extends StatelessWidget {
-
   const UserLogged({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Responsive.screenHeight(context) * 0.30,
+      height: Responsive.screenHeight(context) * 0.25,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -25,17 +24,14 @@ class UserLogged extends StatelessWidget {
             text: 'معلومات الحساب',
             onPressed: () {
               Navigator.pushNamed(context, '/accountDetails');
-
             },
           ),
           ProfileButton(
-
             icon: AppPhotot.walletLg,
             text: 'المحفظة',
             fontsize: Responsive.textSize(context, 8),
             onPressed: () {
               Navigator.pushNamed(context, '/walletScreen');
-
             },
           ),
           ProfileButton(
@@ -43,26 +39,27 @@ class UserLogged extends StatelessWidget {
             text: 'قيم التطبيق',
             onPressed: () {},
             fontsize: Responsive.textSize(context, 8),
+
+            //ميزة للاصدار القادم
           ),
+          //  ProfileButton(
+          //    fontsize: Responsive.textSize(context, 8),
+          //
+          //    icon: AppPhotot.nighModLg,
+          //    text: 'الوضع الليلي',
+          //    hasLeading: true,
+          //    leadingIcon: AppPhotot.cupLogo,
+          //    onSwitchToggle: () {
+          //      BlocProvider.of<ThemeCubit>(context).toggleTheme(
+          //        context,
+          //        !(BlocProvider.of<ThemeCubit>(context).state.brightness ==
+          //            Brightness.dark),
+          //      );
+          //    },
+          //    onPressed: () {},
+          //  ),
           ProfileButton(
             fontsize: Responsive.textSize(context, 8),
-
-            icon: AppPhotot.nighModLg,
-            text: 'الوضع الليلي',
-            hasLeading: true,
-            leadingIcon: AppPhotot.cupLogo,
-            onSwitchToggle: () {
-              BlocProvider.of<ThemeCubit>(context).toggleTheme(
-                context,
-                !(BlocProvider.of<ThemeCubit>(context).state.brightness ==
-                    Brightness.dark),
-              );
-            },
-            onPressed: () {},
-          ),
-          ProfileButton(
-            fontsize: Responsive.textSize(context, 8),
-
             icon: AppPhotot.logoutLg,
             text: 'تسجيل الخروج',
             onPressed: () {

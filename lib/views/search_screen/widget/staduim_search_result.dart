@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -11,6 +8,7 @@ import '../../../utilits/responsive.dart';
 
 class StaduimSearchResult extends StatelessWidget {
   final Stadium stadium;
+
   const StaduimSearchResult({super.key, required this.stadium});
 
   @override
@@ -24,21 +22,34 @@ class StaduimSearchResult extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15))
         ),
         child: Column(
-
           children: [
             Image.network(
-              stadium.image,
+              stadium.image.isNotEmpty
+                  ? stadium.image
+                  : 'https://via.placeholder.com/150', // Placeholder image URL
               fit: BoxFit.fill,
               width: double.infinity,
               height: Responsive.screenHeight(context) * 0.16,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey,
+                  child: const Center(
+                    child: Text(
+                      'No image available',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                );
+              },
             ),
             SizedBox(
               height: Responsive.screenHeight(context) * 0.011,
             ),
             Padding(
               padding: EdgeInsets.only(
-                left: Responsive.screenWidth(context)*0.05,
-                right: Responsive.screenWidth(context)*0.05,
+                top: Responsive.screenHeight(context) * 0.01,
+                left: Responsive.screenWidth(context) * 0.05,
+                right: Responsive.screenWidth(context) * 0.05,
               ),
 
               child: Row(
@@ -48,27 +59,34 @@ class StaduimSearchResult extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(stadium.name.isNotEmpty == true ? stadium.name : 'ملعب',style: TextStyle(
-                          fontSize: Responsive.textSize(context, 13)
-                      ),),
+                      Text(
+                        stadium.name.isNotEmpty == true ? stadium.name : 'ملعب',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                            fontSize: Responsive.textSize(context, 16)
+                        ),),
+                      SizedBox(
+                        height: Responsive.screenHeight(context) * 0.01,
+                      ),
                       Row(
                         children: [
-                          Text('${stadium.address}.',style: TextStyle(
+                          Text('${stadium.address}.', style: TextStyle(
                               color: Constants.txtColor,
-                            fontSize: Responsive.textSize(context, 12)
+                              fontSize: Responsive.textSize(context, 12)
                           ),),
 
                           SvgPicture.asset(AppPhotot.starLogo,
-                            height: Responsive.screenHeight(context)*0.014,
-                            width: Responsive.screenWidth(context)*0.014,
+                            height: Responsive.screenHeight(context) * 0.014,
+                            width: Responsive.screenWidth(context) * 0.014,
                           ),
-                          Text(stadium.avgRating.toString(),style: TextStyle(
+                          Text(stadium.avgRating.toString(), style: TextStyle(
                               fontSize: Responsive.textSize(context, 12.5)
                           ),),
-                          Text(' (${stadium.totalRating.toString() })', style: TextStyle(
-                              color: Constants.txtColor,
-                            fontSize: Responsive.textSize(context, 12.2)
-                          ),),
+                          Text(' (${stadium.totalRating.toString() })',
+                            style: TextStyle(
+                                color: Constants.txtColor,
+                                fontSize: Responsive.textSize(context, 12.2)
+                            ),),
                         ],
                       )
                     ],
@@ -76,10 +94,14 @@ class StaduimSearchResult extends StatelessWidget {
                   Text(
                     stadium.isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
                     style: TextStyle(
-                      color: stadium.isAvailable ? Constants.mainColor : Colors.red,
-                      fontSize: Responsive.textSize(context, 13), // Customize the font size as needed
+                      color: stadium.isAvailable ? Constants.mainColor : Colors
+                          .red,
+                      fontSize: Responsive.textSize(
+                          context, 13), // Customize the font size as needed
                     ),
-                  ),                                  ],
+                  ),
+
+                ],
               ),
             ),
           ],
