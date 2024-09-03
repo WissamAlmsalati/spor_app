@@ -19,7 +19,7 @@ class Visitor extends StatelessWidget {
           icon: AppPhotot.startLg,
           text: 'قيم التطبيق',
           onPressed: () {},
-          fontsize: Responsive.textSize(context, 8),
+          fontsize: Responsive.textSize(context, 16),
         ),
     //ميزة للاصدار القادم
     //    ProfileButton(

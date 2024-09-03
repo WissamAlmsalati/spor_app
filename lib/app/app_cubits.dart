@@ -11,7 +11,7 @@ class RefreshCubit {
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
     context.read<AuthenticationCubit>().checkUserStatus();
     context.read<OldReservationFetchCubit>().fetchOldReservations();
-    context.read<AdsPhotosCubit>().fetchAdsPhotos();
+    context.read<FetchAdsImagesCubit>();
   }
 
   static void refreshBalance(BuildContext context) {

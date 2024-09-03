@@ -34,6 +34,7 @@ class ProfileButton extends StatelessWidget {
           SizedBox(width: Responsive.blockHeight(context) * 2),
           Text(text,
               style: TextStyle(
+                fontWeight: FontWeight.w500,
                   fontSize: fontsize ?? Responsive.textSize(context, 10))),
           if (hasLeading) ...[
             const Spacer(),

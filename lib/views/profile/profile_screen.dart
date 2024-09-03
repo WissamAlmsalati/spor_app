@@ -47,7 +47,8 @@ class ProfileScreen extends StatelessWidget {
                       child: Text(
                         'اعدادات عامة',
                         style: TextStyle(
-                          fontSize: Responsive.textSize(context, 12),
+                          fontWeight: FontWeight.w400,
+                          fontSize: Responsive.textSize(context, 18),
                           color: Constants.mainColor,
                         ),
                       ),

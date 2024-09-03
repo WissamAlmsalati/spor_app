@@ -17,7 +17,7 @@ class ProvidersWidget extends StatelessWidget {
           create: (context) => StadiumDetailCubit(StadiumRepository()),
         ),
         BlocProvider(
-          create: (context) => ReverseRequestCubit(StadiumRepository()),
+          create: (context) => ReverseRequestCubit(),
         ),
 
         BlocProvider(create: (context) => FetchCommentsCubit()),

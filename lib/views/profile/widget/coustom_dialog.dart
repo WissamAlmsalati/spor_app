@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:sport/utilits/responsive.dart';
-
 import '../../auth/widgets/coustom_button.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   final String title;
   final String content;
-
   final String canceText;
-  final String confirmText;
-
+  final String? confirmText;
+  final Color? color;
+  final Color? borderColor;
+  final Color? textColor;
   final VoidCallback? onConfirm;
   final VoidCallback? onCancel;
 
   const CustomAlertDialog({
     super.key,
     required this.title,
-    required this.content, required this.canceText, required this.confirmText, this.onConfirm, this.onCancel,
+    required this.content,
+    required this.canceText,
+    this.confirmText,
+    this.onConfirm,
+    this.onCancel,
+    this.color,
+    this.borderColor,
+    this.textColor,
   });
 
   @override
@@ -42,31 +49,32 @@ class CustomAlertDialog extends StatelessWidget {
               ),
             ),
             Text(content, style: TextStyle(fontSize: Responsive.textSize(context, 12))),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CustomButton(
-                  text: confirmText,
-                  onPress: onConfirm,
-                  textSize: Responsive.textSize(context, 12.5),
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  height: Responsive.screenHeight(context) * 0.05,
-                  hasBorder: false,
-                  width: Responsive.screenWidth(context) * 0.33,
-                ),
+                if (confirmText != null)
+                  CustomButton(
+                    text: confirmText!,
+                    onPress: onConfirm,
+                    textSize: Responsive.textSize(context, 12.5),
+                    color: color ?? Colors.red,
+                    textColor: textColor ?? Colors.white,
+                    borderColor: borderColor,
+                    height: Responsive.screenHeight(context) * 0.05,
+                    hasBorder: false,
+                    width: confirmText != null ? Responsive.screenWidth(context) * 0.33 : Responsive.screenWidth(context) * 0.66,
+                  ),
                 CustomButton(
                   text: canceText,
                   onPress: onCancel,
                   textSize: Responsive.textSize(context, 12.5),
                   color: Colors.white,
+                  textColor: textColor ?? Colors.black54,
+                  borderColor: borderColor ?? Colors.black54,
                   hasBorder: true,
-                  borderColor: Colors.black54,
-                  textColor: Colors.black54,
                   height: Responsive.screenHeight(context) * 0.05,
-                  width: Responsive.screenWidth(context) * 0.33,
+                  width: confirmText != null ? Responsive.screenWidth(context) * 0.33 : Responsive.screenWidth(context) * 0.66,
                 ),
               ],
             ),

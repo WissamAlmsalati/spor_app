@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import the flutter/services.dart package
+import 'package:flutter/services.dart';
 import 'package:sport/app/app_packges.dart';
 import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/stadium/widget/coustom_appbar.dart';
@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
   final double width;
   final double? textSize;
   final FontWeight? fontWeight;
-  final bool isLoading; // New parameter
+  final bool isLoading;
   final Color? loadingColor;
   final double? loadingSize;
 
@@ -34,8 +34,9 @@ class CustomButton extends StatelessWidget {
     this.textSize,
     this.fontWeight,
     this.brWidth,
-    this.isLoading = false, // Default value
-    this.loadingColor, this.loadingSize,
+    this.isLoading = false,
+    this.loadingColor,
+    this.loadingSize,
   }) : assert(hasBorder == false || borderColor != null);
 
   @override
@@ -45,9 +46,7 @@ class CustomButton extends StatelessWidget {
       height: height,
       child: ElevatedButton(
         onPressed: () {
-          // Trigger haptic feedback
           HapticFeedback.mediumImpact();
-          // Call the provided onPress callback
           if (onPress != null) {
             onPress!();
           }

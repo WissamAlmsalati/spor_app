@@ -26,18 +26,17 @@ class StadiumDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Constants.backGroundColor,
       body: SafeArea(
-
         child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
           builder: (context, state) {
             if (state is StaduimDetailLoading) {
-              return const StadiumDetailShimmerLoading(); // Use the new shimmer class
+              return const StadiumDetailShimmerLoading();
             } else if (state is StaduimDetailLoaded) {
               final stadium = state.stadiumInfo;
               final sessions = state.availableSessions;
               final selectedSession = sessions.isNotEmpty
                   ? sessions.firstWhere(
                       (session) => session.date == cubit.selectedDate,
-                      orElse: () => sessions.first, // Provide a default value
+                      orElse: () => sessions.first,
                     )
                   : null;
 
@@ -137,7 +136,7 @@ class StadiumDetailScreen extends StatelessWidget {
                         margin: EdgeInsets.zero,
                         borderOnForeground: true,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0), // Remove default border radius
+                          borderRadius: BorderRadius.circular(0),
                         ),
                         child: Container(
                           padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
@@ -168,6 +167,7 @@ class StadiumDetailScreen extends StatelessWidget {
                                         true,
                                         2,
                                       );
+                                      print('stadiumId: $stadiumId, selectedDate: ${cubit.selectedDate}, selectedSessionId: ${cubit.selectedSessionId}, isMonthlyReservation: true, paymentType: 2');
                                     },
                                     text: "حجز",
                                     color: Constants.mainColor,
@@ -258,7 +258,7 @@ class StadiumDetailScreen extends StatelessWidget {
                         margin: EdgeInsets.zero,
                         borderOnForeground: true,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0), // Remove default border radius
+                          borderRadius: BorderRadius.circular(0),
                         ),
                         child: Container(
                           padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),

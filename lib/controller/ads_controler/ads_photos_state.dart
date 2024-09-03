@@ -1,20 +1,30 @@
 part of 'ads_photos_cubit.dart';
 
 @immutable
-sealed class AdsPhotosState {}
+abstract class AdsImagesState {}
 
-final class AdsPhotosInitial extends AdsPhotosState {}
+class AdsImagesInitial extends AdsImagesState {}
 
-final class AdsPhotosLoading extends AdsPhotosState {}
+class AdsImagesLoading extends AdsImagesState {}
 
-final class AdsPhotosLoaded extends AdsPhotosState {
-  final List<AdsPhoto> adsPhotos;
-  AdsPhotosLoaded(this.adsPhotos);
+class AdsImagesLoaded extends AdsImagesState {
+  final List<AdsPhoto> adsImages;
+
+  AdsImagesLoaded(this.adsImages);
 }
 
-final class AdsPhotosError extends AdsPhotosState {
-  final String message;
-  AdsPhotosError(this.message);
+class AdsImagesError extends AdsImagesState {
+  final String error;
+
+  AdsImagesError(this.error);
 }
 
-final class AdsPhotosNoData extends AdsPhotosState {}
+class SendAdsImagesLoading extends AdsImagesState {}
+
+class SendAdsImagesSuccess extends AdsImagesState {}
+
+class SendAdsImagesError extends AdsImagesState {
+  final String error;
+
+  SendAdsImagesError(this.error);
+}

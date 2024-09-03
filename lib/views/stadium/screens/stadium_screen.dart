@@ -9,6 +9,7 @@ import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../../utilits/images.dart';
 import '../../../utilits/responsive.dart';
 import '../../search_screen/search_screen.dart';
+import '../../search_screen/widget/ads_photo_cursol.dart';
 import '../widget/logo_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -66,7 +67,7 @@ class StadiumScreen extends StatelessWidget {
                     logo: AppPhotot.cupLogo,
                     text: "عروض خاصة",
                   ),
-                  CarouselPhoto(),
+                  AdsCarouselSlider(),
                   const LogoText(
                     logo: AppPhotot.hearth,
                     text: " الملاعب المفضلة",

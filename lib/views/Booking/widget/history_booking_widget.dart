@@ -26,14 +26,9 @@ class HistoryBookingWidget extends StatelessWidget {
     String formattedDate = DateFormat('EEEE', 'ar').format(date);
 
 
-    return Container(
+    return Card(
       margin: EdgeInsets.all(Responsive.screenWidth(context) * 0.03),
-      height: Responsive.screenHeight(context) * 0.35,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
+      elevation: 3,
       child: Padding(
         padding:  EdgeInsets.only(
           top: Responsive.screenHeight(context) * 0.02,
@@ -45,7 +40,7 @@ class HistoryBookingWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(reservation.stadiumName, style: TextStyle(fontSize: Responsive.textSize(context, 10),
+            Text(reservation.stadiumName, style: TextStyle(fontSize: Responsive.textSize(context, 20),
                 fontWeight: FontWeight.w700),),
             Padding(
               padding:  EdgeInsets.only(top: Responsive.screenHeight(context) * 0.013),
@@ -57,18 +52,18 @@ class HistoryBookingWidget extends StatelessWidget {
                     fit: BoxFit.fill,
                   ),
                   SizedBox(width: Responsive.screenWidth(context) * 0.02,),
-                  Text(reservation.stadiumAddress, style: TextStyle(fontSize: Responsive.textSize(context, 8),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text(reservation.stadiumAddress, style: TextStyle(fontSize: Responsive.textSize(context, 18),fontWeight: FontWeight.w500,color: Constants.txtColor),),
                 ],
               ),
             ),
             SizedBox(
               height: Responsive.screenHeight(context) * 0.05,
-              width: Responsive.screenWidth(context) * 0.5,
+              width: Responsive.screenWidth(context) * 0.45,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("يوم الحجز: ", style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
-                  Text(formattedDate, style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text("يوم الحجز: ", style: TextStyle(fontSize: Responsive.textSize(context, 16),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text(formattedDate, style: TextStyle(fontSize: Responsive.textSize(context, 18),fontWeight: FontWeight.w500,color: Colors.black),),
                   Container(
                     height: Responsive.screenHeight(context) * 0.005,
                     width: Responsive.screenWidth(context) * 0.04,
@@ -77,18 +72,18 @@ class HistoryBookingWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  Text(date.day.toString(), style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text(date.day.toString(), style: TextStyle(fontSize: Responsive.textSize(context, 18),fontWeight: FontWeight.w500,color: Colors.black),),
                 ],
               ),
             ),
             SizedBox(
               height: Responsive.screenHeight(context) * 0.05,
-              width: Responsive.screenWidth(context) * 0.53,
+              width: Responsive.screenWidth(context) * 0.56,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("ساعة الحجز: ", style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
-                  Text(startTime, style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text("ساعة الحجز: ", style: TextStyle(fontSize: Responsive.textSize(context, 18),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text(startTime, style: TextStyle(fontSize: Responsive.textSize(context, 18),fontWeight: FontWeight.w500,color: Colors.black),),
                   Container(
                     height: Responsive.screenHeight(context) * 0.005,
                     width: Responsive.screenWidth(context) * 0.04,
@@ -97,23 +92,23 @@ class HistoryBookingWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  Text(endTime, style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text(endTime, style: TextStyle(fontSize: Responsive.textSize(context, 18),fontWeight: FontWeight.w500,color: Colors.black),),
                 ],
               ),
             ),
             SizedBox(
               height: Responsive.screenHeight(context) * 0.05,
-              width: Responsive.screenWidth(context) * 0.42,
+              width: Responsive.screenWidth(context) * 0.35,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("حالة الحجز : ", style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
-                  Text("منتهي", style: TextStyle(fontSize: Responsive.textSize(context, 10),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text("حالة الحجز : ", style: TextStyle(fontSize: Responsive.textSize(context, 16),fontWeight: FontWeight.w500,color: Constants.txtColor),),
+                  Text("منتهي", style: TextStyle(fontSize: Responsive.textSize(context, 18),fontWeight: FontWeight.w500,color: Colors.black),),
                 ],
               ),
             ),
             SizedBox(
-              height: Responsive.screenHeight(context) * 0.056,
+              height: Responsive.screenHeight(context) * 0.054,
               width: double.infinity,
               child: CustomButton(
                 onPress: (){
@@ -124,8 +119,8 @@ class HistoryBookingWidget extends StatelessWidget {
                 textColor: Colors.white,
                 height: Responsive.screenHeight(context) * 0.05,
                 width: Responsive.screenWidth(context) * 0.3,
-                textSize: Responsive.textSize(context, 10),
-                fontWeight: FontWeight.w500,
+                textSize: Responsive.textSize(context, 14),
+                fontWeight: FontWeight.w700,
               ),
             )
           ],

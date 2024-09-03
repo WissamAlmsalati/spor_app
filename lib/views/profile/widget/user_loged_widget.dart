@@ -14,12 +14,12 @@ class UserLogged extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Responsive.screenHeight(context) * 0.25,
+      height: Responsive.screenHeight(context) * 0.29,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ProfileButton(
-            fontsize: Responsive.textSize(context, 8),
+            fontsize: Responsive.textSize(context, 16),
             icon: AppPhotot.profileLg,
             text: 'معلومات الحساب',
             onPressed: () {
@@ -29,7 +29,8 @@ class UserLogged extends StatelessWidget {
           ProfileButton(
             icon: AppPhotot.walletLg,
             text: 'المحفظة',
-            fontsize: Responsive.textSize(context, 8),
+            fontsize: Responsive.textSize(context, 16),
+
             onPressed: () {
               Navigator.pushNamed(context, '/walletScreen');
             },
@@ -38,7 +39,7 @@ class UserLogged extends StatelessWidget {
             icon: AppPhotot.startLg,
             text: 'قيم التطبيق',
             onPressed: () {},
-            fontsize: Responsive.textSize(context, 8),
+            fontsize: Responsive.textSize(context, 16),
 
             //ميزة للاصدار القادم
           ),
@@ -59,7 +60,7 @@ class UserLogged extends StatelessWidget {
           //    onPressed: () {},
           //  ),
           ProfileButton(
-            fontsize: Responsive.textSize(context, 8),
+            fontsize: Responsive.textSize(context, 16),
             icon: AppPhotot.logoutLg,
             text: 'تسجيل الخروج',
             onPressed: () {

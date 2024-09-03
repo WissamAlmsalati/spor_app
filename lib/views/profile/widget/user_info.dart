@@ -34,7 +34,8 @@ class UserInfo extends StatelessWidget {
                 Text(
                   state.userInfo.firstName,
                   style: TextStyle(
-                    fontSize: Responsive.textSize(context, 16),
+                    fontWeight: FontWeight.w600,
+                    fontSize: Responsive.textSize(context, 30),
                   ),
                 ),
                 Divider(
@@ -44,7 +45,8 @@ class UserInfo extends StatelessWidget {
                 Text(
                   state.userInfo.phone,
                   style: TextStyle(
-                    fontSize: Responsive.textSize(context, 14),
+                    fontWeight: FontWeight.w500,
+                    fontSize: Responsive.textSize(context, 20),
                     color: Colors.grey.withOpacity(0.9),
                   ),
                 ),

@@ -8,34 +8,24 @@ import '../../services/apis.dart';
 
 part 'ads_photos_state.dart';
 
-class AdsPhotosCubit extends Cubit<AdsPhotosState> {
-  AdsPhotosCubit() : super(AdsPhotosInitial());
 
-  Future<void> fetchAdsPhotos() async {
-    emit(AdsPhotosLoading());
+class FetchAdsImagesCubit extends Cubit<AdsImagesState> {
+  FetchAdsImagesCubit() : super(AdsImagesInitial());
 
+  Future<void> fetchAdsImages() async {
+    emit(AdsImagesLoading());
     try {
-      final response = await http.get(
-        Uri.parse(Apis.AdsPhotos),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
+      final response = await http.get(Uri.parse('https://api.sport.com.ly/management/ads-images'));
       if (response.statusCode == 200) {
-        final List<dynamic> responseData = json.decode(response.body);
-        final List<AdsPhoto> adsPhotos = responseData.map((data) => AdsPhoto.fromJson(data)).toList();
-        emit(AdsPhotosLoaded(adsPhotos));
+        final List<AdsPhoto> adsImages = (json.decode(response.body) as List)
+            .map((ad) => AdsPhoto.fromJson(ad))
+            .toList();
+        emit(AdsImagesLoaded(adsImages));
       } else {
-        print('Failed to load ads photos: ${response.reasonPhrase}');
-        emit(AdsPhotosError('Failed to load ads photos: ${response.reasonPhrase}'));
+        emit(AdsImagesError('Failed to load ads images'));
       }
     } catch (e) {
-      print('An error occurred: $e');
-      emit(AdsPhotosError('An error occurred: $e'));
+      emit(AdsImagesError(e.toString()));
     }
   }
 }
