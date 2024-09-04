@@ -12,10 +12,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../controller/region_search_controler/region_search_cubit.dart';
 import '../../controller/steduim_search_cubit/stidum_search_cubit.dart';
 
-class StadiumSearchScreen extends StatelessWidget {
-  final TextEditingController searchController = TextEditingController();
-
+class StadiumSearchScreen extends StatefulWidget {
   StadiumSearchScreen({super.key});
+
+  @override
+  _StadiumSearchScreenState createState() => _StadiumSearchScreenState();
+}
+
+class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
+  final TextEditingController searchController = TextEditingController();
+  String? selectedRegion;
 
   void _closeScreen(BuildContext context) {
     context.read<StadiumSearchCubit>().resetSearch();
@@ -78,16 +84,43 @@ class StadiumSearchScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: Center(
-                          child: SearchFieldWidget(
-                            controller: searchController,
-                            onChanged: (String text) {
-                              context.read<RegionSearchCubit>().searchRegions(text);
-                            },
-                            onSubmitted: (String text) {
-                              context.read<StadiumSearchCubit>().searchStadiums(name: text);
-                            },
-                            enabled: true,
-                          ),
+                          child: selectedRegion == null
+                              ? SearchFieldWidget(
+                                  controller: searchController,
+                                  onChanged: (String text) {
+                                    context.read<RegionSearchCubit>().searchRegions(text);
+                                  },
+                                  onSubmitted: (String text) {
+                                    context.read<StadiumSearchCubit>().searchStadiums(name: text);
+                                  },
+                                  enabled: true,
+                                  onTap: () {
+                                    setState(() {
+                                      selectedRegion = null;
+                                    });
+                                  },
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedRegion = null;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(selectedRegion!),
+                                        Icon(Icons.close),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                         ),
                       ),
                       IconButton(
@@ -106,20 +139,30 @@ class StadiumSearchScreen extends StatelessWidget {
             BlocBuilder<RegionSearchCubit, RegionSearchState>(
               builder: (context, state) {
                 if (state is RegionSearchLoading) {
-                  return  Center(child:Container());
+                  return Center(child: Container());
                 } else if (state is RegionSearchLoaded) {
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: state.regions.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-
-                        title: Text(state.regions[index]),
+                      return GestureDetector(
                         onTap: () {
-                          searchController.text = state.regions[index];
-                          context.read<StadiumSearchCubit>().searchStadiums(name: state.regions[index]);
-                          context.read<RegionSearchCubit>().emit(RegionSearchInitial()); // Clear region search results
+                          setState(() {
+                            selectedRegion = state.regions[index];
+                          });
+                          context.read<StadiumSearchCubit>().searchStadiums( name: searchController.text);
                         },
+                        child: Container(
+                          height: Responsive.screenHeight(context) * 0.05,
+                          margin: EdgeInsets.symmetric(horizontal: Responsive.screenWidth(context) * 0.035),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(AppPhotot.locationIco),
+                              SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                              Text(state.regions[index]),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   );
@@ -208,4 +251,3 @@ class StadiumSearchScreen extends StatelessWidget {
     );
   }
 }
-

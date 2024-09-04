@@ -12,6 +12,8 @@ class CustomAlertDialog extends StatelessWidget {
   final Color? textColor;
   final VoidCallback? onConfirm;
   final VoidCallback? onCancel;
+  final double? height;
+  final double? width;
 
   const CustomAlertDialog({
     super.key,
@@ -24,6 +26,8 @@ class CustomAlertDialog extends StatelessWidget {
     this.color,
     this.borderColor,
     this.textColor,
+    this.height,
+    this.width,
   });
 
   @override
@@ -33,7 +37,8 @@ class CustomAlertDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Container(
-        height: Responsive.screenHeight(context) * 0.21,
+        height: height ?? Responsive.screenHeight(context) * 0.21,
+        width: width ?? Responsive.screenWidth(context) * 0.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
         ),

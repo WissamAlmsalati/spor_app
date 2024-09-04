@@ -37,7 +37,6 @@ dependencies:
   percent_indicator: ^4.2.3
   mockito: ^5.0.16
   flutter_screenutil: ^5.9.3
-  flutter_native_splash: ^2.4.1
   permission_handler: ^11.3.1
   dio: ^4.0.0
   logger: ^2.4.0

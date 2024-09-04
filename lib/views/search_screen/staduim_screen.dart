@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/auth/widgets/coustom_button.dart';
 import 'package:sport/views/search_screen/widget/HorizontalCalendar.dart';
 import 'package:sport/views/search_screen/widget/screen_detail_shimmer.dart';
@@ -11,7 +10,7 @@ import 'package:sport/views/stadium/screens/widget/comments_widget.dart';
 import '../../app/app_packges.dart';
 import '../../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
-import 'package:shimmer/shimmer.dart';
+import '../profile/widget/coustom_dialog.dart';
 
 class StadiumDetailScreen extends StatelessWidget {
   final int stadiumId;
@@ -146,28 +145,15 @@ class StadiumDetailScreen extends StatelessWidget {
                               BlocConsumer<ReverseRequestCubit, ReverseRequestState>(
                                 listener: (context, state) {
                                   if (state is ReverseRequestSuccess) {
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Request sent successfully')));
+                                    _showReservationStatusDialog(context, 'تم الحجز بنجاح', 'Request sent successfully');
                                   } else if (state is ReverseRequestError) {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                                    _showReservationStatusDialog(context, 'خطأ', 'حدث خطأ');
                                   }
                                 },
                                 builder: (context, state) {
-                                  if (state is ReverseRequestLoading) {
-                                    return Container(
-                                      margin: EdgeInsets.only(right: Responsive.screenWidth(context) * 0.13),
-                                      child: LoadingAnimation(size: Responsive.screenWidth(context) * 0.11),
-                                    );
-                                  }
                                   return CustomButton(
                                     onPress: () {
-                                      context.read<ReverseRequestCubit>().sendReverseRequest(
-                                        stadiumId,
-                                        cubit.selectedDate,
-                                        cubit.selectedSessionId,
-                                        true,
-                                        2,
-                                      );
-                                      print('stadiumId: $stadiumId, selectedDate: ${cubit.selectedDate}, selectedSessionId: ${cubit.selectedSessionId}, isMonthlyReservation: true, paymentType: 2');
+                                      _showReservationDialog(context, stadium, cubit.selectedDate, cubit.selectedSessionId);
                                     },
                                     text: "حجز",
                                     color: Constants.mainColor,
@@ -268,27 +254,15 @@ class StadiumDetailScreen extends StatelessWidget {
                               BlocConsumer<ReverseRequestCubit, ReverseRequestState>(
                                 listener: (context, state) {
                                   if (state is ReverseRequestSuccess) {
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Request sent successfully')));
+                                    _showReservationStatusDialog(context,"تم الحجز", 'تم الحجز بنجاح');
                                   } else if (state is ReverseRequestError) {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                                    _showReservationStatusDialog(context, 'خطأ',"حدث خطأ");
                                   }
                                 },
                                 builder: (context, state) {
-                                  if (state is ReverseRequestLoading) {
-                                    return Container(
-                                      margin: EdgeInsets.only(right: Responsive.screenWidth(context) * 0.13),
-                                      child: LoadingAnimation(size: Responsive.screenWidth(context) * 0.11),
-                                    );
-                                  }
                                   return CustomButton(
                                     onPress: () {
-                                      context.read<ReverseRequestCubit>().sendReverseRequest(
-                                        stadiumId,
-                                        cubit.selectedDate,
-                                        cubit.selectedSessionId,
-                                        true,
-                                        2,
-                                      );
+                                      _showReservationDialog(context, stadium, cubit.selectedDate, cubit.selectedSessionId);
                                     },
                                     text: "حجز",
                                     color: Constants.mainColor,
@@ -317,6 +291,53 @@ class StadiumDetailScreen extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  void _showReservationDialog(BuildContext context, stadium, String selectedDate, int selectedSessionId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          title: 'تأكيد الحجز',
+          content: 'اسم الملعب: ${stadium.name}\nعنوان الملعب: ${stadium.address}\nالتاريخ: $selectedDate\nالتوقيت: $selectedSessionId',
+          canceText: 'إغلاق',
+          confirmText: 'تأكيد',
+          onConfirm: () {
+            Navigator.of(context).pop();
+            context.read<ReverseRequestCubit>().sendReverseRequest(
+              stadium.id,
+              selectedDate,
+              selectedSessionId,
+              true,
+              2,
+            );
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+          },
+          height: Responsive.screenHeight(context) * 0.3,
+          width: Responsive.screenWidth(context) * 0.8,
+        );
+      },
+    );
+  }
+
+  void _showReservationStatusDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          title: title,
+          content: message,
+          canceText: 'إغلاق',
+          onCancel: () {
+            Navigator.of(context).pop();
+          },
+          height: Responsive.screenHeight(context) * 0.2,
+          width: Responsive.screenWidth(context) * 0.75,
+        );
+      },
     );
   }
 }

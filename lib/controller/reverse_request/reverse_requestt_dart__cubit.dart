@@ -25,6 +25,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
             "date": selectedDate,
             "session_id": selectedSessionId,
           },
+          "stadium_id" : stadiumId,
           "payment_type": paymentType,
           "is_monthly_reservation": isMonthlyReservation,
         }),
@@ -34,7 +35,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         emit(ReverseRequestSuccess());
       } else if (response.statusCode == 404) {
         emit(ReverseRequestError('Request failed: Not Found (404)'));
