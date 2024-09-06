@@ -7,6 +7,7 @@ class Reservation {
   final String stadiumName;
   final String stadiumAddress;
   final String mapUrl;
+  final int stadiumId;
 
   Reservation({
     required this.id,
@@ -17,18 +18,24 @@ class Reservation {
     required this.stadiumName,
     required this.stadiumAddress,
     required this.mapUrl,
+    required this.stadiumId,
   });
 
   factory Reservation.fromJson(Map<String, dynamic> json) {
     return Reservation(
-      id: json['id'],
-      date: json['date'],
-      weekDay: json['week_day'],
-      startTime: json['start_time'],
-      endTime: json['end_time'],
-      stadiumName: json['stadium_name'],
-      stadiumAddress: json['stadium_address'],
-      mapUrl: json['map_url'],
+      id: json['id']??0,
+      date: json['date']??'',
+      weekDay: json['week_day']??0,
+      startTime: json['start_time']??'',
+      endTime: json['end_time']??'',
+      stadiumName: json['stadium_name']??'',
+      stadiumAddress: json['stadium_address']??'',
+      mapUrl: json['map_url']??'',
+      stadiumId: json['stadium_id']??0,
     );
+  }
+
+  static List<Reservation> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => Reservation.fromJson(json)).toList();
   }
 }

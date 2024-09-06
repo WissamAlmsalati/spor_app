@@ -213,12 +213,14 @@ class CurrentBookWidget extends StatelessWidget {
                     },
                     text: isMatchStarted ? 'المبارة بدأت' : 'الوقت المتبقي',
                     color: Colors.transparent,
-                    textColor: Colors.black,
-                    brWidth: 0.5,
+                    textColor: isMatchStarted ? Colors.red : Constants.mainColor,
+                    brWidth: 1.5,
                     height: Responsive.screenHeight(context) * 0.05,
                     width: Responsive.screenWidth(context) * 0.4,
                     hasBorder: true,
-                    borderColor: Colors.black,
+                    borderColor: isMatchStarted
+                        ? Colors.red
+                        : Constants.mainColor,
                     textSize: Responsive.textSize(context, 14),
                     fontWeight: FontWeight.w700,
                   ),

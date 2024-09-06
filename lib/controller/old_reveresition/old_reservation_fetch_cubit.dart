@@ -36,12 +36,16 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
       }
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(decodedResponse);
-        if (data.isEmpty) {
-          emit(OldReservationEmpty('ليس لديك حجوزات سابقة'));
+        final data = json.decode(decodedResponse);
+        if (data is Map<String, dynamic> && data['results'] is List) {
+          final reservations = Reservation.fromJsonList(data['results']);
+          if (reservations.isEmpty) {
+            emit(OldReservationEmpty('ليس لديك حجوزات سابقة'));
+          } else {
+            emit(OldReservationLoaded(reservations));
+          }
         } else {
-          final reservations = data.map((json) => Reservation.fromJson(json)).toList();
-          emit(OldReservationLoaded(reservations));
+          emit(OldReservationError('Invalid data format'));
         }
       } else if (response.statusCode == 401) {
         emit(UnAuthenticated());

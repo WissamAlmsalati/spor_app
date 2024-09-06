@@ -25,7 +25,7 @@ class FavoriteStadium extends StatelessWidget {
       },
       child: SingleChildScrollView(
         child: SizedBox(
-          height: Responsive.screenHeight(context) * 0.35,
+          height: Responsive.screenHeight(context) * 0.41,
           width: double.infinity,
           child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
             builder: (BuildContext context, state) {

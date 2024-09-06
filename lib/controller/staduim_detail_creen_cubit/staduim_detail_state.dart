@@ -1,8 +1,5 @@
 part of 'staduim_detail_cubit.dart';
 
-
-
-
 @immutable
 abstract class StaduimDetailState {}
 
@@ -14,10 +11,7 @@ class StaduimDetailLoaded extends StaduimDetailState {
   final StadiumInfo stadiumInfo;
   final List<AvailableSession> availableSessions;
 
-  StaduimDetailLoaded({
-    required this.stadiumInfo,
-    required this.availableSessions,
-  });
+  StaduimDetailLoaded({required this.stadiumInfo, required this.availableSessions});
 }
 
 class StaduimDetailLoadedEmptySession extends StaduimDetailState {

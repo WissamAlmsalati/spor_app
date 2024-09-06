@@ -35,6 +35,7 @@ class CustomTextField extends StatelessWidget {
         Text(
           labeltext,
           style: TextStyle(
+            fontFamily: GoogleFonts.cairo().fontFamily,
             color: Constants.txtColor,
             fontWeight: FontWeight.w500,
             fontSize: lableSize ?? 18,

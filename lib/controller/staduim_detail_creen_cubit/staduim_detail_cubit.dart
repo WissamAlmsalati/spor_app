@@ -46,6 +46,10 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
     }
   }
 
+  Future<void> fetchStadiumInfo(int stadiumId) async {
+    await fetchStadiumById(stadiumId);
+  }
+
   void setSelectedDate(String date) {
     selectedDate = date;
     if (state is StaduimDetailLoaded) {

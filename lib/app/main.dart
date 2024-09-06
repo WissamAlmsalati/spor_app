@@ -7,6 +7,7 @@ import '../controller/ads_controler/ads_photos_cubit.dart';
 import '../controller/change_pass_controler/change_password_cubit.dart';
 import '../controller/region_search_controler/region_search_cubit.dart';
 import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
+import '../controller/review_comment_controller/comment_review_cubit.dart';
 import '../repostry/staduim_repostry.dart';
 import 'app_packges.dart';
 
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => RegionSearchCubit()),
         BlocProvider(create: (context) => FetchAdsImagesCubit()),
         BlocProvider(create: (context) => ChangePasswordCubit()),
+        BlocProvider(create: (context) => CommentReviewCubit()),
       ],
       child: Builder(
         builder: (context) {
