@@ -5,6 +5,7 @@ import 'package:sport/views/stadium/screens/widget/cursol_photo.dart';
 import 'package:sport/views/stadium/screens/widget/favorite_staduim.dart';
 import 'package:sport/views/stadium/screens/widget/profile_appbar.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
+import '../../../controller/ads_controler/ads_photos_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../../utilits/images.dart';
 import '../../../utilits/responsive.dart';
@@ -19,6 +20,7 @@ class StadiumScreen extends StatelessWidget {
   Future<void> _refreshData(BuildContext context) async {
     context.read<FetchProfileCubit>().fetchProfileInfo();
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
+    context.read<FetchAdsImagesCubit>().fetchAdsImages();
   }
 
   @override
@@ -41,8 +43,9 @@ class StadiumScreen extends StatelessWidget {
                     padding: EdgeInsets.only(
                       top: Responsive.screenHeight(context) * 0.02,
                     ),
-
                     child: OpenContainer(
+                      closedElevation: 0, // Removes shadow when closed
+                      openElevation: 0,   // Removes shadow when opened
                       closedShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.022),
                       ),
@@ -59,8 +62,6 @@ class StadiumScreen extends StatelessWidget {
                         onTap: openContainer,
                       ),
                     ),
-
-
 
                   ),
                   const LogoText(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sport/app/app_packges.dart';
 import '../../../utilits/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -13,6 +14,7 @@ class CoustomAppBr extends StatelessWidget {
   final Widget? child;
   final bool isLoading;
   final Widget? loadingWidget;
+  final String? userName;
 
   const CoustomAppBr({
     super.key,
@@ -24,7 +26,7 @@ class CoustomAppBr extends StatelessWidget {
     this.onPressed,
     this.child,
     this.isLoading = false,
-    this.loadingWidget,
+    this.loadingWidget, this.userName,
   });
 
   @override
@@ -46,11 +48,20 @@ class CoustomAppBr extends StatelessWidget {
                   ),
                 ),
               )
-            : Text(
-                title,
-                style: TextStyle(
-                    fontSize: Responsive.textSize(context, 20), color: color),
-              ),
+            : Row(
+              children: [
+                Text(
+                    title,
+                    style: TextStyle(
+                        fontSize: Responsive.textSize(context, 20), color: color),
+                  ),
+                Text(
+                  userName ?? '',
+                  style: TextStyle(
+                      fontSize: Responsive.textSize(context, 20), color: Constants.mainColor),
+                ),
+              ],
+            ),
         loadingWidget ??
         IconButton(
           padding: EdgeInsets.zero,

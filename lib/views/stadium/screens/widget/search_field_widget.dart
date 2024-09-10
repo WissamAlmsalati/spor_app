@@ -21,6 +21,7 @@ class SearchFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      elevation: 0, // Remove shadow
       child: GestureDetector(
         onTap: onTap,
         child: SizedBox(

@@ -7,39 +7,47 @@ import '../../../controller/ads_controler/ads_photos_cubit.dart';
 import '../../../utilits/responsive.dart';
 import '../../../models/ads_photo_model.dart';
 
-class AdsCarouselSlider extends StatefulWidget {
-  @override
-  _AdsCarouselSliderState createState() => _AdsCarouselSliderState();
-}
-
-class _AdsCarouselSliderState extends State<AdsCarouselSlider> {
-  final ValueNotifier<int> _current = ValueNotifier<int>(0);
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<FetchAdsImagesCubit>().fetchAdsImages();
-  }
-
+class AdsCarouselSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ValueNotifier<int> _current = ValueNotifier<int>(0);
+
     return BlocBuilder<FetchAdsImagesCubit, AdsImagesState>(
       builder: (context, state) {
         if (state is AdsImagesLoading) {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Container(
-              margin: EdgeInsets.only(
-                top: Responsive.screenHeight(context) * 0.02,
+          return Column(
+            children: [
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    top: Responsive.screenHeight(context) * 0.02,
+                  ),
+                  height: Responsive.screenHeight(context) * 0.18, // Match CarouselSlider height
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.03), // Match border radius
+                  ),
+                ),
               ),
-              height: Responsive.screenHeight(context) * 0.17,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) { // Placeholder for dots
+                  return Container(
+                    width: Responsive.screenWidth(context) * 0.04,
+                    height: Responsive.screenHeight(context) * 0.01,
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.01),
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]!,
+                    ),
+                  );
+                }),
               ),
-            ),
+            ],
           );
         } else if (state is AdsImagesLoaded) {
           return Column(
@@ -53,7 +61,7 @@ class _AdsCarouselSliderState extends State<AdsCarouselSlider> {
                     height: Responsive.screenHeight(context) * 0.17,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.03),
                       image: DecorationImage(
                         image: ad.image.isNotEmpty
                             ? NetworkImage(ad.image)
@@ -92,7 +100,7 @@ class _AdsCarouselSliderState extends State<AdsCarouselSlider> {
                           shape: BoxShape.rectangle,
                           color: value == index
                               ? Constants.mainColor
-                              : Constants.mainColor.withOpacity(0.3)
+                              : Constants.mainColor.withOpacity(0.3),
                         ),
                       );
                     }),
@@ -102,12 +110,39 @@ class _AdsCarouselSliderState extends State<AdsCarouselSlider> {
             ],
           );
         } else if (state is AdsImagesError) {
-          return Center(
-            child: Container(
-              height: Responsive.screenHeight(context) * 0.08,
-              width: Responsive.screenWidth(context) * 0.04,
-              decoration: BoxDecoration(color: Colors.grey),
-            ),
+          return Column(
+            children: [
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    top: Responsive.screenHeight(context) * 0.02,
+                  ),
+                  height: Responsive.screenHeight(context) * 0.17, // Match CarouselSlider height
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.03), // Match border radius
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) { // Placeholder for dots
+                  return Container(
+                    width: Responsive.screenWidth(context) * 0.04,
+                    height: Responsive.screenHeight(context) * 0.01,
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.01),
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]!,
+                    ),
+                  );
+                }),
+              ),
+            ],
           );
         } else {
           return Container();

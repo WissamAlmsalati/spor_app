@@ -1,44 +1,47 @@
-// fetch_comments_cubit.dart
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
+import 'package:http/http.dart' as http;
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../models/comments_model.dart';
 import '../../services/apis.dart';
 import '../../utilits/secure_data.dart';
-import 'package:http/http.dart' as http;
 
 part 'fetch_comments_state.dart';
 
 class FetchCommentsCubit extends Cubit<FetchCommentsState> {
+  final String apiUrl = 'https://api.sport.com.ly/stadium/comment';
+  static const _pageSize = 10;
+
   FetchCommentsCubit() : super(FetchCommentsInitial());
 
-  Future<void> fetchComments(int stadiumId, Function(List<Comment>) onSuccess) async {
-    final token = await SecureStorageData.getToken();
-    emit(FetchCommentsLoading());
-
+  Future<void> fetchComments(int stadiumId, int pageKey, PagingController<int, Comment> pagingController) async {
     try {
+      final token = await SecureStorageData.getToken();
       final response = await http.get(
-        Uri.parse('${Apis.comments}?stadium_id=$stadiumId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
+        Uri.parse('$apiUrl?stadium_id=$stadiumId&page=$pageKey'),
+        headers: {'Authorization': 'Bearer $token'},
       );
 
-      print("Response status: ${response.statusCode}");
-      print("Response body: ${response.body}");
-
       if (response.statusCode == 200) {
-        final List<dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
-        final List<Comment> comments = responseData.map((json) => Comment.fromJson(json)).toList();
-        onSuccess(comments);
-        emit(FetchCommentsLoaded(comments));
+        final data = jsonDecode(utf8.decode(response.bodyBytes));
+        final List<dynamic> commentList = data['results'];
+        final List<Comment> newComments = commentList.map((json) => Comment.fromJson(json)).toList();
+        final isLastPage = newComments.length < _pageSize;
+
+        if (isLastPage) {
+          pagingController.appendLastPage(newComments);
+        } else {
+          final nextPageKey = pageKey + 1;
+          pagingController.appendPage(newComments, nextPageKey);
+        }
+      } else if (response.statusCode == 404) {
+        pagingController.appendLastPage([]);
       } else {
-        emit(FetchCommentsError('Failed to fetch comments: ${response.reasonPhrase}'));
+        pagingController.error = 'Failed to load comments (Status code: ${response.statusCode})';
       }
-    } catch (e) {
-      emit(FetchCommentsError('An error occurred: $e'));
+    } catch (error) {
+      pagingController.error = error.toString();
     }
   }
 }

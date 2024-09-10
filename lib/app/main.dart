@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => StadiumDetailCubit(StadiumRepository())),
         BlocProvider(create: (context) => ReverseRequestCubit()),
         BlocProvider(create: (context) => RegionSearchCubit()),
+
         BlocProvider(create: (context) => FetchAdsImagesCubit()),
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),

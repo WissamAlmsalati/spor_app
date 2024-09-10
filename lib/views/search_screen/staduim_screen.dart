@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sport/views/auth/widgets/coustom_button.dart';
 import 'package:sport/views/search_screen/widget/HorizontalCalendar.dart';
 import 'package:sport/views/search_screen/widget/screen_detail_shimmer.dart';
@@ -10,6 +11,7 @@ import 'package:sport/views/stadium/screens/widget/comments_widget.dart';
 import '../../app/app_packges.dart';
 import '../../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
+import '../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../profile/widget/coustom_dialog.dart';
 
 class StadiumDetailScreen extends StatelessWidget {
@@ -25,119 +27,143 @@ class StadiumDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Constants.backGroundColor,
       body: SafeArea(
-        child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
-          builder: (context, state) {
-            if (state is StaduimDetailLoading) {
-              return const StadiumDetailShimmerLoading();
-            } else if (state is StaduimDetailLoaded) {
-              final stadium = state.stadiumInfo;
-              final sessions = state.availableSessions;
-              final selectedSession = sessions.isNotEmpty
-                  ? sessions.firstWhere(
-                      (session) => session.date == cubit.selectedDate,
-                      orElse: () => sessions.first,
-                    )
-                  : null;
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
+              listener: (context, state) {
+                if (state is AdedToFavorite) {
+                  Fluttertoast.showToast(
+                    msg: 'Stadium added to favorites',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 2,
+                  );
+                } else if (state is RemovedFromFavorite) {
+                  Fluttertoast.showToast(
+                    msg: 'Stadium removed from favorites',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 2,
+                  );
+                }
+              },
+            ),
+          ],
+          child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
+            builder: (context, state) {
+              if (state is StaduimDetailLoading) {
+                return const StadiumDetailShimmerLoading();
+              } else if (state is StaduimDetailLoaded) {
+                final stadium = state.stadiumInfo;
+                final sessions = state.availableSessions;
+                final selectedSession = sessions.isNotEmpty
+                    ? sessions.firstWhere(
+                        (session) => session.date == cubit.selectedDate,
+                        orElse: () => sessions.first,
+                      )
+                    : null;
 
-              return NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  SliverToBoxAdapter(
-                    child: stadium.images.isNotEmpty && stadium.images[0].isNotEmpty
-                        ? StaduimPhotoStack(StdPhoto: stadium.images[0], stdId: stadiumId)
-                        : Container(
-                            height: Responsive.screenHeight(context) * 0.25,
-                            color: Colors.grey,
-                            child: const Center(child: Text('No image available', style: TextStyle(color: Colors.white))),
-                          ),
-                  ),
-                ],
-                body: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(stadium.name, style: TextStyle(fontSize: Responsive.textSize(context, 18), fontWeight: FontWeight.bold)),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.015),
-                              Row(
-                                children: [
-                                  SvgPicture.asset(AppPhotot.locationIco),
-                                  SizedBox(width: Responsive.screenWidth(context) * 0.02),
-                                  Text(stadium.address, style: TextStyle(fontSize: Responsive.textSize(context, 14))),
-                                ],
-                              ),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              StadiumInfoSummary(
-                                totalReservations: stadium.totalReservations,
-                                avgReviews: stadium.avgReviews,
-                                totalReviews: stadium.totalReviews,
-                              ),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("اختيار اليوم", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
-                                  BlocBuilder<CheckboxCubit, bool>(
-                                    builder: (context, isChecked) {
-                                      return Checkbox(
-                                        checkColor: Colors.white,
-                                        activeColor: Constants.mainColor,
-                                        value: isChecked,
-                                        onChanged: (value) {
-                                          context.read<CheckboxCubit>().toggle();
+                return NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                    SliverToBoxAdapter(
+                      child: stadium.images.isNotEmpty && stadium.images[0].isNotEmpty
+                          ? StaduimPhotoStack(StdPhoto: stadium.images[0], stdId: stadiumId)
+                          : Container(
+                              height: Responsive.screenHeight(context) * 0.25,
+                              color: Colors.grey,
+                              child: const Center(child: Text('No image available', style: TextStyle(color: Colors.white))),
+                            ),
+                    ),
+                  ],
+                  body: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(stadium.name, style: TextStyle(fontSize: Responsive.textSize(context, 18), fontWeight: FontWeight.bold)),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.015),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppPhotot.locationIco),
+                                    SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                                    Text(stadium.address, style: TextStyle(fontSize: Responsive.textSize(context, 14))),
+                                  ],
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                StadiumInfoSummary(
+                                  totalReservations: stadium.totalReservations,
+                                  avgReviews: stadium.avgReviews,
+                                  totalReviews: stadium.totalReviews,
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("اختيار اليوم", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
+                                    Row(
+                                      children: [
+                                        Text("حجز شهري", style: TextStyle(fontSize: Responsive.textSize(context, 10), fontWeight: FontWeight.w600,color: Constants.txtColor)),
+                                        BlocBuilder<CheckboxCubit, bool>(
+                                          builder: (context, isChecked) {
+                                            return Checkbox(
+                                              checkColor: Colors.white,
+                                              activeColor: Constants.mainColor,
+                                              value: isChecked,
+                                              onChanged: (value) {
+                                                context.read<CheckboxCubit>().toggle();
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                sessions.isNotEmpty
+                                    ? DateSelector(
+                                        dates: sessions.map((session) => session.date).toList(),
+                                        selectedDate: cubit.selectedDate,
+                                        onDateSelected: (date) {
+                                          cubit.setSelectedDate(date);
                                         },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              sessions.isNotEmpty
-                                  ? DateSelector(
-                                      dates: sessions.map((session) => session.date).toList(),
-                                      selectedDate: cubit.selectedDate,
-                                      onDateSelected: (date) {
-                                        cubit.setSelectedDate(date);
-                                      },
-                                    )
-                                  : const Center(child: Text('No available dates')),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              Text("اختيار التوقيت", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              selectedSession != null
-                                  ? SessionList(
-                                      availableSession: selectedSession,
-                                      selectedSessionId: cubit.selectedSessionId,
-                                      onTimeSelected: (sessionId) {
-                                        cubit.setSelectedSessionId(sessionId);
-                                      },
-                                    )
-                                  : const Center(child: Text('No available times')),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              Text("التعليقات", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              Container(
-                                height: Responsive.screenHeight(context) * 0.47,
-                                child: CommentsWidget(stadiumId: stadium.id),
-                              ),
-                            ],
+                                      )
+                                    : const Center(child: Text('No available dates')),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                Text("اختيار التوقيت", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                selectedSession != null
+                                    ? SessionList(
+                                        availableSession: selectedSession,
+                                        selectedSessionId: cubit.selectedSessionId,
+                                        onTimeSelected: (sessionId) {
+                                          cubit.setSelectedSessionId(sessionId);
+                                        },
+                                      )
+                                    : const Center(child: Text('No available times')),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                Text("التعليقات", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                Container(
+                                  height: Responsive.screenHeight(context) * 0.47,
+                                  child: CommentsWidget(stadiumId: stadium.id),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: Responsive.screenHeight(context) * 0.1,
-                      child: Card(
-                        margin: EdgeInsets.zero,
-                        borderOnForeground: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
+                      Container(
+                        width: double.infinity,
+                        height: Responsive.screenHeight(context) * 0.1,
                         child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white
+                          ),
                           padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,7 +179,16 @@ class StadiumDetailScreen extends StatelessWidget {
                                 builder: (context, state) {
                                   return CustomButton(
                                     onPress: () {
-                                      _showReservationDialog(context, stadium, cubit.selectedDate, cubit.selectedSessionId);
+                                      if (cubit.selectedSessionId == null) {
+                                        Fluttertoast.showToast(
+                                          msg: 'يرجي اختيار توقيت',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 2,
+                                        );
+                                      } else {
+                                        _showReservationDialog(context, stadium, cubit.selectedDate, cubit.selectedSessionId!);
+                                      }
                                     },
                                     text: "حجز",
                                     color: Constants.mainColor,
@@ -171,130 +206,139 @@ class StadiumDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            } else if (state is StaduimDetailLoadedEmptySession) {
-              final stadium = state.stadiumInfo;
-
-              return NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  SliverToBoxAdapter(
-                    child: stadium.images.isNotEmpty && stadium.images[0].isNotEmpty
-                        ? Image.network(
-                            stadium.images[0],
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                height: Responsive.screenHeight(context) * 0.25,
-                                color: Colors.grey,
-                                child: const Center(child: Text('No image available', style: TextStyle(color: Colors.white))),
-                              );
-                            },
-                          )
-                        : Container(
-                            height: Responsive.screenHeight(context) * 0.25,
-                            color: Colors.grey,
-                            child: const Center(child: Text('No image available', style: TextStyle(color: Colors.white))),
-                          ),
+                    ],
                   ),
-                ],
-                body: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(stadium.name, style: TextStyle(fontSize: Responsive.textSize(context, 18), fontWeight: FontWeight.bold)),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.015),
-                              Row(
-                                children: [
-                                  SvgPicture.asset(AppPhotot.locationIco),
-                                  SizedBox(width: Responsive.screenWidth(context) * 0.02),
-                                  Text(stadium.address, style: TextStyle(fontSize: Responsive.textSize(context, 14))),
-                                ],
-                              ),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              StadiumInfoSummary(
-                                totalReservations: stadium.totalReservations,
-                                avgReviews: stadium.avgReviews,
-                                totalReviews: stadium.totalReviews,
-                              ),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.04),
-                              const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا')),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.04),
-                              Text("التعليقات", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
-                              SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                              Container(
-                                height: Responsive.screenHeight(context) * 0.47,
-                                child: CommentsWidget(stadiumId: stadium.id),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: Responsive.screenHeight(context) * 0.1,
-                      child: Card(
-                        margin: EdgeInsets.zero,
-                        borderOnForeground: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              BlocConsumer<ReverseRequestCubit, ReverseRequestState>(
-                                listener: (context, state) {
-                                  if (state is ReverseRequestSuccess) {
-                                    _showReservationStatusDialog(context,"تم الحجز", 'تم الحجز بنجاح');
-                                  } else if (state is ReverseRequestError) {
-                                    _showReservationStatusDialog(context, 'خطأ',"حدث خطأ");
-                                  }
-                                },
-                                builder: (context, state) {
-                                  return CustomButton(
-                                    onPress: () {
-                                      _showReservationDialog(context, stadium, cubit.selectedDate, cubit.selectedSessionId);
-                                    },
-                                    text: "حجز",
-                                    color: Constants.mainColor,
-                                    textColor: Colors.white,
-                                    height: Responsive.screenHeight(context) * 0.06,
-                                    width: Responsive.screenWidth(context) * 0.4,
-                                  );
-                                },
-                              ),
-                              Text(
-                                "${stadium.sessionPrice}دينار",
-                                style: TextStyle(fontSize: Responsive.textSize(context, 22), fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                );
+              } else if (state is StaduimDetailLoadedEmptySession) {
+                final stadium = state.stadiumInfo;
+                return NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                    SliverToBoxAdapter(
+                      child: stadium.images.isNotEmpty && stadium.images[0].isNotEmpty
+                          ? Image.network(
+                              stadium.images[0],
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  height: Responsive.screenHeight(context) * 0.25,
+                                  color: Colors.grey,
+                                  child: const Center(child: Text('No image available', style: TextStyle(color: Colors.white))),
+                                );
+                              },
+                            )
+                          : Container(
+                              height: Responsive.screenHeight(context) * 0.25,
+                              color: Colors.grey,
+                              child: const Center(child: Text('No image available', style: TextStyle(color: Colors.white))),
+                            ),
                     ),
                   ],
-                ),
-              );
-            } else if (state is StaduimDetailError) {
-              return Center(child: Text(state.message));
-            }
-            return Container();
-          },
+                  body: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(stadium.name, style: TextStyle(fontSize: Responsive.textSize(context, 18), fontWeight: FontWeight.bold)),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.015),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppPhotot.locationIco),
+                                    SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                                    Text(stadium.address, style: TextStyle(fontSize: Responsive.textSize(context, 14))),
+                                  ],
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                StadiumInfoSummary(
+                                  totalReservations: stadium.totalReservations,
+                                  avgReviews: stadium.avgReviews,
+                                  totalReviews: stadium.totalReviews,
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.04),
+                                const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا')),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.04),
+                                Text("التعليقات", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                Container(
+                                  height: Responsive.screenHeight(context) * 0.47,
+                                  child: CommentsWidget(stadiumId: stadium.id),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: Responsive.screenHeight(context) * 0.1,
+                        child: Card(
+                          margin: EdgeInsets.zero,
+                          borderOnForeground: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                BlocConsumer<ReverseRequestCubit, ReverseRequestState>(
+                                  listener: (context, state) {
+                                    if (state is ReverseRequestSuccess) {
+                                      _showReservationStatusDialog(context,"تم الحجز", 'تم الحجز بنجاح');
+                                    } else if (state is ReverseRequestError) {
+                                      _showReservationStatusDialog(context, 'خطأ',"حدث خطأ");
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    return CustomButton(
+                                      onPress: () {
+                                        if (cubit.selectedSessionId == null) {
+                                          Fluttertoast.showToast(
+                                            msg: 'يرجي اختيار توقيت',
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 2,
+                                          );
+                                        } else {
+                                          _showReservationDialog(context, stadium, cubit.selectedDate, cubit.selectedSessionId!);
+                                        }
+                                      },
+                                      text: "حجز",
+                                      color: Constants.mainColor,
+                                      textColor: Colors.white,
+                                      height: Responsive.screenHeight(context) * 0.06,
+                                      width: Responsive.screenWidth(context) * 0.4,
+                                    );
+                                  },
+                                ),
+                                Text(
+                                  "${stadium.sessionPrice}دينار",
+                                  style: TextStyle(fontSize: Responsive.textSize(context, 22), fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else if (state is StaduimDetailError) {
+                return Center(child: Text("حدث خطا ما"));
+              }
+              return Container();
+            },
+          ),
         ),
       ),
     );
   }
 
   void _showReservationDialog(BuildContext context, stadium, String selectedDate, int selectedSessionId) {
+    final isMonthlyReservation = context.read<CheckboxCubit>().state;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -309,7 +353,7 @@ class StadiumDetailScreen extends StatelessWidget {
               stadium.id,
               selectedDate,
               selectedSessionId,
-              true,
+              isMonthlyReservation,
               2,
             );
           },

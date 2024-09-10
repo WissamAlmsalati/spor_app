@@ -24,6 +24,8 @@ class FavoriteStadium extends StatelessWidget {
         }
       },
       child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(), // Remove stretch effect
+
         child: SizedBox(
           height: Responsive.screenHeight(context) * 0.41,
           width: double.infinity,
@@ -33,8 +35,8 @@ class FavoriteStadium extends StatelessWidget {
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 0.1,
-                    mainAxisSpacing: 0.2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                     childAspectRatio: 1,
                   ),
                   itemCount: 4, // Placeholder item count
@@ -80,8 +82,8 @@ class FavoriteStadium extends StatelessWidget {
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 0.1,
-                    mainAxisSpacing: 0.2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                     childAspectRatio: 1,
                   ),
                   itemCount: state.stadiums.length,
@@ -98,6 +100,7 @@ class FavoriteStadium extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         child: Card(
+                          margin: const EdgeInsets.all(0),
                           elevation: 1,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.04),
@@ -203,6 +206,7 @@ class ShimmerPlaceholder extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: Card(
+        margin: const EdgeInsets.all(0),
         elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),

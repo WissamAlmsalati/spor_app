@@ -342,6 +342,8 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
               Navigator.of(context).pop();
             },
             text: 'الغاء',
+            hasBorder: true,
+            borderColor: Constants.mainColor,
             color: Colors.white,
             textColor: Constants.mainColor,
             textSize: Responsive.textSize(context, 12.5),

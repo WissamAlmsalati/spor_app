@@ -34,10 +34,10 @@ class SelectableTimeTile extends StatelessWidget {
             margin: const EdgeInsets.only(right: 8.0),
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             decoration: BoxDecoration(
-              color: isSelected ? Constants.mainColor : Colors.white,
+              color: isSelected && !isLocked && !isReserved ? Constants.mainColor : Colors.white,
               borderRadius: BorderRadius.circular(8.0),
               border: Border.all(
-                color: isSelected ? Constants.mainColor : Colors.white,
+                color: isSelected && !isLocked && !isReserved ? Constants.mainColor : Colors.white,
                 width: 2.0,
               ),
             ),
@@ -46,7 +46,6 @@ class SelectableTimeTile extends StatelessWidget {
                   ? MainAxisAlignment.spaceAround
                   : MainAxisAlignment.center,
               children: [
-
                 if (isReserved || isLocked)
                   Icon(
                     Icons.lock,
@@ -57,7 +56,7 @@ class SelectableTimeTile extends StatelessWidget {
                   formattedTime,
                   style: TextStyle(
                     fontSize: Responsive.textSize(context, 15),
-                    color: isSelected ? Colors.white : Colors.black,
+                    color: isSelected && !isLocked && !isReserved ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

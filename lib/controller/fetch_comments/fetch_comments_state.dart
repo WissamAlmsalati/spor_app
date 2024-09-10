@@ -1,21 +1,38 @@
-// fetch_comments_state.dart
 part of 'fetch_comments_cubit.dart';
 
-@immutable
-abstract class FetchCommentsState {}
+abstract class FetchCommentsState extends Equatable {
+  const FetchCommentsState();
+  @override
+  List<Object?> get props => [];
+}
 
 class FetchCommentsInitial extends FetchCommentsState {}
 
-class FetchCommentsLoading extends FetchCommentsState {}
+class FetchCommentsLoading extends FetchCommentsState {
+  final List<Comment> comments;
+  final bool isLoadingMore;
+
+  FetchCommentsLoading({required this.comments, this.isLoadingMore = false});
+
+  @override
+  List<Object?> get props => [comments, isLoadingMore];
+}
 
 class FetchCommentsLoaded extends FetchCommentsState {
   final List<Comment> comments;
+  final bool hasNextPage;
 
-  FetchCommentsLoaded(this.comments);
+  FetchCommentsLoaded({required this.comments, required this.hasNextPage});
+
+  @override
+  List<Object?> get props => [comments, hasNextPage];
 }
 
 class FetchCommentsError extends FetchCommentsState {
   final String message;
 
-  FetchCommentsError(this.message);
+  FetchCommentsError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

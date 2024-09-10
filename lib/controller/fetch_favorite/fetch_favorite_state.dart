@@ -13,6 +13,8 @@ class FetchFavoriteLoaded extends FetchFavoriteState {
   final List<Stadium> stadiums;
 
   FetchFavoriteLoaded(this.stadiums);
+
+  List<Stadium> get favoriteStadiums => stadiums;
 }
 
 class FetchFavoriteError extends FetchFavoriteState {

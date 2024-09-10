@@ -18,121 +18,6 @@ class StaduimPhotoStack extends StatelessWidget {
   const StaduimPhotoStack(
       {super.key, required this.StdPhoto, required this.stdId});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
-      listener: (context, state) {
-        if (state is AdedToFavorite) {
-          Fluttertoast.showToast(
-            msg: 'Added to favorite successfully!',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-          );
-          context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
-        } else if (state is AddToFavoriteError) {
-          Fluttertoast.showToast(
-            msg: state.message,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-          );
-        } else if (state is RemovedFromFavorite) {
-          Fluttertoast.showToast(
-            msg: 'Removed from favorite successfully!',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-          );
-          context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
-        }
-      },
-      child: Stack(
-        children: [
-          SizedBox(
-            height: Responsive.screenHeight(context) * 0.25,
-            child: Image.network(
-              StdPhoto,
-              fit: BoxFit.fill,
-              width: double.infinity,
-              height: Responsive.screenHeight(context) * 0.23,
-            ),
-          ),
-          Positioned(
-            top: Responsive.screenHeight(context) * 0.01,
-            left: 0,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: SizedBox(
-                height: Responsive.screenHeight(context) * 0.070,
-                width: Responsive.screenHeight(context) * 0.070,
-                child: Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: EdgeInsets.all(
-                          Responsive.screenHeight(context) * 0.01),
-                      child: SvgPicture.asset(AppPhotot.arrowBack,
-                          height: Responsive.screenHeight(context) * 0.05),
-                    )),
-              ),
-            ),
-          ),
-          Positioned(
-            top: Responsive.screenHeight(context) * 0.01,
-            right: Responsive.screenWidth(context) * 0.15,
-            child: IconButton(
-              onPressed: () {
-                _shareStadium(context);
-              },
-              icon: SizedBox(
-                height: Responsive.screenHeight(context) * 0.070,
-                width: Responsive.screenHeight(context) * 0.070,
-                child: Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(AppPhotot.shareIco,
-                          height: Responsive.screenHeight(context) * 0.05),
-                    )),
-              ),
-            ),
-          ),
-          Positioned(
-            top: Responsive.screenHeight(context) * 0.01,
-            right: 0,
-            child: BlocBuilder<AddToFavoriteCubit, AddToFavoriteState>(
-              builder: (BuildContext context, state) {
-                final isFavorite = state is AdedToFavorite;
-                return IconButton(
-                  onPressed: () {
-                    if (isFavorite) {
-                      context.read<AddToFavoriteCubit>().removeFromFavorite(stdId, context);
-                    } else {
-                      context.read<AddToFavoriteCubit>().addToFavorite(stdId, context);
-                    }
-                  },
-                  icon: SizedBox(
-                    height: Responsive.screenHeight(context) * 0.070,
-                    width: Responsive.screenHeight(context) * 0.070,
-                    child: Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(
-                            isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
-                            color: isFavorite ? Colors.red : Colors.black,
-                            height: Responsive.screenHeight(context) * 0.05,
-                          ),
-                        )),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<String> generateSecureLink(int stadiumId) async {
     final response = await http.post(
       Uri.parse('https://your-backend-api.com/generateLink'),
@@ -162,5 +47,119 @@ class StaduimPhotoStack extends StatelessWidget {
         gravity: ToastGravity.BOTTOM,
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
+          listener: (context, state) {
+            if (state is AddToFavoriteError) {
+              Fluttertoast.showToast(
+                msg: state.message,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 2, // Set duration to 2 seconds
+              );
+            }
+          },
+        ),
+      ],
+      child: Stack(
+        children: [
+          SizedBox(
+            height: Responsive.screenHeight(context) * 0.25,
+            child: Image.network(
+              StdPhoto,
+              fit: BoxFit.fill,
+              width: double.infinity,
+              height: Responsive.screenHeight(context) * 0.23,
+            ),
+          ),
+          Positioned(
+            top: Responsive.screenHeight(context) * 0.01,
+            left: 0,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: SizedBox(
+                height: Responsive.screenHeight(context) * 0.070,
+                width: Responsive.screenHeight(context) * 0.070,
+                child: Card(
+                  elevation: 2,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
+                    child: SvgPicture.asset(AppPhotot.arrowBack,
+                        height: Responsive.screenHeight(context) * 0.05),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: Responsive.screenHeight(context) * 0.01,
+            right: Responsive.screenWidth(context) * 0.15,
+            child: IconButton(
+              onPressed: () {
+                _shareStadium(context);
+              },
+              icon: SizedBox(
+                height: Responsive.screenHeight(context) * 0.070,
+                width: Responsive.screenHeight(context) * 0.070,
+                child: Card(
+                  elevation: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(AppPhotot.shareIco,
+                        height: Responsive.screenHeight(context) * 0.05),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+              top: Responsive.screenHeight(context) * 0.01,
+              right: 0,
+              child: BlocBuilder<AddToFavoriteCubit, AddToFavoriteState>(
+                builder: (context, state) {
+                  bool isFavorite = false;
+                  if (state is AdedToFavorite) {
+                    isFavorite = true;
+                  } else if (state is RemovedFromFavorite) {
+                    isFavorite = false;
+                  }
+
+                  return IconButton(
+                    onPressed: () {
+                      context
+                          .read<AddToFavoriteCubit>()
+                          .toggleFavoriteStatus(stdId, context);
+                    },
+                    icon: SizedBox(
+                      height: Responsive.screenHeight(context) * 0.070,
+                      width: Responsive.screenHeight(context) * 0.070,
+                      child: Card(
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SvgPicture.asset(
+                            isFavorite
+                                ? AppPhotot.fillFav
+                                : AppPhotot.favoriteBg,
+                            color: isFavorite ? Colors.red : Colors.black,
+                            height: Responsive.screenHeight(context) * 0.05,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              )),
+        ],
+      ),
+    );
   }
 }

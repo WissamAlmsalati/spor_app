@@ -21,7 +21,6 @@ export  '../controller/auth/authintication_cubit.dart';
 export  '../controller/old_reveresition/old_reservation_fetch_cubit.dart';
 export  '../controller/steduim_search_cubit/stidum_search_cubit.dart';
 export 'route_generator.dart';
-export  'package:connectivity_plus/connectivity_plus.dart';
 export 'package:page_transition/page_transition.dart';
 export 'package:sport/views/auth/screens/login_screen.dart';
 export 'package:sport/views/auth/screens/signup_screen.dart';

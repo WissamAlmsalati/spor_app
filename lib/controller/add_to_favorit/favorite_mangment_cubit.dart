@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -5,24 +7,52 @@ import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../services/apis.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/app_cubits.dart';
 import '../../utilits/secure_data.dart';
-
+import '../fetch_favorite/fetch_favorite_cubit.dart';
 part 'favorite_mangment_state.dart';
 
 class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
   AddToFavoriteCubit() : super(AddToFavoriteInitial());
 
-  Future<void> addToFavorite(int stadiumId, BuildContext context) async {
-    final token = await SecureStorageData.getToken();
+  Timer? _debounce;
 
+  Future<void> checkIfFavorite(int stadiumId, BuildContext context) async {
+    final favoriteCubit = context.read<FetchFavoriteCubit>();
+    final favoriteState = favoriteCubit.state;
+    if (favoriteState is FetchFavoriteLoaded) {
+      final isFavorite = favoriteState.favoriteStadiums.any((stadium) => stadium.id == stadiumId);
+      if (isFavorite) {
+        emit(AdedToFavorite());
+      } else {
+        emit(RemovedFromFavorite());
+      }
+    }
+  }
+
+  Future<void> toggleFavoriteStatus(int stadiumId, BuildContext context) async {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () async {
+      if (state is AdedToFavorite) {
+        final response = await removeFromFavorite(stadiumId, context);
+        if (response.statusCode == 200) {
+          emit(RemovedFromFavorite());
+        }
+      } else {
+        final response = await addToFavorite(stadiumId, context);
+        if (response.statusCode == 200) {
+          emit(AdedToFavorite());
+        }
+      }
+    });
+  }
+
+  Future<http.Response> addToFavorite(int stadiumId, BuildContext context) async {
+    final token = await SecureStorageData.getToken();
     emit(AddToFavoriteLoading());
 
     try {
-      if (kDebugMode) {
-        print('Adding to favorite: $stadiumId');
-      }
-
       final response = await http.post(
         Uri.parse('${Apis.addToFavorite}?stadium=$stadiumId'),
         headers: {
@@ -32,39 +62,24 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
         body: json.encode({'stadium': stadiumId}),
       );
 
-      final decodedResponse = utf8.decode(response.bodyBytes);
-
-      if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print('Successfully added to favorite: $stadiumId');
-        }
+      if (response.statusCode == 201) {
         emit(AdedToFavorite());
         RefreshCubit.refreshFavoriteStadiums(context);
       } else {
-        if (kDebugMode) {
-          print('Failed to add to favorite: ${response.reasonPhrase}');
-          print('Response body: $decodedResponse');
-        }
         emit(AddToFavoriteError('Failed to add to favorite'));
       }
+      return response;
     } catch (e) {
-      if (kDebugMode) {
-        print('An error occurred while adding to favorite: $e');
-      }
       emit(AddToFavoriteError('An error occurred: $e'));
+      rethrow;
     }
   }
 
-  Future<void> removeFromFavorite(int stadiumId, BuildContext context) async {
+  Future<http.Response> removeFromFavorite(int stadiumId, BuildContext context) async {
     final token = await SecureStorageData.getToken();
-
     emit(AddToFavoriteLoading());
 
     try {
-      if (kDebugMode) {
-        print('Removing from favorite: $stadiumId');
-      }
-
       final response = await http.delete(
         Uri.parse('${Apis.removeFavorite}?stadium=$stadiumId'),
         headers: {
@@ -73,26 +88,16 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
         },
       );
 
-      final decodedResponse = utf8.decode(response.bodyBytes);
-
       if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print('Successfully removed from favorite: $stadiumId');
-        }
         emit(RemovedFromFavorite());
         RefreshCubit.refreshFavoriteStadiums(context);
       } else {
-        if (kDebugMode) {
-          print('Failed to remove from favorite: ${response.reasonPhrase}');
-          print('Response body: $decodedResponse');
-        }
         emit(AddToFavoriteError('Failed to remove from favorite'));
       }
+      return response;
     } catch (e) {
-      if (kDebugMode) {
-        print('An error occurred while removing from favorite: $e');
-      }
       emit(AddToFavoriteError('An error occurred: $e'));
+      rethrow;
     }
   }
 }

@@ -27,13 +27,6 @@ class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
 
       final decodedResponse = utf8.decode(response.bodyBytes);
 
-      if (kDebugMode) {
-        print('Favorite Response  status: ${response.statusCode}');
-      }
-      if (kDebugMode) {
-        print('Response body: $decodedResponse');
-      }
-
       if (response.statusCode == 200) {
         final data = json.decode(decodedResponse)['results'] as List;
         final stadiums = data.map((json) => Stadium.fromJson(json)).toList();

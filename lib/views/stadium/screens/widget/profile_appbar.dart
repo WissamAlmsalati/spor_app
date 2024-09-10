@@ -38,7 +38,8 @@ class ProfileAppBar {
           );
         } else if (state is FetchProfileLoaded) {
           return CoustomAppBr(
-            title: "اهلا وسهلا ${state.userInfo.firstName}",
+            title: "اهلا وسهلا ,",
+            userName: state.userInfo.firstName,
             logo: AppPhotot.notificationLogo,
             height: Responsive.screenHeight(context) * 0.045,
             width: Responsive.screenHeight(context) * 0.045,

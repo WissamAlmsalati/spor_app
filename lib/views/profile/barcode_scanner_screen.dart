@@ -58,7 +58,6 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                 padding: EdgeInsets.all(Responsive.blockHeight(context) * 2),
                 child: Column(
                   children: [
-
                     SizedBox(height: Responsive.blockHeight(context) * 1),
                     Row(
                       children: [
@@ -111,22 +110,40 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                   ),
                 ),
               ),
-
               Padding(
                 padding: EdgeInsets.all(Responsive.blockHeight(context) * 2),
-                child: CustomButton(
-                  text: 'إدخال الرمز يدوياً',
-                  onPress: () {
-                    // Trigger haptic feedback
-                    HapticFeedback.mediumImpact();
-                    // Call the provided onPress callback
-                    Navigator.pop(context);
-                  },
-                  color: Constants.mainColor,
-                  textColor: Colors.white,
-                  textSize: Responsive.textSize(context, 12),
-                  height: Responsive.screenHeight(context) * 0.053,
-                  width: double.infinity,
+                child: Column(
+                  children: [
+                    CustomButton(
+                      text: 'مسح الرمز',
+                      hasBorder: true,
+                      borderColor: Constants.mainColor,
+                      onPress: _startScanning,
+                      color: Colors.white,
+                      textColor: Constants.mainColor,
+                      brWidth: 3,
+                      textSize: Responsive.textSize(context, 12),
+                      height: Responsive.screenHeight(context) * 0.053,
+                      width: double.infinity,
+                    ),
+                    SizedBox(height: Responsive.blockHeight(context) * 2),
+
+                    CustomButton(
+                      text: 'إدخال الرمز يدوياً',
+                      onPress: () {
+                        // Trigger haptic feedback
+                        HapticFeedback.mediumImpact();
+                        // Call the provided onPress callback
+                        Navigator.pop(context);
+                      },
+                      color: Constants.mainColor,
+                      textColor: Colors.white,
+                      textSize: Responsive.textSize(context, 12),
+                      height: Responsive.screenHeight(context) * 0.053,
+                      width: double.infinity,
+                    ),
+
+                  ],
                 ),
               ),
             ],
@@ -140,10 +157,15 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
     setState(() {
       this.controller = controller;
     });
+    controller.pauseCamera();
+  }
 
-    controller.scannedDataStream.listen((scanData) {
+  void _startScanning() {
+    controller?.resumeCamera();
+    controller?.scannedDataStream.listen((scanData) {
       if (scanData.code != null) {
         context.read<RechargeCubit>().rechargeCard(scanData.code!, context);
+        controller?.pauseCamera();
       }
     });
   }
