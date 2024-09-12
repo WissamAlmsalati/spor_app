@@ -17,6 +17,14 @@ class CurrentBooking extends StatelessWidget {
           if (state is ReservationLoading) {
             return const ShimmerLoadingWidget();
           } else if (state is ReservationLoaded) {
+            if (state.reservations.isEmpty) {
+              return Center(
+                child: Text(
+                  'لا توجد حجوزات حالية',
+                  style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+                ),
+              );
+            }
             return RefreshIndicator(
               onRefresh: () async {
                 context.read<ReservationCubit>().fetchReservations();
@@ -29,7 +37,12 @@ class CurrentBooking extends StatelessWidget {
               ),
             );
           } else if (state is ReservationError) {
-            return Center(child: Text(state.message, style:  TextStyle(fontSize: Responsive.textSize(context, 12),),));
+            return Center(
+              child: Text(
+                state.message,
+                style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+              ),
+            );
           } else {
             return const Center(child: Text('Unknown state'));
           }
@@ -38,8 +51,6 @@ class CurrentBooking extends StatelessWidget {
     );
   }
 }
-
-
 
 class ShimmerLoadingWidget extends StatelessWidget {
   const ShimmerLoadingWidget({super.key});

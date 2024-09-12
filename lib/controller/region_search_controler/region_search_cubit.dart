@@ -19,6 +19,7 @@ class RegionSearchCubit extends Cubit<RegionSearchState> {
       return;
     }
 
+
     emit(RegionSearchLoading());
 
     try {
@@ -41,5 +42,9 @@ class RegionSearchCubit extends Cubit<RegionSearchState> {
       print('Failed to fetch regions: $e');
       emit(RegionSearchError('Failed to fetch regions'));
     }
+  }
+
+  void resetSearch() {
+    emit(RegionSearchInitial());
   }
 }

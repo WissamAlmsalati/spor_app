@@ -172,6 +172,7 @@ class StadiumDetailScreen extends StatelessWidget {
                                 listener: (context, state) {
                                   if (state is ReverseRequestSuccess) {
                                     _showReservationStatusDialog(context, 'تم الحجز بنجاح', 'Request sent successfully');
+                                    context.read<ReservationCubit>().fetchReservations();
                                   } else if (state is ReverseRequestError) {
                                     _showReservationStatusDialog(context, 'خطأ', 'حدث خطأ');
                                   }
@@ -225,12 +226,9 @@ class StadiumDetailScreen extends StatelessWidget {
                                 );
                               },
                             )
-                          : Container(
-                              height: Responsive.screenHeight(context) * 0.25,
-                              color: Colors.grey,
-                              child: const Center(child: Text('No image available', style: TextStyle(color: Colors.white))),
-                            ),
+                          : StaduimPhotoStack(StdPhoto: 'https://placehold.jp/150x150.png', stdId: stadiumId),
                     ),
+
                   ],
                   body: Column(
                     children: [
@@ -288,6 +286,7 @@ class StadiumDetailScreen extends StatelessWidget {
                                   listener: (context, state) {
                                     if (state is ReverseRequestSuccess) {
                                       _showReservationStatusDialog(context,"تم الحجز", 'تم الحجز بنجاح');
+                                      context.read<ReservationCubit>().fetchReservations();
                                     } else if (state is ReverseRequestError) {
                                       _showReservationStatusDialog(context, 'خطأ',"حدث خطأ");
                                     }
@@ -348,14 +347,20 @@ class StadiumDetailScreen extends StatelessWidget {
           canceText: 'إغلاق',
           confirmText: 'تأكيد',
           onConfirm: () {
+            try {
+              context.read<ReverseRequestCubit>().sendReverseRequest(
+                stadium.id,
+                selectedDate,
+                selectedSessionId,
+                isMonthlyReservation,
+                2,
+              );
+            } catch (e) {
+              print(e);
+            }
+            context.read<ReservationCubit>().fetchReservations();
             Navigator.of(context).pop();
-            context.read<ReverseRequestCubit>().sendReverseRequest(
-              stadium.id,
-              selectedDate,
-              selectedSessionId,
-              isMonthlyReservation,
-              2,
-            );
+
           },
           onCancel: () {
             Navigator.of(context).pop();

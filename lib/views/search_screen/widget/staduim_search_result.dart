@@ -17,31 +17,40 @@ class StaduimSearchResult extends StatelessWidget {
       child: Container(
         height: Responsive.screenHeight(context) * 0.25,
         width: Responsive.screenWidth(context) * 9,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(15))
+            borderRadius: BorderRadius.all(Radius.circular(Responsive.screenWidth(context) * 0.05)  ),
         ),
         child: Column(
           children: [
-            Image.network(
-              stadium.image.isNotEmpty
-                  ? stadium.image
-                  : 'https://via.placeholder.com/150', // Placeholder image URL
-              fit: BoxFit.fill,
-              width: double.infinity,
-              height: Responsive.screenHeight(context) * 0.16,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey,
-                  child: const Center(
-                    child: Text(
-                      'No image available',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                );
-              },
-            ),
+       Container(
+  width: double.infinity,
+  height: Responsive.screenHeight(context) * 0.16,
+  decoration: BoxDecoration(
+    color: Colors.grey,
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(Responsive.screenWidth(context) * 0.05),
+      topRight: Radius.circular(Responsive.screenWidth(context) * 0.05),
+    ),
+    image: stadium.image.isNotEmpty
+        ? DecorationImage(
+            image: NetworkImage(stadium.image),
+            fit: BoxFit.fill,
+            onError: (error, stackTrace) {
+              // Handle error
+            },
+          )
+        : null,
+  ),
+  child: stadium.image.isEmpty
+      ? const Center(
+          child: Text(
+            'No image available',
+            style: TextStyle(color: Colors.white),
+          ),
+        )
+      : null,
+),
             SizedBox(
               height: Responsive.screenHeight(context) * 0.011,
             ),
@@ -97,7 +106,7 @@ class StaduimSearchResult extends StatelessWidget {
                       color: stadium.isAvailable ? Constants.mainColor : Colors
                           .red,
                       fontSize: Responsive.textSize(
-                          context, 13), // Customize the font size as needed
+                          context, 15), // Customize the font size as needed
                     ),
                   ),
 

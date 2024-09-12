@@ -1,7 +1,5 @@
 part of 'stidum_search_cubit.dart';
 
-
-
 @immutable
 abstract class StadiumSearchState {}
 
@@ -33,4 +31,10 @@ class StadiumSearchTextUpdated extends StadiumSearchState {
   final String text;
 
   StadiumSearchTextUpdated(this.text);
+}
+
+class StadiumSearchSessionIdSelected extends StadiumSearchState {
+  final int sessionId;
+
+  StadiumSearchSessionIdSelected(this.sessionId);
 }

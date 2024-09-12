@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
@@ -15,6 +14,7 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
 
   DateTime? selectedDate;
   String searchText = '';
+  int? selectedSessionId;
 
   void selectDate(DateTime date) {
     selectedDate = date;
@@ -26,8 +26,15 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
     emit(StadiumSearchTextUpdated(text));
   }
 
+  void selectSessionId(int sessionId) {
+    selectedSessionId = sessionId;
+    emit(StadiumSearchSessionIdSelected(sessionId));
+  }
+
   Future<void> searchStadiums({
     required String name,
+    DateTime? date,
+    int? sessionId,
     String? startDate,
     String? endDate,
     String? timeFrom,
@@ -38,11 +45,15 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
       // Construct the query parameters
       final queryParams = {
         'name': name,
+        if (date != null) 'date': date.toIso8601String(),
+        if (sessionId != null) 'session_id': sessionId.toString(),
         if (startDate != null) 'start_date': startDate,
         if (endDate != null) 'end_date': endDate,
         if (timeFrom != null) 'time_from': timeFrom,
         if (timeTo != null) 'time_to': timeTo,
       };
+
+      print('Query Params: $queryParams');
 
       // Build the query string
       final queryString = Uri(queryParameters: queryParams).query;
@@ -131,6 +142,7 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
   void resetSearch() {
     selectedDate = null;
     searchText = '';
+    selectedSessionId = null;
     emit(StadiumSearchInitial());
   }
 }

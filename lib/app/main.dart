@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
@@ -11,19 +12,27 @@ import '../controller/review_comment_controller/comment_review_cubit.dart';
 import '../repostry/staduim_repostry.dart';
 import 'app_packges.dart';
 
-Future <void> main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SecureStorageData.getIsSign();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Set the system status bar and navigation bar color
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
 
     return MultiBlocProvider(
       providers: [
@@ -47,7 +56,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => StadiumDetailCubit(StadiumRepository())),
         BlocProvider(create: (context) => ReverseRequestCubit()),
         BlocProvider(create: (context) => RegionSearchCubit()),
-
         BlocProvider(create: (context) => FetchAdsImagesCubit()),
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),

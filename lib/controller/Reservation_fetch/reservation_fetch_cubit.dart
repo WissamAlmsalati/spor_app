@@ -30,7 +30,11 @@ class ReservationCubit extends Cubit<ReservationState> {
         final data = json.decode(decodedResponse);
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
-          emit(ReservationLoaded(reservations));
+          if (reservations.isEmpty) {
+            emit(ReservationError('لا توجد حجوزات حالية'));
+          } else {
+            emit(ReservationLoaded(reservations));
+          }
         } else {
           emit(ReservationError('Invalid data format'));
         }
@@ -68,7 +72,11 @@ class ReservationCubit extends Cubit<ReservationState> {
         final data = json.decode(decodedResponse);
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
-          emit(ReservationLoaded(reservations));
+          if (reservations.isEmpty) {
+            emit(ReservationError('لا توجد حجوزات سابقة'));
+          } else {
+            emit(ReservationLoaded(reservations));
+          }
         } else {
           emit(ReservationError('Invalid data format'));
         }

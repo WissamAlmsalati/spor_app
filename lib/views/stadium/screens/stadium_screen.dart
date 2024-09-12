@@ -26,6 +26,7 @@ class StadiumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: ProfileAppBar.build(context),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => _refreshData(context),
@@ -38,7 +39,6 @@ class StadiumScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  ProfileAppBar.build(context), // Use the static method
                   Padding(
                     padding: EdgeInsets.only(
                       top: Responsive.screenHeight(context) * 0.02,
@@ -62,7 +62,6 @@ class StadiumScreen extends StatelessWidget {
                         onTap: openContainer,
                       ),
                     ),
-
                   ),
                   const LogoText(
                     logo: AppPhotot.cupLogo,

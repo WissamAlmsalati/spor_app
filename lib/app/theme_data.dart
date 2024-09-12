@@ -5,7 +5,26 @@ class CustomThemeData {
   static ThemeData getThemeData(BuildContext context) {
     // Set the system status bar and navigation bar color
 
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Constants.mainColor,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Constants.mainColor,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+
     return ThemeData(
+      appBarTheme:  AppBarTheme(
+        scrolledUnderElevation: 0,
+        backgroundColor:Constants.backGroundColor,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontFamily: GoogleFonts.cairo().fontFamily,
+        ),
+      ),
       primaryColor: const Color(0xFF95CA5B),
       hintColor: Colors.grey,
       scaffoldBackgroundColor: Constants.backGroundColor,

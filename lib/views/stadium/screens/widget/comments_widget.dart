@@ -8,6 +8,7 @@ import '../../../../controller/fetch_comments/fetch_comments_cubit.dart';
 import 'package:intl/intl.dart';
 import '../../../../models/comments_model.dart';
 
+
 class CommentsWidget extends StatefulWidget {
   final int stadiumId;
 
@@ -46,9 +47,24 @@ class _CommentsWidgetState extends State<CommentsWidget> {
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<Comment>(
               itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
-              firstPageErrorIndicatorBuilder: (context) => Center(child: Text('Failed to load comments')),
-              noItemsFoundIndicatorBuilder: (context) => Center(child: Text('No comments found')),
-              newPageErrorIndicatorBuilder: (context) => Center(child: Text('Something went wrong')),
+              firstPageErrorIndicatorBuilder: (context) => Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
+                ],
+              ),
+              noItemsFoundIndicatorBuilder: (context) => Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(child: Text('لاتوجد تعليقات علي ها ذا الملعب')),
+                ],
+              ),
+              newPageErrorIndicatorBuilder: (context) => Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(child: Text('حدث خطأ')),
+                ],
+              ),
               newPageProgressIndicatorBuilder: (context) => CommentsShimmer(),
             ),
           );

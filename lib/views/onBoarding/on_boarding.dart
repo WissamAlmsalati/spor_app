@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,11 +37,18 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Constants.mainColor,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Constants.mainColor,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
 
     return BlocProvider(
       create: (_) => OnboardingCubit(),
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: SafeArea(
           child: Stack(
             children: [

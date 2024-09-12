@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sport/app/app_packges.dart';
@@ -7,12 +6,15 @@ import 'package:sport/utilits/images.dart';
 import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/views/search_screen/staduim_screen.dart';
+import 'package:sport/views/search_screen/widget/buttom_sheet_filter.dart';
 import 'package:sport/views/search_screen/widget/staduim_search_result.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../controller/region_search_controler/region_search_cubit.dart';
 import '../../controller/steduim_search_cubit/stidum_search_cubit.dart';
 import 'package:intl/intl.dart';
+
+import '../auth/widgets/coustom_button.dart';
 
 class StadiumSearchScreen extends StatefulWidget {
   StadiumSearchScreen({super.key});
@@ -24,139 +26,35 @@ class StadiumSearchScreen extends StatefulWidget {
 class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
   final TextEditingController searchController = TextEditingController();
   String? selectedRegion;
-  DateTime? selectedDate; // Declare selectedDate
-  int? selectedSessionId; // Declare selectedSessionId
+  DateTime? selectedDate;
+  int? selectedSessionId;
 
   @override
   void initState() {
     super.initState();
-    // Clear previous search data when screen is opened
     searchController.clear();
     selectedRegion = null;
-    context.read<StadiumSearchCubit>().resetSearch(); // Reset the search state
+    context.read<StadiumSearchCubit>().resetSearch();
   }
 
   void _closeScreen(BuildContext context) {
-    // Reset search state when closing the screen
     context.read<StadiumSearchCubit>().resetSearch();
-    searchController.clear(); // Clear the search field
-    selectedRegion = null; // Reset the selected region
-    Navigator.pop(context); // Close the screen
+    searchController.clear();
+    selectedRegion = null;
+    context.read<RegionSearchCubit>().resetSearch();
+    Navigator.pop(context);
   }
 
-  void _showFilterBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Constants.backGroundColor,
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                  Text("اختيار التاريخ", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
-                  SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                  Container(
-                    height: Responsive.screenHeight(context) * 0.13,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 30, // Assuming 30 days for a month
-                      itemBuilder: (context, index) {
-                        final date = DateTime.now().add(Duration(days: index));
-                        final formattedDate = DateFormat('dd/MM').format(date);
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedDate = date;
-                            });
-                          },
-                          child: Container(
-                            height: Responsive.screenHeight(context) * 0.13,
-                            width: Responsive.screenWidth(context) * 0.3,
-                            margin: EdgeInsets.symmetric(
-                              horizontal: Responsive.screenWidth(context) * 0.02,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: selectedDate == date ? Colors.blue : Colors.grey,
-                            ),
-                            child: Center(
-                              child: Text(
-                                formattedDate,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                  Text("اختيار التوقيت", style: TextStyle(fontSize: Responsive.textSize(context, 16), fontWeight: FontWeight.w600)),
-                  SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                  Container(
-                    height: Responsive.screenHeight(context) * 0.13,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 24,
-                      itemBuilder: (context, index) {
-                        final hour = index < 12 ? '${index + 1} ص' : '${index - 11} م';
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedSessionId = index;
-                            });
-                          },
-                          child: Container(
-                            height: Responsive.screenHeight(context) * 0.13,
-                            width: Responsive.screenWidth(context) * 0.3,
-                            margin: EdgeInsets.symmetric(
-                              horizontal: Responsive.screenWidth(context) * 0.02,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: selectedSessionId == index ? Colors.blue : Colors.grey,
-                            ),
-                            child: Center(
-                              child: Text(
-                                hour,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Apply Filters'),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _searchByHour(String hour) {
-    // Implement search logic based on the selected hour
-    // This function should trigger the search with the selected hour and date
+  void _showBottomSheet(BuildContext context, int i) {
+    showCustomBottomSheet(context, searchController.text, (date) {
+      setState(() {
+        selectedDate = date;
+      });
+    }, (hour) {
+      setState(() {
+        selectedSessionId = hour;
+      });
+    });
   }
 
   @override
@@ -179,7 +77,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          _showFilterBottomSheet(context);
+                          _showBottomSheet(context, 1);
                         },
                         icon: SvgPicture.asset(
                           AppPhotot.optionlogo,
@@ -213,7 +111,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                       IconButton(
                         color: Colors.black,
                         onPressed: () {
-                          _closeScreen(context); // Close and reset the screen
+                          _closeScreen(context);
                         },
                         icon: SvgPicture.asset(AppPhotot.backArrow),
                       ),
@@ -321,6 +219,24 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                           ),
                         );
                       }
+                    } else if (state is StadiumSearchError) {
+                      return Center(
+                        child: SizedBox(
+                          height: Responsive.screenHeight(context) * 0.4,
+                          width: Responsive.screenWidth(context) * 0.9,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SvgPicture.asset(AppPhotot.noSearchResult),
+                              Text(
+                                state.message,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     } else if (state is StadiumSearchErrorSocketException) {
                       return Center(
                         child: SizedBox(
