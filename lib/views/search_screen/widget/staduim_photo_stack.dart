@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sport/app/app_packges.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,8 +16,7 @@ class StaduimPhotoStack extends StatelessWidget {
   final String StdPhoto;
   final int stdId;
 
-  const StaduimPhotoStack(
-      {super.key, required this.StdPhoto, required this.stdId});
+  const StaduimPhotoStack({super.key, required this.StdPhoto, required this.stdId});
 
   Future<String> generateSecureLink(int stadiumId) async {
     final response = await http.post(
@@ -90,10 +90,8 @@ class StaduimPhotoStack extends StatelessWidget {
                 child: Card(
                   elevation: 2,
                   child: Padding(
-                    padding:
-                        EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
-                    child: SvgPicture.asset(AppPhotot.arrowBack,
-                        height: Responsive.screenHeight(context) * 0.05),
+                    padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
+                    child: SvgPicture.asset(AppPhotot.arrowBack, height: Responsive.screenHeight(context) * 0.05),
                   ),
                 ),
               ),
@@ -113,51 +111,87 @@ class StaduimPhotoStack extends StatelessWidget {
                   elevation: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: SvgPicture.asset(AppPhotot.shareIco,
-                        height: Responsive.screenHeight(context) * 0.05),
+                    child: SvgPicture.asset(AppPhotot.shareIco, height: Responsive.screenHeight(context) * 0.05),
                   ),
                 ),
               ),
             ),
           ),
           Positioned(
-              top: Responsive.screenHeight(context) * 0.01,
-              right: 0,
-              child: BlocBuilder<AddToFavoriteCubit, AddToFavoriteState>(
-                builder: (context, state) {
-                  bool isFavorite = false;
-                  if (state is AdedToFavorite) {
-                    isFavorite = true;
-                  } else if (state is RemovedFromFavorite) {
-                    isFavorite = false;
-                  }
+            top: Responsive.screenHeight(context) * 0.01,
+            right: 0,
+            child: BlocBuilder<AddToFavoriteCubit, AddToFavoriteState>(
+              builder: (context, state) {
+                bool isFavorite = false;
+                if (state is AdedToFavorite) {
+                  isFavorite = true;
+                } else if (state is RemovedFromFavorite) {
+                  isFavorite = false;
+                }
 
-                  return IconButton(
-                    onPressed: () {
-                      context
-                          .read<AddToFavoriteCubit>()
-                          .toggleFavoriteStatus(stdId, context);
-                    },
-                    icon: SizedBox(
-                      height: Responsive.screenHeight(context) * 0.070,
-                      width: Responsive.screenHeight(context) * 0.070,
-                      child: Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(
-                            isFavorite
-                                ? AppPhotot.fillFav
-                                : AppPhotot.favoriteBg,
-                            color: isFavorite ? Colors.red : Colors.black,
-                            height: Responsive.screenHeight(context) * 0.05,
+                return BlocBuilder<AuthenticationCubit, AuthenticationState>(
+                  builder: (context, state) {
+                    if (state is AuthenticationAuthenticated) {
+                      return BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
+                        builder: (BuildContext context, FetchFavoriteState state) {
+                          if (state is FetchFavoriteLoaded) {
+                            return IconButton(
+                              onPressed: () {
+                                context.read<AddToFavoriteCubit>().toggleFavoriteStatus(stdId, context);
+                              },
+                              icon: SizedBox(
+                                height: Responsive.screenHeight(context) * 0.070,
+                                width: Responsive.screenHeight(context) * 0.070,
+                                child: Card(
+                                  elevation: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SvgPicture.asset(
+                                      isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
+                                      color: Colors.black,
+                                      height: Responsive.screenHeight(context) * 0.05,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container(); // Return an empty container if state is not loaded
+                          }
+                        },
+                      );
+                    } else {
+                      return IconButton(
+                        onPressed: () {
+                          Fluttertoast.showToast(
+                            msg: 'يجب تسجيل الدخول اولا',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2, // Set duration to 2 seconds
+                          );
+                        },
+                        icon: SizedBox(
+                          height: Responsive.screenHeight(context) * 0.070,
+                          width: Responsive.screenHeight(context) * 0.070,
+                          child: Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SvgPicture.asset(
+                                AppPhotot.favoriteBg,
+                                color: Colors.black,
+                                height: Responsive.screenHeight(context) * 0.05,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              )),
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

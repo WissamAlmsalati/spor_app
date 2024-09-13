@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../repostry/staduim_repostry.dart';
 import '../../utilits/secure_data.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +9,9 @@ import 'package:http/http.dart' as http;
 part 'reverse_requestt_dart__state.dart';
 
 class ReverseRequestCubit extends Cubit<ReverseRequestState> {
-  ReverseRequestCubit() : super(ReverseRequestInitial());
+  ReverseRequestCubit() : super(ReverseRequestInitial()) {
+    _loadReservationState();
+  }
 
   Future<void> sendReverseRequest(int stadiumId, String selectedDate, int selectedSessionId, bool isMonthlyReservation, int paymentType) async {
     emit(ReverseRequestLoading());
@@ -36,6 +39,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
       print('Response body: ${response.body}');
 
       if (response.statusCode == 201) {
+        await _saveReservationState(true);
         emit(ReverseRequestSuccess());
       } else if (response.statusCode == 404) {
         emit(ReverseRequestError('Request failed: Not Found (404)'));
@@ -46,6 +50,19 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
       }
     } catch (e) {
       emit(ReverseRequestError('An error occurred: $e'));
+    }
+  }
+
+  Future<void> _saveReservationState(bool isReserved) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isReverseCompleted', isReserved);
+  }
+
+  Future<void> _loadReservationState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isReserved = prefs.getBool('isReverseCompleted') ?? false;
+    if (isReserved) {
+      emit(ReverseRequestSuccess());
     }
   }
 }

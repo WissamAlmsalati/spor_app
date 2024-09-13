@@ -1,3 +1,5 @@
+import 'package:sport/app/status_bar_color.dart';
+
 import 'app_packges.dart';
 
 
@@ -5,14 +7,8 @@ class CustomThemeData {
   static ThemeData getThemeData(BuildContext context) {
     // Set the system status bar and navigation bar color
 
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Constants.mainColor,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Constants.mainColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
+    setStatusBarColor(Constants.backGroundColor);
+
 
     return ThemeData(
       appBarTheme:  AppBarTheme(

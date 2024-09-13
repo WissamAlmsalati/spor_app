@@ -25,9 +25,7 @@ class RegionSearchCubit extends Cubit<RegionSearchState> {
     try {
       final response = await http.get(
         Uri.parse('https://api.sport.com.ly/management/regions?name=$query'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
+
       );
 
       if (response.statusCode == 200) {

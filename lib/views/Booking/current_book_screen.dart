@@ -40,7 +40,10 @@ class CurrentBooking extends StatelessWidget {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+                style: TextStyle(
+                    fontSize: Responsive.textSize(context, 12),
+                fontWeight: FontWeight.w600,
+                ),
               ),
             );
           } else {

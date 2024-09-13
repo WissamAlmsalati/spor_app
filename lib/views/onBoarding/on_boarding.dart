@@ -7,6 +7,7 @@ import 'package:sport/app/app_cubits.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/utilits/secure_data.dart';
 import '../../app/app_packges.dart';
+import '../../app/status_bar_color.dart';
 import '../../controller/onboarding_cubit/onboarding_cubit.dart';
 import '../../utilits/constants.dart';
 import '../auth/widgets/coustom_button.dart';
@@ -37,163 +38,153 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Constants.mainColor,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Constants.mainColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
+    setStatusBarColor(Constants.mainColor);
 
-    return BlocProvider(
-      create: (_) => OnboardingCubit(),
-      child: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: SvgPicture.asset(
-                  'assets/photos/appBackground.svg',
-                  fit: BoxFit.cover,
-                ),
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: SvgPicture.asset(
+                'assets/photos/appBackground.svg',
+                fit: BoxFit.cover,
               ),
-              Positioned(
-                top: Responsive.screenHeight(context) * 0.03,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: BlocBuilder<OnboardingCubit, int>(
-                    builder: (context, currentPage) {
-                      final cubit = context.read<OnboardingCubit>();
-                      return Swiper(
-                        controller: cubit.swiperController,
-                        itemCount: pages.length,
-                        loop: false,
-                        onIndexChanged: (index) {
-                          cubit.updatePage(index);
-                        },
-                        itemBuilder: (context, index) {
-                          return SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: Stack(
-                              children: [
-                                Center(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        pages[index]["text"]!,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Constants.secondaryColor,
-                                          fontSize:
-                                          Responsive.textSize(context, 25),
-                                          fontWeight: FontWeight.bold,
+            ),
+            Positioned(
+              top: Responsive.screenHeight(context) * 0.03,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: BlocBuilder<OnboardingCubit, int>(
+                  builder: (context, currentPage) {
+                    final cubit = context.read<OnboardingCubit>();
+                    return Swiper(
+                      controller: cubit.swiperController,
+                      itemCount: pages.length,
+                      loop: false,
+                      onIndexChanged: (index) {
+                        cubit.updatePage(index);
+                      },
+                      itemBuilder: (context, index) {
+                        return SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      pages[index]["text"]!,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Constants.secondaryColor,
+                                        fontSize:
+                                        Responsive.textSize(context, 25),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(
+                                          pages[index]["arrow"]!,
+                                          height: Responsive.screenHeight(
+                                              context) *
+                                              0.1,
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          SvgPicture.asset(
-                                            pages[index]["arrow"]!,
-                                            height: Responsive.screenHeight(
-                                                context) *
-                                                0.1,
-                                          ),
-                                          SizedBox(
-                                            width: Responsive.screenHeight(
-                                                context) *
-                                                0.13,
-                                          ),
-                                          SvgPicture.asset(
-                                            pages[index]["reversArrow"]!,
-                                            height: Responsive.screenHeight(
-                                                context) *
-                                                0.1,
-                                          ),
-                                        ],
-                                      ),
-                                      Image.asset(
-                                        pages[index]["photoPath"]!,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ],
-                                  ),
+                                        SizedBox(
+                                          width: Responsive.screenHeight(
+                                              context) *
+                                              0.13,
+                                        ),
+                                        SvgPicture.asset(
+                                          pages[index]["reversArrow"]!,
+                                          height: Responsive.screenHeight(
+                                              context) *
+                                              0.1,
+                                        ),
+                                      ],
+                                    ),
+                                    Image.asset(
+                                      pages[index]["photoPath"]!,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Card(
+                margin: EdgeInsets.zero,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(0)),
+                ),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildPageIndicators(context),
+                      CustomButton(
+                        fontWeight: FontWeight.w600,
+                        textSize: Responsive.textSize(context, 16),
+                        height: Responsive.screenHeight(context) * 0.06,
+                        text: "انشاء حساب",
+                        color: Constants.mainColor,
+                        onPress: () {
+                          Navigator.pushNamed(context, '/signup');
                         },
-                      );
-                    },
+                        textColor: Constants.secondaryColor,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                      ),
+                      CustomButton(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        text: "تسجيل الدخول",
+                        fontWeight: FontWeight.w600,
+                        textSize: Responsive.textSize(context, 16),
+                        color: Constants.secondaryColor,
+                        borderColor: Constants.mainColor,
+                        height: Responsive.screenHeight(context) * 0.060,
+                        onPress: () {
+                          Navigator.pushNamed(context, '/login' );
+                        },
+                        textColor: Constants.mainColor,
+                        hasBorder: true,
+                      ),
+                      CustomButton(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: Responsive.screenHeight(context) * 0.06,
+                        fontWeight: FontWeight.w600,
+                        textSize: Responsive.textSize(context, 16),
+                        text: "دخول كزائر",
+                        color: Constants.secondaryColor,
+                        borderColor: Constants.secondaryColor,
+                        onPress: () {
+                          RefreshCubit.refreshCubits(context);
+                          SecureStorageData.clearData();
+                          Navigator.pushNamed(context, '/visitor');
+                        },
+                        textColor: Constants.thirdColor,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(0)),
-                  ),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildPageIndicators(context),
-                        CustomButton(
-                          fontWeight: FontWeight.w600,
-                          textSize: Responsive.textSize(context, 16),
-                          height: Responsive.screenHeight(context) * 0.06,
-                          text: "انشاء حساب",
-                          color: Constants.mainColor,
-                          onPress: () {
-                            Navigator.pushNamed(context, '/signup');
-                          },
-                          textColor: Constants.secondaryColor,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                        ),
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          text: "تسجيل الدخول",
-                          fontWeight: FontWeight.w600,
-                          textSize: Responsive.textSize(context, 16),
-                          color: Constants.secondaryColor,
-                          borderColor: Constants.mainColor,
-                          height: Responsive.screenHeight(context) * 0.060,
-                          onPress: () {
-                            Navigator.pushNamedAndRemoveUntil(context, '/login' , (route) => false);
-                          },
-                          textColor: Constants.mainColor,
-                          hasBorder: true,
-                        ),
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: Responsive.screenHeight(context) * 0.06,
-                          fontWeight: FontWeight.w600,
-                          textSize: Responsive.textSize(context, 16),
-                          text: "دخول كزائر",
-                          color: Constants.secondaryColor,
-                          borderColor: Constants.secondaryColor,
-                          onPress: () {
-                            RefreshCubit.refreshCubits(context);
-                            SecureStorageData.clearData();
-                            Navigator.pushNamed(context, '/visitor');
-                          },
-                          textColor: Constants.thirdColor,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -20,6 +20,7 @@ class CustomButton extends StatelessWidget {
   final bool isLoading;
   final Color? loadingColor;
   final double? loadingSize;
+  final  bool?  isDisabled;
 
   const CustomButton({
     super.key,
@@ -36,7 +37,7 @@ class CustomButton extends StatelessWidget {
     this.brWidth,
     this.isLoading = false,
     this.loadingColor,
-    this.loadingSize,
+    this.loadingSize, this.isDisabled,
   }) : assert(hasBorder == false || borderColor != null);
 
   @override
@@ -45,12 +46,8 @@ class CustomButton extends StatelessWidget {
       width: width,
       height: height,
       child: ElevatedButton(
-        onPressed: () {
-          HapticFeedback.mediumImpact();
-          if (onPress != null) {
-            onPress!();
-          }
-        },
+
+        onPressed: isDisabled == true ? onPress : onPress,
         style: ElevatedButton.styleFrom(
           elevation: 0,
           backgroundColor: color,

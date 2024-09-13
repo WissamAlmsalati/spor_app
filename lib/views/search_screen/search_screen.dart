@@ -59,8 +59,13 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Constants.backGroundColor,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Constants.backGroundColor,
         body: Column(
           children: [
             Material(
@@ -120,7 +125,6 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
             if (selectedRegion == null)
               BlocBuilder<RegionSearchCubit, RegionSearchState>(
                 builder: (context, state) {
@@ -214,7 +218,14 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                                       ),
                                     );
                                   },
-                                  child: StaduimSearchResult(stadium: stadium));
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: Responsive.screenHeight(context) *
+                                          0.02,
+
+                                    ),
+
+                                      child: StaduimSearchResult(stadium: stadium)));
                             },
                           ),
                         );

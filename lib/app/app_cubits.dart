@@ -12,7 +12,7 @@ class RefreshCubit {
     context.read<FetchProfileCubit>().fetchProfileInfo();
     context.read<OldReservationFetchCubit>().fetchOldReservations();
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
-    context.read<AuthenticationCubit>().checkUserStatus();
+    context.read<AuthenticationCubit>();
     context.read<OldReservationFetchCubit>().fetchOldReservations();
     context.read<FetchAdsImagesCubit>().fetchAdsImages();
   }

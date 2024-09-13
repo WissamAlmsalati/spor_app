@@ -7,7 +7,8 @@ import '../../widget/coustom_appbar.dart';
 
 class ProfileAppBar {
   static PreferredSizeWidget build(BuildContext context) {
-    return AppBar(automaticallyImplyLeading: false,
+    return AppBar(
+      automaticallyImplyLeading: false,
       title: BlocBuilder<FetchProfileCubit, FetchProfileState>(
         builder: (context, state) {
           if (state is FetchProfileLoading) {

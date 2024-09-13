@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sport/controller/profile/fetch_profile_cubit.dart';
 import 'package:sport/views/stadium/screens/widget/cursol_photo.dart';
 import 'package:sport/views/stadium/screens/widget/favorite_staduim.dart';
@@ -7,6 +8,7 @@ import 'package:sport/views/stadium/screens/widget/profile_appbar.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
 import '../../../controller/ads_controler/ads_photos_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
+import '../../../utilits/constants.dart';
 import '../../../utilits/images.dart';
 import '../../../utilits/responsive.dart';
 import '../../search_screen/search_screen.dart';
@@ -25,6 +27,8 @@ class StadiumScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: ProfileAppBar.build(context),
       body: SafeArea(

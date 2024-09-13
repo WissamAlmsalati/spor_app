@@ -47,19 +47,19 @@ class _CommentsWidgetState extends State<CommentsWidget> {
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<Comment>(
               itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
-              firstPageErrorIndicatorBuilder: (context) => Column(
+              firstPageErrorIndicatorBuilder: (context) => const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
                 ],
               ),
-              noItemsFoundIndicatorBuilder: (context) => Column(
+              noItemsFoundIndicatorBuilder: (context) => const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Center(child: Text('لاتوجد تعليقات علي ها ذا الملعب')),
+                  Center(child: Text('لاتوجد تعليقات علي هاذا الملعب')),
                 ],
               ),
-              newPageErrorIndicatorBuilder: (context) => Column(
+              newPageErrorIndicatorBuilder: (context) => const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Center(child: Text('حدث خطأ')),

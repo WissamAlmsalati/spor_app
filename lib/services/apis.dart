@@ -5,7 +5,7 @@ import 'dart:convert';
 class Apis {
   static const String url = BaseUrl.baseUrl;
   static const String login = "${BaseUrl.baseUrl}/auth/login";
-  static const String signUp = "${BaseUrl.baseUrl}/auth/signup";
+  static const String signUp = "${BaseUrl.baseUrl}/player/signup";
   static const String searchStadium = "${BaseUrl.baseUrl}/stadium/search";
   static const String searchStadiumWithQuery = "${BaseUrl.baseUrl}/stadium/search?";
   static const String fetchProfile = "${BaseUrl.baseUrl}/player/profile";
@@ -19,6 +19,7 @@ class Apis {
   static const String startReservation = "${BaseUrl.baseUrl}/player/reserve";
   static const String staduimDetail = "${BaseUrl.baseUrl}/player/stadium-info";
   static const String AdsPhotos = "${BaseUrl.baseUrl}/management/ads-images";
+  static const String phoneVerify = "${BaseUrl.baseUrl}/auth/phone-verify";
 
   // Add the new endpoint for fetching stadium info
   static String stadiumInfo(int stadiumId) {

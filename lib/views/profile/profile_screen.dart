@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
           child: BlocBuilder<AuthenticationCubit, AuthenticationState>(
             builder: (context, authState) {
               return SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 child: Column(
                   children: [
                     CoustomAppBr(

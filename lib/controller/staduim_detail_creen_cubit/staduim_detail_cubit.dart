@@ -16,6 +16,7 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
 
   String selectedDate = '';
   int selectedSessionId = -1;
+  String selectedTime = '';
 
   Future<void> fetchStadiumById(int stadiumId) async {
     emit(StaduimDetailLoading());
@@ -36,6 +37,7 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
         } else {
           selectedDate = availableSessions.first.date;
           selectedSessionId = availableSessions.first.sessions.first.sessionId;
+          selectedTime = availableSessions.first.sessions.first.startTime;
           emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions));
         }
       } else {
@@ -62,6 +64,16 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
 
   void setSelectedSessionId(int sessionId) {
     selectedSessionId = sessionId;
+    if (state is StaduimDetailLoaded) {
+      emit(StaduimDetailLoaded(
+        stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
+        availableSessions: (state as StaduimDetailLoaded).availableSessions,
+      ));
+    }
+  }
+
+  void setSelectedTime(String time) {
+    selectedTime = time;
     if (state is StaduimDetailLoaded) {
       emit(StaduimDetailLoaded(
         stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,

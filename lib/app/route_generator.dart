@@ -1,5 +1,5 @@
+import '../views/auth/screens/otp_screen.dart';
 import 'app_packges.dart';
-
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -33,23 +33,37 @@ class RouteGenerator {
         );
 
       case '/onboarding':
-        return MaterialPageRoute(builder: (_) =>  OnboardingScreen());
+        return MaterialPageRoute(builder: (_) => OnboardingScreen());
+
       case '/changePasswordScreen':
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
+
       case '/homeNavigation':
         return PageTransition(
           child: HomeNavigation(),
           type: PageTransitionType.fade,
           duration: const Duration(milliseconds: 300),
         );
+
       case '/accountDetails':
         return MaterialPageRoute(builder: (_) => const AccountDetails());
+
       case '/searchScreen':
         return MaterialPageRoute(builder: (_) => StadiumSearchScreen());
+
       case '/walletScreen':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
+
       case '/createOrLoginScreen':
         return MaterialPageRoute(builder: (_) => const CreateOrLoginScreen());
+
+
+      case '/otpScreen':
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => OtpScreen(userId: args['userId']),
+        );
+
       default:
         return _errorRoute();
     }

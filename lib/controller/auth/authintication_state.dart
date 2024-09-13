@@ -11,9 +11,12 @@ class AuthenticationAuthenticated extends AuthenticationState {}
 
 class AuthenticationUnauthenticated extends AuthenticationState {}
 
-class SocketExceptionError extends AuthenticationState {}
-
 class AuthenticationFailure extends AuthenticationState {
   final String message;
+
   AuthenticationFailure(this.message);
 }
+
+class AuthenticationPhoneNotVirefy extends AuthenticationState {}
+
+class SocketExceptionError extends AuthenticationState {}

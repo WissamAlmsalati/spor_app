@@ -17,26 +17,40 @@ class BookingHistoryScreen extends StatelessWidget {
           } else if (state is OldReservationLoaded) {
             return RefreshIndicator(
               onRefresh: () async {
-                await context.read<OldReservationFetchCubit>().fetchOldReservations();
+                await context
+                    .read<OldReservationFetchCubit>()
+                    .fetchOldReservations();
               },
               child: ListView.builder(
                 itemCount: state.reservations.length,
                 itemBuilder: (context, index) {
-                  return HistoryBookingWidget(reservation: state.reservations[index]);
+                  return HistoryBookingWidget(
+                      reservation: state.reservations[index]);
                 },
               ),
             );
           } else if (state is OldReservationEmpty) {
-            return Center(child: Text(state.message));
+            return Center(child: Text(state.message,style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: Responsive.textSize(context, 12),
+            ),));
           } else if (state is UnAuthenticated) {
-            return Center(child: Text(
+            return Center(
+                child: Text(
               'انشئ حساب و احجز ملاعبك المفضلة',
-              style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+              style: TextStyle(
+                fontSize: Responsive.textSize(context, 12),
+                fontWeight: FontWeight.w600,
+              ),
             ));
           } else if (state is OldReservationSocketExceptionError) {
-            return Center(child: Text('لا يوجد اتصال بالانترنت',style: TextStyle(
-              fontSize: Responsive.textSize(context, 2.5),
-            ),));
+            return Center(
+                child: Text(
+              'لا يوجد اتصال بالانترنت',
+              style: TextStyle(
+                fontSize: Responsive.textSize(context, 2.5),
+              ),
+            ));
           } else if (state is OldReservationError) {
             return Center(child: Text(state.message));
           } else {

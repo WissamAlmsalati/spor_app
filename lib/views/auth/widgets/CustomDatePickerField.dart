@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sport/utilits/responsive.dart';
 import '../../../utilits/constants.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomDatePickerField extends StatefulWidget {
   final TextEditingController controller;
   final String labeltext;
   final double? hintSize;
@@ -14,7 +15,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
 
-  const CustomTextField({
+  const CustomDatePickerField({
     super.key,
     required this.controller,
     required this.labeltext,
@@ -28,26 +29,81 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  _CustomDatePickerFieldState createState() => _CustomDatePickerFieldState();
+}
+
+class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate;
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      pickedDate = await showCupertinoModalPopup<DateTime>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 250,
+            color: Colors.white,
+            child: Column(
+              children: [
+                Container(
+                  height: 200,
+                  child: CupertinoDatePicker(
+                    mode: CupertinoDatePickerMode.date,
+                    initialDateTime: DateTime.now(),
+                    onDateTimeChanged: (DateTime dateTime) {
+                      pickedDate = dateTime;
+                    },
+                  ),
+                ),
+                CupertinoButton(
+                  child: const Text('Done'),
+                  onPressed: () {
+                    Navigator.of(context).pop(pickedDate);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    } else {
+      pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100),
+      );
+    }
+
+    if (pickedDate != null) {
+      setState(() {
+        widget.controller.text = "${pickedDate!.year}-${pickedDate!.month.toString().padLeft(2, '0')}-${pickedDate!.day.toString().padLeft(2, '0')}";
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          labeltext,
+          widget.labeltext,
           style: TextStyle(
             fontFamily: GoogleFonts.cairo().fontFamily,
             color: Constants.txtColor,
             fontWeight: FontWeight.w500,
-            fontSize: lableSize ?? 18,
+            fontSize: widget.lableSize ?? 18,
           ),
         ),
         SizedBox(height: Responsive.screenHeight(context) * 0.01),
         Container(
           height: Responsive.screenHeight(context) * 0.06,
           child: TextFormField(
-            keyboardType: keyboardType ?? TextInputType.text,
-            controller: controller,
-            obscureText: isPasswordField,
+            keyboardType: widget.keyboardType ?? TextInputType.text,
+            controller: widget.controller,
+            obscureText: widget.isPasswordField,
+            readOnly: true,
+            onTap: () => _selectDate(context),
             decoration: InputDecoration(
               filled: true,
               enabledBorder: OutlineInputBorder(
@@ -64,10 +120,10 @@ class CustomTextField extends StatelessWidget {
                   width: 1.2,
                 ),
               ),
-              hintText: labeltext,
+              hintText: widget.labeltext,
               hintStyle: TextStyle(
                 color: Constants.thirdColor,
-                fontSize: hintSize ?? 14,
+                fontSize: widget.hintSize ?? 14,
                 fontFamily: GoogleFonts.cairo().fontFamily,
               ),
               errorBorder: const OutlineInputBorder(
@@ -79,7 +135,7 @@ class CustomTextField extends StatelessWidget {
               ),
               errorStyle: GoogleFonts.cairo(
                 color: Colors.red,
-                fontSize: validatorSize,
+                fontSize: widget.validatorSize,
                 fontWeight: FontWeight.bold,
               ),
               contentPadding: const EdgeInsets.symmetric(
@@ -89,11 +145,11 @@ class CustomTextField extends StatelessWidget {
             ),
             style: TextStyle(
               color: Colors.black,
-              fontSize: hintSize,
+              fontSize: widget.hintSize,
             ),
-            validator: validator ?? (value) {
+            validator: widget.validator ?? (value) {
               if (value == null || value.isEmpty) {
-                return validatorText;
+                return widget.validatorText;
               }
               return null;
             },

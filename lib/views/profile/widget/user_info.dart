@@ -58,7 +58,7 @@ class UserInfo extends StatelessWidget {
               'لا يوجد اتصال بالانترنت',
               style: TextStyle(
                 fontSize: Responsive.textSize(context, 12),
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
               ),
             ));
           } else if (state is FetchProfileEmpty) {

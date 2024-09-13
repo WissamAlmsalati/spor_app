@@ -1,0 +1,133 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:sport/views/search_screen/widget/session_list.dart';
+import 'package:sport/views/search_screen/widget/staduim_rating.dart';
+import 'package:sport/views/stadium/screens/widget/comments_widget.dart';
+import '../../../controller/check_box_monthe_price/check_box.dart';
+import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
+import '../../../utilits/constants.dart';
+import '../../../utilits/images.dart';
+import '../../../utilits/responsive.dart';
+import 'HorizontalCalendar.dart';
+
+class StadiumDetailBody extends StatelessWidget {
+  final stadium;
+  final List sessions;
+  final selectedSession;
+  final StadiumDetailCubit cubit;
+
+  const StadiumDetailBody({
+    super.key,
+    required this.stadium,
+    required this.sessions,
+    required this.selectedSession,
+    required this.cubit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      // Wrap with SingleChildScrollView for unified scrolling
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+              height: Responsive.screenHeight(context) * 0.05,
+              child: Center(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(stadium.name,
+                        style: TextStyle(
+                            fontSize: Responsive.textSize(context, 18),
+                            fontWeight: FontWeight.bold)),
+                  ))),
+          Row(
+            children: [
+              SvgPicture.asset(AppPhotot.locationIco),
+              SizedBox(width: Responsive.screenWidth(context) * 0.02),
+              Text(stadium.address,
+                  style: TextStyle(fontSize: Responsive.textSize(context, 14))),
+            ],
+          ),
+          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          StadiumInfoSummary(
+            totalReservations: stadium.totalReservations,
+            avgReviews: stadium.avgReviews,
+            totalReviews: stadium.totalReviews,
+          ),
+          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("اختيار اليوم",
+                  style: TextStyle(
+                      fontSize: Responsive.textSize(context, 16),
+                      fontWeight: FontWeight.w600)),
+              Row(
+                children: [
+                  Text("حجز شهري",
+                      style: TextStyle(
+                          fontSize: Responsive.textSize(context, 10),
+                          fontWeight: FontWeight.w600,
+                          color: Constants.txtColor)),
+                  BlocBuilder<CheckboxCubit, bool>(
+                    builder: (context, isChecked) {
+                      return Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: Constants.mainColor,
+                        value: isChecked,
+                        onChanged: (value) {
+                          context.read<CheckboxCubit>().toggle();
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          sessions.isNotEmpty
+              ? DateSelector(
+                  dates: sessions
+                      .map((session) => session.date as String)
+                      .toList(),
+                  selectedDate: cubit.selectedDate,
+                  onDateSelected: (date) {
+                    cubit.setSelectedDate(date);
+                  },
+                )
+              : const Center(child: Text('No available dates')),
+          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          Text("اختيار التوقيت",
+              style: TextStyle(
+                  fontSize: Responsive.textSize(context, 16),
+                  fontWeight: FontWeight.w600)),
+          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          selectedSession != null
+              ? SessionList(
+                  availableSession: selectedSession,
+                  selectedSessionId: cubit.selectedSessionId,
+                  onTimeSelected: (sessionId) {
+                    cubit.setSelectedSessionId(sessionId);
+                  },
+                )
+              : const Center(child: Text('No available times')),
+          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          Text("التعليقات",
+              style: TextStyle(
+                  fontSize: Responsive.textSize(context, 16),
+                  fontWeight: FontWeight.w600)),
+          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          // Fixed height for the comment section to allow it to scroll inside SingleChildScrollView
+          Container(
+            height: Responsive.screenHeight(context) * 0.5,
+              child: CommentsWidget(stadiumId: stadium.id)),
+
+
+        ],
+      ),
+    );
+  }
+}

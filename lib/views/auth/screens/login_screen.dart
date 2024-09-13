@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import '../../../app/app_packges.dart';
+import '../../../app/status_bar_color.dart';
 import '../../../utilits/texts.dart';
 import '../widgets/login_form_widget.dart';
 import '../widgets/logo_title_logo.dart';
+
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
-
+    setStatusBarColor(Colors.white);
 
     return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {

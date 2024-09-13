@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -18,19 +17,6 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
 
   Timer? _debounce;
 
-  Future<void> checkIfFavorite(int stadiumId, BuildContext context) async {
-    final favoriteCubit = context.read<FetchFavoriteCubit>();
-    final favoriteState = favoriteCubit.state;
-    if (favoriteState is FetchFavoriteLoaded) {
-      final isFavorite = favoriteState.favoriteStadiums.any((stadium) => stadium.id == stadiumId);
-      if (isFavorite) {
-        emit(AdedToFavorite());
-      } else {
-        emit(RemovedFromFavorite());
-      }
-    }
-  }
-
   Future<void> toggleFavoriteStatus(int stadiumId, BuildContext context) async {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () async {
@@ -38,11 +24,13 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
         final response = await removeFromFavorite(stadiumId, context);
         if (response.statusCode == 200) {
           emit(RemovedFromFavorite());
+          FetchFavoriteCubit.refreshFavoriteStadiums(context);
         }
       } else {
         final response = await addToFavorite(stadiumId, context);
         if (response.statusCode == 200) {
           emit(AdedToFavorite());
+          FetchFavoriteCubit.refreshFavoriteStadiums(context);
         }
       }
     });
@@ -64,7 +52,7 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
 
       if (response.statusCode == 201) {
         emit(AdedToFavorite());
-        RefreshCubit.refreshFavoriteStadiums(context);
+        FetchFavoriteCubit.refreshFavoriteStadiums(context);
       } else {
         emit(AddToFavoriteError('Failed to add to favorite'));
       }
@@ -90,7 +78,7 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
 
       if (response.statusCode == 200) {
         emit(RemovedFromFavorite());
-        RefreshCubit.refreshFavoriteStadiums(context);
+        FetchFavoriteCubit.refreshFavoriteStadiums(context);
       } else {
         emit(AddToFavoriteError('Failed to remove from favorite'));
       }

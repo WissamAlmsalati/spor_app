@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
+import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
 import 'package:sport/views/naviggation/home_navigation.dart';
 import '../controller/ads_controler/ads_photos_cubit.dart';
@@ -24,21 +25,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Set the system status bar and navigation bar color
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => OnboardingCubit()),
         BlocProvider(create: (context) => FetchCommentsCubit()),
         BlocProvider(create: (context) => AuthenticationCubit()..checkAuthentication()),
-        BlocProvider(create: (context) => AuthenticationCubit()),
         BlocProvider(create: (context) => ThemeCubit(context)),
         BlocProvider(create: (context) => AppModeSwicherCubit()),
         BlocProvider(create: (context) => StadiumSearchCubit()),
@@ -50,9 +42,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CheckboxCubit()),
         BlocProvider(create: (context) => RechargeCubit()),
         BlocProvider(create: (context) => OnboardingCubit()),
-        BlocProvider(create: (context) => StadiumDetailCubit(StadiumRepository())),
-        BlocProvider(create: (context) => ReverseRequestCubit()),
-        BlocProvider(create: (context) => ReverseRequestCubit()),
         BlocProvider(create: (context) => StadiumDetailCubit(StadiumRepository())),
         BlocProvider(create: (context) => ReverseRequestCubit()),
         BlocProvider(create: (context) => RegionSearchCubit()),
@@ -85,25 +74,11 @@ class MyApp extends StatelessWidget {
                 theme: customThemeData,
                 initialRoute: '/',
                 routes: {
-                  '/': (context) => AuthenticationWrapper(),
+                  '/': (context) => const AuthenticationWrapper(),
                   '/homeNavigation': (context) => HomeNavigation(),
-                  '/onboarding': (context) => OnboardingScreen(),
+                  '/onboarding': (context) => const OnboardingScreen(),
                 },
                 onGenerateRoute: RouteGenerator.generateRoute,
-                builder: (context, child) {
-                  return AnnotatedRegion<SystemUiOverlayStyle>(
-                    value: SystemUiOverlayStyle(
-                      statusBarColor: Colors.transparent,
-                      statusBarIconBrightness: state is AppModeSwicherDarkMood
-                          ? Brightness.light
-                          : Brightness.dark,
-                      systemNavigationBarColor: state is AppModeSwicherDarkMood
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                    child: child!,
-                  );
-                },
               );
             },
           );
@@ -113,19 +88,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class AuthenticationWrapper extends StatelessWidget {
   const AuthenticationWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
-      builder: (context, state) {
+    return BlocConsumer<AuthenticationCubit, AuthenticationState>(
+      listener: (context, state) {
         if (state is AuthenticationAuthenticated) {
-          return HomeNavigation();
-        } else if (state is AuthenticationUnauthenticated) {
-          return const OnboardingScreen();
+          Navigator.pushReplacementNamed(context, '/homeNavigation');
+        } else if (state is AuthenticationUnauthenticated || state is AuthenticationPhoneNotVirefy) {
+          Navigator.pushReplacementNamed(context, '/onboarding');
+        }
+      },
+      builder: (context, state) {
+        if (state is AuthenticationLoading) {
+          return Center(child: LoadingAnimation(size: Responsive.screenWidth(context) * 0.2));
         } else {
-          return Container(); // Return an empty container or another widget as needed
+          return Container(
+            color: Colors.white,
+          );
         }
       },
     );

@@ -21,7 +21,7 @@ class ProvidersWidget extends StatelessWidget {
         ),
 
         BlocProvider(create: (context) => FetchCommentsCubit()),
-        BlocProvider(create: (context) => AuthenticationCubit()..checkUserStatus()),
+        BlocProvider(create: (context) => AuthenticationCubit()),
         BlocProvider(create: (context) => AuthenticationCubit()),
         BlocProvider(create: (context) => ThemeCubit(context)),
         BlocProvider(create: (context) => AppModeSwicherCubit()),

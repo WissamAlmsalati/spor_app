@@ -1,105 +1,43 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../app/app_packges.dart';
+import '../../../utilits/constants.dart';
+import '../../../utilits/responsive.dart';
 import '../../../utilits/texts.dart';
+import '../functions/sign_up_fun.dart';
+import '../widgets/CustomDatePickerField.dart';
 import '../widgets/coustom_button.dart';
 import '../widgets/coustom_text_field.dart';
 import '../widgets/form_decoration.dart';
 import '../widgets/logo_title_logo.dart';
+import '../widgets/sign_up_form.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController firstname = TextEditingController();
-    final TextEditingController lastname = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController phone = TextEditingController();
-    final TextEditingController birthdate = TextEditingController();
+
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(
-                left: Responsive.screenWidth(context) * 0.07,
-                right: Responsive.screenWidth(context) * 0.07,
-                top: Responsive.screenHeight(context) * 0.10),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,  // Center vertically
-                crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
-                children: [
-                  const TitleLogoTitle(
-                    logo: AppPhotot.signLogo,
-                    title: AppText.signUptxt,
-                    description: AppText.signUpdes,
-                  ),
-                  SizedBox(height: Responsive.screenHeight(context) * 0.03),
-                  FormDecoration(
-                    height: Responsive.screenHeight(context) * 0.55,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: Responsive.screenWidth(context) * 0.05,
-                          right: Responsive.screenWidth(context) * 0.05),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
-                        children: [
-                          CustomTextField(
-                            lableSize: Responsive.textSize(context, 8),
-                            hintSize: Responsive.textSize(context, 8),
-                            controller: firstname,
-                            labeltext: 'الاسم',
-                            validatorText: 'Please enter your firstname',
-                          ),
-                          CustomTextField(
-                            controller: phone,
-                            labeltext: 'رقم الهاتف',
-                            validatorText: 'Please enter your phone number',
-                            lableSize: Responsive.textSize(context, 8),
-                            hintSize: Responsive.textSize(context, 8),
-                          ),
-                          CustomTextField(
-                            controller: passwordController,
-                            labeltext: 'كلمة المرور',
-                            validatorText: 'Please enter your password',
-                            lableSize: Responsive.textSize(context, 8),
-                            hintSize: Responsive.textSize(context, 8),
-                          ),
-                          CustomButton(
-                            fontWeight: FontWeight.w600,
-                            width: Responsive.screenWidth(context) * 0.9,
-                            height: Responsive.screenHeight(context) * 0.06,
-                            text: 'انشاء حساب',
-                            color: Constants.mainColor,
-                            textSize: Responsive.textSize(context, 16),
-                            borderColor: Constants.secondaryColor,
-                            onPress: () {},
-                            textColor: Constants.secondaryColor,
-                          ),
-                          CustomButton(
-                            width: Responsive.screenWidth(context) * 0.9,
-                            height: Responsive.screenHeight(context) * 0.06,
-                            textSize: Responsive.textSize(context, 16),
-                            fontWeight: FontWeight.w600,
-                            text: 'تسجيل الدخول',
-                            color: Constants.secondaryColor,
-                            borderColor: Constants.secondaryColor,
-                            onPress: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SignIn()));
-                            },
-                            textColor: Constants.thirdColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            padding: EdgeInsets.symmetric(
+              horizontal: Responsive.screenWidth(context) * 0.07,
+              vertical: Responsive.screenHeight(context) * 0.10,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const TitleLogoTitle(
+                  logo: AppPhotot.signLogo,
+                  title: AppText.signUptxt,
+                  description: AppText.signUpdes,
+                ),
+                const SignUpForm(),
+                SizedBox(height: Responsive.screenHeight(context) * 0.03),
+              ],
             ),
           ),
         ),
