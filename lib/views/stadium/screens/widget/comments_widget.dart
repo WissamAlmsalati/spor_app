@@ -11,8 +11,9 @@ import '../../../../models/comments_model.dart';
 
 class CommentsWidget extends StatefulWidget {
   final int stadiumId;
+  final bool isScrollable;
 
-  const CommentsWidget({super.key, required this.stadiumId});
+  const CommentsWidget({super.key, required this.stadiumId, required this.isScrollable});
 
   @override
   _CommentsWidgetState createState() => _CommentsWidgetState();
@@ -44,6 +45,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
           return CommentsShimmer();
         } else {
           return PagedListView<int, Comment>(
+            physics: widget.isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<Comment>(
               itemBuilder: (context, comment, index) => CommentWidget(comment: comment),

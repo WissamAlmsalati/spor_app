@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sport/views/search_screen/widget/session_list.dart';
 import 'package:sport/views/search_screen/widget/staduim_rating.dart';
 import 'package:sport/views/stadium/screens/widget/comments_widget.dart';
+import '../../../app/app_packges.dart';
 import '../../../controller/check_box_monthe_price/check_box.dart';
 import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../../utilits/constants.dart';
@@ -115,19 +116,49 @@ class StadiumDetailBody extends StatelessWidget {
                 )
               : const Center(child: Text('No available times')),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
-          Text("التعليقات",
-              style: TextStyle(
-                  fontSize: Responsive.textSize(context, 16),
-                  fontWeight: FontWeight.w600)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("التعليقات",
+                  style: TextStyle(
+                      fontSize: Responsive.textSize(context, 16),
+                      fontWeight: FontWeight.w600)),
+              TextButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AllCommentsScreen(stadiumId: stadium.id)));
+              }, child: Text("عرض الكل",style: TextStyle(
+                  fontSize: Responsive.textSize(context, 12),
+                  color: Constants.mainColor,
+                  fontWeight: FontWeight.bold,
+                fontFamily: GoogleFonts.cairo().fontFamily
+              ),)),
+            ],
+          ),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
-          // Fixed height for the comment section to allow it to scroll inside SingleChildScrollView
-          Container(
-            height: Responsive.screenHeight(context) * 0.5,
-              child: CommentsWidget(stadiumId: stadium.id)),
+          SizedBox(
+            height: Responsive.screenHeight(context) * 0.44,
+              child: CommentsWidget(
+                  isScrollable: false,
+                  stadiumId: stadium.id)),
 
 
         ],
       ),
+    );
+  }
+}
+
+
+class AllCommentsScreen extends StatelessWidget {
+  final int stadiumId;
+  const AllCommentsScreen({super.key, required this.stadiumId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("التعليقات"),
+      ),
+      body: CommentsWidget(stadiumId: stadiumId,isScrollable: true),
     );
   }
 }

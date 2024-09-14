@@ -61,45 +61,40 @@ class StadiumDetailScreen extends StatelessWidget {
                 final sessions = state.availableSessions;
                 final selectedSession = sessions.isNotEmpty
                     ? sessions.firstWhere(
-                      (session) => session.date == cubit.selectedDate,
-                  orElse: () => sessions.first,
-                )
+                        (session) => session.date == cubit.selectedDate,
+                        orElse: () => sessions.first,
+                      )
                     : null;
 
-                return Column(
+                return Stack(
                   children: [
-
-                    Expanded(
-                      flex: 0,
-                      child: SingleChildScrollView(
-                        child: StadiumDetailHeader(
-                          stadium: stadium,
-                          stadiumId: stadiumId,
-                        ),
-                      ),
-                    ),
-
-
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: Responsive.screenWidth(context) * 0.04,
-                          right: Responsive.screenWidth(context) * 0.04,
-                        ),
-                        child: SingleChildScrollView(
-                          child: StadiumDetailBody(
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          StadiumDetailHeader(
                             stadium: stadium,
-                            sessions: sessions,
-                            selectedSession: selectedSession,
-                            cubit: cubit,
+                            stadiumId: stadiumId,
                           ),
-                        ),
+                          Padding(
+                            padding:  EdgeInsets.only(
+                              left: Responsive.screenWidth(context) * 0.04,
+                              right: Responsive.screenWidth(context) * 0.04,
+
+                            ),
+                            child: StadiumDetailBody(
+                              stadium: stadium,
+                              sessions: sessions,
+                              selectedSession: selectedSession,
+                              cubit: cubit,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-
-                    // Footer area
-                    Flexible(
-                      flex: 0, // Footer takes smaller space
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
                       child: StadiumDetailFooter(
                         stadium: stadium,
                         cubit: cubit,
@@ -109,24 +104,22 @@ class StadiumDetailScreen extends StatelessWidget {
                 );
               } else if (state is StaduimDetailLoadedEmptySession) {
                 final stadium = state.stadiumInfo;
-                return Column(
+                return Stack(
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: SingleChildScrollView(
-                        child: StadiumDetailHeader(
-                          stadium: stadium,
-                          stadiumId: stadiumId,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 9,
+                    SingleChildScrollView(
                       child: Padding(
-                        padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
+                        padding: EdgeInsets.only(
+                          left: Responsive.screenWidth(context) * 0.04,
+                          right: Responsive.screenWidth(context) * 0.04,
+                          bottom: Responsive.screenHeight(context) * 0.1, // Add padding to avoid overlap with footer
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            StadiumDetailHeader(
+                              stadium: stadium,
+                              stadiumId: stadiumId,
+                            ),
                             Text(
                               stadium.name,
                               style: TextStyle(
@@ -164,13 +157,14 @@ class StadiumDetailScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: Responsive.screenHeight(context) * 0.02),
-
                           ],
                         ),
                       ),
                     ),
-                    Flexible(
-                      flex: 1,
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
                       child: StadiumDetailFooter(
                         stadium: stadium,
                         cubit: cubit,
