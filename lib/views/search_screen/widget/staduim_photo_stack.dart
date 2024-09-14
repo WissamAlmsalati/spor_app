@@ -10,13 +10,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
+import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../../utilits/images.dart';
 
 class StaduimPhotoStack extends StatelessWidget {
-  final String StdPhoto;
+  final List<String> stdPhotos;
   final int stdId;
+  final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0);
 
-  const StaduimPhotoStack({super.key, required this.StdPhoto, required this.stdId});
+  StaduimPhotoStack({super.key, required this.stdPhotos, required this.stdId});
 
   Future<String> generateSecureLink(int stadiumId) async {
     final response = await http.post(
@@ -60,7 +62,7 @@ class StaduimPhotoStack extends StatelessWidget {
                 msg: state.message,
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 2, // Set duration to 2 seconds
+                timeInSecForIosWeb: 2,
               );
             }
           },
@@ -70,11 +72,19 @@ class StaduimPhotoStack extends StatelessWidget {
         children: [
           SizedBox(
             height: Responsive.screenHeight(context) * 0.25,
-            child: Image.network(
-              StdPhoto,
-              fit: BoxFit.fill,
-              width: double.infinity,
-              height: Responsive.screenHeight(context) * 0.23,
+            child: PageView.builder(
+              itemCount: stdPhotos.length,
+              onPageChanged: (index) {
+                _currentPageNotifier.value = index;
+              },
+              itemBuilder: (context, index) {
+                return Image.network(
+                  stdPhotos[index],
+                  fit: BoxFit.fill,
+                  width: double.infinity,
+                  height: Responsive.screenHeight(context) * 0.23,
+                );
+              },
             ),
           ),
           Positioned(
@@ -120,74 +130,73 @@ class StaduimPhotoStack extends StatelessWidget {
           Positioned(
             top: Responsive.screenHeight(context) * 0.01,
             right: 0,
-            child: BlocBuilder<AddToFavoriteCubit, AddToFavoriteState>(
-              builder: (context, state) {
-                bool isFavorite = false;
-                if (state is AdedToFavorite) {
-                  isFavorite = true;
-                } else if (state is RemovedFromFavorite) {
-                  isFavorite = false;
-                }
-
-                return BlocBuilder<AuthenticationCubit, AuthenticationState>(
-                  builder: (context, state) {
-                    if (state is AuthenticationAuthenticated) {
-                      return BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
-                        builder: (BuildContext context, FetchFavoriteState state) {
-                          if (state is FetchFavoriteLoaded) {
-                            return IconButton(
-                              onPressed: () {
-                                context.read<AddToFavoriteCubit>().toggleFavoriteStatus(stdId, context);
-                              },
-                              icon: SizedBox(
-                                height: Responsive.screenHeight(context) * 0.070,
-                                width: Responsive.screenHeight(context) * 0.070,
-                                child: Card(
-                                  elevation: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SvgPicture.asset(
-                                      isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
-                                      color: Colors.black,
-                                      height: Responsive.screenHeight(context) * 0.05,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          } else {
-                            return Container(); // Return an empty container if state is not loaded
-                          }
-                        },
-                      );
-                    } else {
-                      return IconButton(
-                        onPressed: () {
-                          Fluttertoast.showToast(
-                            msg: 'يجب تسجيل الدخول اولا',
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2, // Set duration to 2 seconds
-                          );
-                        },
-                        icon: SizedBox(
-                          height: Responsive.screenHeight(context) * 0.070,
-                          width: Responsive.screenHeight(context) * 0.070,
-                          child: Card(
-                            elevation: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SvgPicture.asset(
-                                AppPhotot.favoriteBg,
-                                color: Colors.black,
-                                height: Responsive.screenHeight(context) * 0.05,
-                              ),
-                            ),
+            child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
+              builder: (BuildContext context, StaduimDetailState state) {
+                if (state is StaduimDetailLoaded) {
+                  final bool isFavorite = state.isFavorite;
+                  return IconButton(
+                    onPressed: () {
+                      if (isFavorite) {
+                        context.read<AddToFavoriteCubit>().removeFromFavorite(stdId, context);
+                      } else {
+                        context.read<AddToFavoriteCubit>().addToFavorite(stdId, context);
+                      }
+                    },
+                    icon: SizedBox(
+                      height: Responsive.screenHeight(context) * 0.070,
+                      width: Responsive.screenHeight(context) * 0.070,
+                      child: Card(
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SvgPicture.asset(
+                            isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
+                            color: Colors.black,
+                            height: Responsive.screenHeight(context) * 0.05,
                           ),
                         ),
-                      );
-                    }
-                  },
+                      ),
+                    ),
+                  );
+                } else {
+                  return IconButton(
+                    onPressed: null,
+                    icon: SizedBox(
+                      height: Responsive.screenHeight(context) * 0.070,
+                      width: Responsive.screenHeight(context) * 0.070,
+                      child: Card(
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SvgPicture.asset(
+                            AppPhotot.favoriteBg,
+                            color: Colors.black,
+                            height: Responsive.screenHeight(context) * 0.05,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+          Positioned(
+            bottom: Responsive.screenHeight(context) * 0.01,
+            right: Responsive.screenWidth(context) * 0.05,
+            child: ValueListenableBuilder<int>(
+              valueListenable: _currentPageNotifier,
+              builder: (context, currentPage, child) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Text(
+                    '${currentPage + 1} / ${stdPhotos.length}',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 );
               },
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sport/utilits/constants.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/views/search_screen/widget/rating_star.dart';
@@ -10,11 +9,11 @@ class StadiumInfoSummary extends StatelessWidget {
   final int totalReviews;
 
   const StadiumInfoSummary({
-    Key? key,
+    super.key,
     required this.totalReservations,
     required this.avgReviews,
     required this.totalReviews,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -9,8 +9,8 @@ class StadiumDetailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return stadium.images.isNotEmpty && stadium.images[0].isNotEmpty
-        ? StaduimPhotoStack(StdPhoto: stadium.images[0], stdId: stadiumId)
-        : StaduimPhotoStack(StdPhoto: "https://placehold.co/600x400", stdId: stadiumId);
+    return stadium.images.isNotEmpty
+        ? StaduimPhotoStack(stdPhotos: stadium.images, stdId: stadiumId)
+        : StaduimPhotoStack(stdPhotos: ["https://placehold.co/600x400"], stdId: stadiumId);
   }
 }

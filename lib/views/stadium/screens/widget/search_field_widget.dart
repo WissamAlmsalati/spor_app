@@ -34,7 +34,6 @@ class SearchFieldWidget extends StatelessWidget {
               filled: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 10), // Adjust padding to reduce height
               hintText: "حدد المنطقة",
-
               hintStyle: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontFamily: GoogleFonts.cairo().fontFamily,

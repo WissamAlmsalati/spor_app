@@ -10,6 +10,7 @@ class StadiumInfo {
   final int totalReviews;
   final String avgReviews;
   final List<String> images;
+  final bool isFavourite;
 
   StadiumInfo({
     required this.id,
@@ -23,6 +24,7 @@ class StadiumInfo {
     required this.totalReviews,
     required this.avgReviews,
     required this.images,
+    required this.isFavourite,
   });
 
   factory StadiumInfo.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class StadiumInfo {
       totalReviews: json['total_reviews'],
       avgReviews: json['avg_reviews'],
       images: List<String>.from(json['images']),
+      isFavourite: json['is_favorite'],
     );
   }
 }

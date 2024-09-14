@@ -107,64 +107,67 @@ class StadiumDetailScreen extends StatelessWidget {
                 return Stack(
                   children: [
                     SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: Responsive.screenWidth(context) * 0.04,
-                          right: Responsive.screenWidth(context) * 0.04,
-                          bottom: Responsive.screenHeight(context) * 0.1, // Add padding to avoid overlap with footer
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            StadiumDetailHeader(
-                              stadium: stadium,
-                              stadiumId: stadiumId,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          StadiumDetailHeader(
+                            stadium: stadium,
+                            stadiumId: stadiumId,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: Responsive.screenHeight(context) * 0.01,
+                              left: Responsive.screenWidth(context) * 0.04,
+                              right: Responsive.screenWidth(context) * 0.04,
                             ),
-                            Text(
-                              stadium.name,
-                              style: TextStyle(
-                                fontSize: Responsive.textSize(context, 18),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: Responsive.screenHeight(context) * 0.015),
-                            Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset(AppPhotot.locationIco),
-                                SizedBox(width: Responsive.screenWidth(context) * 0.02),
                                 Text(
-                                  stadium.address,
+                                  stadium.name,
                                   style: TextStyle(
-                                    fontSize: Responsive.textSize(context, 14),
+                                    fontSize: Responsive.textSize(context, 18),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.015),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppPhotot.locationIco),
+                                    SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                                    Text(
+                                      stadium.address,
+                                      style: TextStyle(
+                                        fontSize: Responsive.textSize(context, 14),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                StadiumInfoSummary(
+                                  totalReservations: stadium.totalReservations,
+                                  avgReviews: stadium.avgReviews,
+                                  totalReviews: stadium.totalReviews,
+                                ),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.04),
+                                const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا')),
+                                SizedBox(height: Responsive.screenHeight(context) * 0.04),
+                                Text(
+                                  "التعليقات",
+                                  style: TextStyle(
+                                    fontSize: Responsive.textSize(context, 16),
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                            StadiumInfoSummary(
-                              totalReservations: stadium.totalReservations,
-                              avgReviews: stadium.avgReviews,
-                              totalReviews: stadium.totalReviews,
-                            ),
-                            SizedBox(height: Responsive.screenHeight(context) * 0.04),
-                            const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا')),
-                            SizedBox(height: Responsive.screenHeight(context) * 0.04),
-                            Text(
-                              "التعليقات",
-                              style: TextStyle(
-                                fontSize: Responsive.textSize(context, 16),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                        ],
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
+                    Align(
+                      alignment: Alignment.bottomCenter,
                       child: StadiumDetailFooter(
                         stadium: stadium,
                         cubit: cubit,

@@ -38,6 +38,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     setStatusBarColor(Constants.mainColor);
 
     return Scaffold(

@@ -10,6 +10,7 @@ import 'package:sport/views/search_screen/widget/buttom_sheet_filter.dart';
 import 'package:sport/views/search_screen/widget/staduim_search_result.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../app/status_bar_color.dart';
 import '../../controller/region_search_controler/region_search_cubit.dart';
 import '../../controller/steduim_search_cubit/stidum_search_cubit.dart';
 import 'package:intl/intl.dart';
@@ -59,10 +60,8 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Constants.backGroundColor,
-      statusBarIconBrightness: Brightness.dark,
-    ));
+    setStatusBarColor(Colors.white);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Constants.backGroundColor,
