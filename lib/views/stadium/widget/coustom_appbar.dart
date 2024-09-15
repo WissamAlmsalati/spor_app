@@ -77,8 +77,9 @@ class CoustomAppBr extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.all(
-                    Responsive.screenWidth(context) * 0.03),
+                    Responsive.screenWidth(context) * 0.02),
                 child: SvgPicture.asset(
+
                   logo,
                 ),
               ) ?? child,

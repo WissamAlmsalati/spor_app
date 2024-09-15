@@ -14,6 +14,7 @@ class CustomAlertDialog extends StatelessWidget {
   final VoidCallback? onCancel;
   final double? height;
   final double? width;
+  final String? selectedTime; // Add this line
 
   const CustomAlertDialog({
     super.key,
@@ -28,6 +29,7 @@ class CustomAlertDialog extends StatelessWidget {
     this.textColor,
     this.height,
     this.width,
+    this.selectedTime, // Add this line
   });
 
   @override
@@ -54,6 +56,14 @@ class CustomAlertDialog extends StatelessWidget {
               ),
             ),
             Text(content, style: TextStyle(fontSize: Responsive.textSize(context, 12))),
+            if (selectedTime != null) // Add this block
+              Text(
+                'Selected time: $selectedTime',
+                style: TextStyle(
+                  fontSize: Responsive.textSize(context, 12),
+                  color: Colors.black54,
+                ),
+              ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

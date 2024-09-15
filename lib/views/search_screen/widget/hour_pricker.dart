@@ -25,7 +25,12 @@ class SelectableTimeTile extends StatelessWidget {
     final String formattedTime = DateFormat("HH:mm").format(parsedTime);
 
     return GestureDetector(
-      onTap: isReserved || isLocked ? null : onTap,
+      onTap: isReserved || isLocked
+          ? null
+          : () {
+              print('Selected time: $formattedTime');
+              onTap();
+            },
       child: Stack(
         children: [
           Container(

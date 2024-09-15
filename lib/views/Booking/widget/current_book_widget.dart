@@ -188,7 +188,7 @@ class CurrentBookWidget extends StatelessWidget {
                     textColor: Colors.white,
                     height: Responsive.screenHeight(context) * 0.05,
                     width: Responsive.screenWidth(context) * 0.4,
-                    textSize: Responsive.textSize(context, 14),
+                    textSize: Responsive.textSize(context, 12),
                     fontWeight: FontWeight.w700,
                   ),
                   CustomButton(
@@ -221,7 +221,7 @@ class CurrentBookWidget extends StatelessWidget {
                     borderColor: isMatchStarted
                         ? Colors.red
                         : Constants.mainColor,
-                    textSize: Responsive.textSize(context, 14),
+                    textSize: Responsive.textSize(context, 12),
                     fontWeight: FontWeight.w700,
                   ),
                 ],

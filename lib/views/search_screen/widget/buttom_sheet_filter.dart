@@ -72,7 +72,7 @@ void showCustomBottomSheet(BuildContext context, String searchText, Function(Dat
                 );
               },
             ),
-            const Spacer(),
+
             BlocBuilder<StadiumSearchCubit, StadiumSearchState>(
               builder: (BuildContext context, state) {
                 return CustomButton(

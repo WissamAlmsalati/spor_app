@@ -8,7 +8,6 @@ import '../../../../controller/fetch_comments/fetch_comments_cubit.dart';
 import 'package:intl/intl.dart';
 import '../../../../models/comments_model.dart';
 
-
 class CommentsWidget extends StatefulWidget {
   final int stadiumId;
   final bool isScrollable;
@@ -20,14 +19,14 @@ class CommentsWidget extends StatefulWidget {
 }
 
 class _CommentsWidgetState extends State<CommentsWidget> {
-  static const _pageSize = 10;
+  int get _pageSize => widget.isScrollable ? 10 : 4;
   final PagingController<int, Comment> _pagingController = PagingController(firstPageKey: 1);
 
   @override
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<FetchCommentsCubit>().fetchComments(widget.stadiumId, pageKey, _pagingController);
+      context.read<FetchCommentsCubit>().fetchComments(widget.stadiumId, pageKey, _pagingController, _pageSize);
     });
   }
 
@@ -45,7 +44,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
           return CommentsShimmer();
         } else {
           return PagedListView<int, Comment>(
-            physics: widget.isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+            physics: widget.isScrollable ? const FixedExtentScrollPhysics() : const NeverScrollableScrollPhysics(),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<Comment>(
               itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
@@ -175,7 +174,6 @@ class CommentWidget extends StatelessWidget {
     }
   }
 }
-
 
 class CommentsShimmer extends StatelessWidget {
   @override

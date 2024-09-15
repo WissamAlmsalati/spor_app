@@ -11,11 +11,10 @@ part 'fetch_comments_state.dart';
 
 class FetchCommentsCubit extends Cubit<FetchCommentsState> {
   final String apiUrl = 'https://api.sport.com.ly/stadium/comment';
-  static const _pageSize = 10;
 
   FetchCommentsCubit() : super(FetchCommentsInitial());
 
-  Future<void> fetchComments(int stadiumId, int pageKey, PagingController<int, Comment> pagingController) async {
+  Future<void> fetchComments(int stadiumId, int pageKey, PagingController<int, Comment> pagingController, int pageSize) async {
     try {
       final token = await SecureStorageData.getToken();
       final response = await http.get(
@@ -27,7 +26,7 @@ class FetchCommentsCubit extends Cubit<FetchCommentsState> {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         final List<dynamic> commentList = data['results'];
         final List<Comment> newComments = commentList.map((json) => Comment.fromJson(json)).toList();
-        final isLastPage = newComments.length < _pageSize;
+        final isLastPage = newComments.length < pageSize;
 
         if (isLastPage) {
           pagingController.appendLastPage(newComments);

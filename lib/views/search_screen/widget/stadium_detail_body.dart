@@ -135,7 +135,7 @@ class StadiumDetailBody extends StatelessWidget {
           ),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
           SizedBox(
-            height: Responsive.screenHeight(context) * 0.44,
+            height: Responsive.screenHeight(context) * 0.5  ,
               child: CommentsWidget(
                   isScrollable: false,
                   stadiumId: stadium.id)),
@@ -156,9 +156,17 @@ class AllCommentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("التعليقات"),
+        centerTitle: true,
+        title: Text("التعليقات",style: TextStyle(
+            fontSize: Responsive.textSize(context, 16),
+            fontWeight: FontWeight.w600,
+            fontFamily: GoogleFonts.cairo().fontFamily
+        ),),
       ),
-      body: CommentsWidget(stadiumId: stadiumId,isScrollable: true),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Responsive.screenWidth(context) * 0.04),
+        child: CommentsWidget(stadiumId: stadiumId,isScrollable: true),
+      ),
     );
   }
 }

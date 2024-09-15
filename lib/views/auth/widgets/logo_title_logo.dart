@@ -21,12 +21,10 @@ class TitleLogoTitle extends StatelessWidget {
     return Column(
       children: [
         Row(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
-             logo ,
-
+              logo,
             ),
             SizedBox(
               width: Responsive.screenWidth(context) * 0.02,
@@ -34,16 +32,16 @@ class TitleLogoTitle extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                  fontSize: Responsive.textSize(context, 24),
-                  color: Constants.mainColor,
-                fontWeight: FontWeight.w700,),
+                fontSize: Responsive.textSize(context, 24),
+                color: Constants.mainColor,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             SizedBox(
               width: Responsive.screenWidth(context) * 0.02,
             ),
             SvgPicture.asset(
               logo,
-
             ),
           ],
         ),

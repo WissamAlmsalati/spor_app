@@ -34,7 +34,7 @@ class HistoryBookingWidget extends StatelessWidget {
 
     return Card(
       margin: EdgeInsets.all(Responsive.screenWidth(context) * 0.03),
-      elevation: 3,
+      elevation: 1,
       child: Padding(
         padding: EdgeInsets.only(
           top: Responsive.screenHeight(context) * 0.02,
@@ -189,7 +189,7 @@ class HistoryBookingWidget extends StatelessWidget {
                     textColor: Colors.white,
                     height: Responsive.screenHeight(context) * 0.05,
                     width: Responsive.screenWidth(context) * 0.4,
-                    textSize: Responsive.textSize(context, 14),
+                    textSize: Responsive.textSize(context, 12),
                     fontWeight: FontWeight.w700,
                   ),
                   BlocListener<FetchProfileCubit, FetchProfileState>(
@@ -224,7 +224,7 @@ class HistoryBookingWidget extends StatelessWidget {
                         borderColor: Constants.mainColor,
                         height: Responsive.screenHeight(context) * 0.05,
                         width: Responsive.screenWidth(context) * 0.4,
-                        textSize: Responsive.textSize(context, 14),
+                        textSize: Responsive.textSize(context, 12),
                         fontWeight: FontWeight.w700,
                       ),
                     ),

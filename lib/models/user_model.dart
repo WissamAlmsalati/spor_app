@@ -31,7 +31,7 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'phone': phone,
-      'birth_day': birthDate.toIso8601String(), // Corrected type conversion
+      'birth_day': birthDate.toIso8601String(),
     };
   }
 }

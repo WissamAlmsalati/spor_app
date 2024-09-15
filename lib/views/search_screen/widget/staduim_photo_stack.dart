@@ -120,7 +120,7 @@ class StaduimPhotoStack extends StatelessWidget {
                 child: Card(
                   elevation: 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
                     child: SvgPicture.asset(AppPhotot.shareIco, height: Responsive.screenHeight(context) * 0.05),
                   ),
                 ),

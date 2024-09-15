@@ -66,112 +66,108 @@ class StadiumDetailScreen extends StatelessWidget {
                       )
                     : null;
 
-                return Stack(
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          StadiumDetailHeader(
-                            stadium: stadium,
-                            stadiumId: stadiumId,
-                          ),
-                          Padding(
-                            padding:  EdgeInsets.only(
-                              left: Responsive.screenWidth(context) * 0.04,
-                              right: Responsive.screenWidth(context) * 0.04,
-
-                            ),
-                            child: StadiumDetailBody(
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            StadiumDetailHeader(
                               stadium: stadium,
-                              sessions: sessions,
-                              selectedSession: selectedSession,
-                              cubit: cubit,
+                              stadiumId: stadiumId,
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: Responsive.screenWidth(context) * 0.04,
+                                right: Responsive.screenWidth(context) * 0.04,
+                              ),
+                              child: StadiumDetailBody(
+                                stadium: stadium,
+                                sessions: sessions,
+                                selectedSession: selectedSession,
+                                cubit: cubit,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: StadiumDetailFooter(
-                        stadium: stadium,
-                        cubit: cubit,
-                      ),
+                    StadiumDetailFooter(
+                      stadium: stadium,
+                      cubit: cubit,
                     ),
                   ],
                 );
               } else if (state is StaduimDetailLoadedEmptySession) {
                 final stadium = state.stadiumInfo;
-                return Stack(
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          StadiumDetailHeader(
-                            stadium: stadium,
-                            stadiumId: stadiumId,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: Responsive.screenHeight(context) * 0.01,
-                              left: Responsive.screenWidth(context) * 0.04,
-                              right: Responsive.screenWidth(context) * 0.04,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            StadiumDetailHeader(
+                              stadium: stadium,
+                              stadiumId: stadiumId,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  stadium.name,
-                                  style: TextStyle(
-                                    fontSize: Responsive.textSize(context, 18),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: Responsive.screenHeight(context) * 0.015),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(AppPhotot.locationIco),
-                                    SizedBox(width: Responsive.screenWidth(context) * 0.02),
-                                    Text(
-                                      stadium.address,
-                                      style: TextStyle(
-                                        fontSize: Responsive.textSize(context, 14),
-                                      ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: Responsive.screenHeight(context) * 0.01,
+                                left: Responsive.screenWidth(context) * 0.04,
+                                right: Responsive.screenWidth(context) * 0.04,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    stadium.name,
+                                    style: TextStyle(
+                                      fontSize: Responsive.textSize(context, 18),
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
-                                ),
-                                SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                                StadiumInfoSummary(
-                                  totalReservations: stadium.totalReservations,
-                                  avgReviews: stadium.avgReviews,
-                                  totalReviews: stadium.totalReviews,
-                                ),
-                                SizedBox(height: Responsive.screenHeight(context) * 0.04),
-                                const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا')),
-                                SizedBox(height: Responsive.screenHeight(context) * 0.04),
-                                Text(
-                                  "التعليقات",
-                                  style: TextStyle(
-                                    fontSize: Responsive.textSize(context, 16),
-                                    fontWeight: FontWeight.w600,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: Responsive.screenHeight(context) * 0.015),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppPhotot.locationIco),
+                                      SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                                      Text(
+                                        stadium.address,
+                                        style: TextStyle(
+                                          fontSize: Responsive.textSize(context, 14),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: Responsive.screenHeight(context) * 0.02),
+                                  StadiumInfoSummary(
+                                    totalReservations: stadium.totalReservations,
+                                    avgReviews: stadium.avgReviews,
+                                    totalReviews: stadium.totalReviews,
+                                  ),
+                                  SizedBox(height: Responsive.screenHeight(context) * 0.04),
+                                  const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا')),
+                                  SizedBox(height: Responsive.screenHeight(context) * 0.04),
+                                  Text(
+                                    "التعليقات",
+                                    style: TextStyle(
+                                      fontSize: Responsive.textSize(context, 16),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: Responsive.screenHeight(context) * 0.02),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: StadiumDetailFooter(
-                        stadium: stadium,
-                        cubit: cubit,
-                      ),
+                    StadiumDetailFooter(
+                      stadium: stadium,
+                      cubit: cubit,
                     ),
                   ],
                 );
