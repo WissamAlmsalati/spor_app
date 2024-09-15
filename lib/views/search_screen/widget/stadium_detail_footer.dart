@@ -24,6 +24,7 @@ class StadiumDetailFooter extends StatelessWidget {
     final bool isReverseCompleted = false;
     final bool noSessions = cubit.selectedSessionId == null;
 
+
     return Container(
       width: double.infinity,
       height: Responsive.screenHeight(context) * 0.1,
@@ -61,9 +62,9 @@ class StadiumDetailFooter extends StatelessWidget {
                                       context,
                                       stadium,
                                       cubit.selectedDate,
-                                      cubit.selectedSessionId.toString(), // Convert to String
+                                      cubit.selectedSessionId.toString(),
                                       isReverseCompleted,
-                                      cubit.selectedSessionId, // Pass the selectedSessionId
+                                      cubit.selectedSessionId,
                                     );
                             },
                             text: state is StaduimDetailLoadedEmptySession

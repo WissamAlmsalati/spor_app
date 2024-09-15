@@ -28,9 +28,8 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
         Uri.parse('https://api.sport.com.ly/player/stadium-info?stadium_id=$stadiumId'),
         headers: {
           'Authorization': 'Bearer $token',
-
-
-          'Content-Type': 'application/json; charset=UTF-8'},
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
       );
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
@@ -45,7 +44,7 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
           selectedDate = availableSessions.first.date;
           selectedSessionId = availableSessions.first.sessions.first.sessionId;
           selectedTime = availableSessions.first.sessions.first.startTime;
-          emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions));
+          emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions, isFavorite: stadiumInfo.isFavourite));
         }
       } else {
         emit(StaduimDetailError(message: 'Failed to load stadium details'));
@@ -65,6 +64,7 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
       emit(StaduimDetailLoaded(
         stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
         availableSessions: (state as StaduimDetailLoaded).availableSessions,
+        isFavorite: (state as StaduimDetailLoaded).isFavorite,
       ));
     }
   }
@@ -75,6 +75,7 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
       emit(StaduimDetailLoaded(
         stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
         availableSessions: (state as StaduimDetailLoaded).availableSessions,
+        isFavorite: (state as StaduimDetailLoaded).isFavorite,
       ));
     }
   }
@@ -85,6 +86,18 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
       emit(StaduimDetailLoaded(
         stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
         availableSessions: (state as StaduimDetailLoaded).availableSessions,
+        isFavorite: (state as StaduimDetailLoaded).isFavorite,
+      ));
+    }
+  }
+
+  void toggleFavoriteStatus() {
+    if (state is StaduimDetailLoaded) {
+      final currentState = state as StaduimDetailLoaded;
+      emit(StaduimDetailLoaded(
+        stadiumInfo: currentState.stadiumInfo,
+        availableSessions: currentState.availableSessions,
+        isFavorite: !currentState.isFavorite,
       ));
     }
   }

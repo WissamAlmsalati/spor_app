@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport/app/app_packges.dart';
 import '../../services/apis.dart';
 import '../../app/app_cubits.dart';
 import '../../utilits/secure_data.dart';
@@ -121,12 +122,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         await _secureStorage.write(key: 'userId', value: responseBody['id'].toString());
         await _secureStorage.write(key: 'phoneVerified', value: responseBody['phone_verified'].toString());
 
-        await SecureStorageData.setIsSignedUp(true);
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => OtpScreen(userId: responseBody['id'])),
-              (route) => false,
-        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+      // await SecureStorageData.setIsSignedUp(true);
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => OtpScreen(userId: responseBody['id'])),
+      //       (route) => false,
+      // );
 
       } else {
         emit(AuthenticationFailure('Sign up failed'));

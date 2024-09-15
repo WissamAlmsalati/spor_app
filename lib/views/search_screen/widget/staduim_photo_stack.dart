@@ -136,6 +136,7 @@ class StaduimPhotoStack extends StatelessWidget {
                   final bool isFavorite = state.isFavorite;
                   return IconButton(
                     onPressed: () {
+                      context.read<StadiumDetailCubit>().toggleFavoriteStatus();
                       if (isFavorite) {
                         context.read<AddToFavoriteCubit>().removeFromFavorite(stdId, context);
                       } else {
@@ -151,7 +152,7 @@ class StaduimPhotoStack extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: SvgPicture.asset(
                             isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
-                            color: Colors.black,
+                            color: isFavorite ? Colors.red : Colors.black,
                             height: Responsive.screenHeight(context) * 0.05,
                           ),
                         ),
