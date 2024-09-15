@@ -6,6 +6,7 @@ import 'dart:convert';
 import '../../models/avilable_sesion_model.dart';
 import '../../models/staduim_info.dart';
 import '../../repostry/staduim_repostry.dart';
+import '../../utilits/secure_data.dart';
 
 part 'staduim_detail_state.dart';
 
@@ -21,9 +22,15 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
   Future<void> fetchStadiumById(int stadiumId) async {
     emit(StaduimDetailLoading());
     try {
+      final token = await SecureStorageData.getToken();
+
       final response = await http.get(
         Uri.parse('https://api.sport.com.ly/player/stadium-info?stadium_id=$stadiumId'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        headers: {
+          'Authorization': 'Bearer $token',
+
+
+          'Content-Type': 'application/json; charset=UTF-8'},
       );
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));

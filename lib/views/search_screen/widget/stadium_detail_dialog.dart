@@ -1,3 +1,4 @@
+// lib/views/search_screen/widget/stadium_detail_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +9,7 @@ import '../../../utilits/responsive.dart';
 import '../../profile/widget/coustom_dialog.dart';
 
 class StadiumDetailDialog {
-  static void showReservationDialog(BuildContext context, stadium, String selectedDate, String selectedTime, bool isReserved) {
+  static void showReservationDialog(BuildContext context, stadium, String selectedDate, String selectedTime, bool isReserved, int selectedSessionId) {
     final isMonthlyReservation = context.read<CheckboxCubit>().state;
     showDialog(
       context: context,
@@ -25,7 +26,7 @@ class StadiumDetailDialog {
                 selectedDate,
                 int.parse(selectedTime), // Convert selectedTime to int
                 isMonthlyReservation,
-                2,
+                selectedSessionId, // Pass the selectedSessionId
               );
               isReserved = true;
             } catch (e) {

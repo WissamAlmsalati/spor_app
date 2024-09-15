@@ -10,10 +10,13 @@ class StaduimDetailLoading extends StaduimDetailState {}
 class StaduimDetailLoaded extends StaduimDetailState {
   final StadiumInfo stadiumInfo;
   final List<AvailableSession> availableSessions;
+  final bool isFavorite;
 
-  StaduimDetailLoaded({required this.stadiumInfo, required this.availableSessions});
-
-  bool get isFavorite => stadiumInfo.isFavourite;
+  StaduimDetailLoaded({
+    required this.stadiumInfo,
+    required this.availableSessions,
+    this.isFavorite = false, // Default to false
+  });
 }
 
 class StaduimDetailLoadedEmptySession extends StaduimDetailState {

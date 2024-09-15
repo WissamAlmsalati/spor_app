@@ -44,6 +44,7 @@ class LoginFormWidget extends StatelessWidget {
                 lableSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
+                isPasswordField: true,
                 controller: passwordController,
                 labeltext: 'كلمة المرور',
                 validatorText: 'ادخل كلمة المرور',

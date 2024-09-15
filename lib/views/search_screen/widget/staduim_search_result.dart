@@ -101,7 +101,7 @@ class StaduimSearchResult extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    stadium.isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
+                    stadium.isFavorite ? 'متوفر للحجز' : 'غير متوفر للحجز',
                     style: TextStyle(
                       color: stadium.isAvailable ? Constants.mainColor : Colors
                           .red,

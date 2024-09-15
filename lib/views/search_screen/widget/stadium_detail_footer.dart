@@ -1,3 +1,4 @@
+// lib/views/search_screen/widget/stadium_detail_footer.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -22,7 +23,6 @@ class StadiumDetailFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isReverseCompleted = false;
     final bool noSessions = cubit.selectedSessionId == null;
-
 
     return Container(
       width: double.infinity,
@@ -61,8 +61,10 @@ class StadiumDetailFooter extends StatelessWidget {
                                       context,
                                       stadium,
                                       cubit.selectedDate,
-                                      cubit.selectedTime,
-                                      isReverseCompleted);
+                                      cubit.selectedSessionId.toString(), // Convert to String
+                                      isReverseCompleted,
+                                      cubit.selectedSessionId, // Pass the selectedSessionId
+                                    );
                             },
                             text: state is StaduimDetailLoadedEmptySession
                                 ? 'غير متوفر'

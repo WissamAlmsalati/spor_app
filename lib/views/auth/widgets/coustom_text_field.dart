@@ -95,11 +95,21 @@ class CustomTextField extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return validatorText;
               }
+              if (isPasswordField && !validatePassword(value)) {
+                return 'Password must be at least 8 characters long and contain an uppercase letter or a special character.';
+              }
               return null;
             },
           ),
         ),
       ],
     );
+  }
+  bool validatePassword(String password) {
+    final minLength = 8;
+    final hasUpperCase = RegExp(r'[A-Z]').hasMatch(password);
+    final hasSpecialCharacter = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password);
+
+    return password.length >= minLength && (hasUpperCase || hasSpecialCharacter);
   }
 }

@@ -72,7 +72,7 @@ void showCustomBottomSheet(BuildContext context, String searchText, Function(Dat
                 );
               },
             ),
-
+            SizedBox(height: Responsive.screenHeight(context) * 0.02), // Add space between time selection and button
             BlocBuilder<StadiumSearchCubit, StadiumSearchState>(
               builder: (BuildContext context, state) {
                 return CustomButton(

@@ -90,6 +90,8 @@ class FavoriteStadium extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
+                      print('Stadium id: ${state.stadiums[index].id}');
+                      print('Stadium name: ${state.stadiums[index].isFavorite}');
                       Navigator.push(
                         context,
                         MaterialPageRoute(

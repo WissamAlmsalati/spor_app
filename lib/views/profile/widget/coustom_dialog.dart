@@ -51,11 +51,11 @@ class CustomAlertDialog extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: Responsive.textSize(context, 12),
+                fontSize: Responsive.textSize(context, 14),
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(content, style: TextStyle(fontSize: Responsive.textSize(context, 12))),
+            Text(content, style: TextStyle(fontSize: Responsive.textSize(context, 14))),
             if (selectedTime != null) // Add this block
               Text(
                 'Selected time: $selectedTime',
