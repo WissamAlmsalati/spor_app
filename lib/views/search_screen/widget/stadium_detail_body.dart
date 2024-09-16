@@ -109,9 +109,9 @@ class StadiumDetailBody extends StatelessWidget {
           selectedSession != null
               ? SessionList(
                   availableSession: selectedSession,
-                  selectedSessionId: cubit.selectedSessionId,
-                  onTimeSelected: (sessionId) {
-                    cubit.setSelectedSessionId(sessionId);
+                  selectedSessionId: cubit.selectedSessionId ?? 0,
+                  onTimeSelected: (sessionId, time) {
+                    cubit.setSelectedSessionId(sessionId, time);
                   },
                 )
               : const Center(child: Text('No available times')),

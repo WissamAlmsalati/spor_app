@@ -17,30 +17,40 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
     emit(ReverseRequestLoading());
     try {
       final token = await SecureStorageData.getToken();
+      final requestBody = jsonEncode({
+        "session": {
+          "date": selectedDate,
+          "session_id": selectedSessionId,
+        },
+        "stadium_id": stadiumId,
+        "payment_type": paymentType,
+        "is_monthly_reservation": isMonthlyReservation,
+      });
+
+      final requestHeaders = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      };
+
+      print('Request URL: https://api.sport.com.ly/player/reserve');
+      print('Request Headers: $requestHeaders');
+      print('Request Body: $requestBody');
+
       final response = await http.post(
         Uri.parse('https://api.sport.com.ly/player/reserve'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          "session": {
-            "date": selectedDate,
-            "session_id": selectedSessionId,
-          },
-          "stadium_id" : stadiumId,
-          "payment_type": paymentType,
-          "is_monthly_reservation": isMonthlyReservation,
-        }),
+        headers: requestHeaders,
+        body: requestBody,
       );
 
-      // Log the response status and body for debugging
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
       if (response.statusCode == 201) {
         await _saveReservationState(true);
         emit(ReverseRequestSuccess());
+      } else if (response.statusCode == 400) {
+        print('Response body: ${utf8.decode(response.bodyBytes)}');
+        emit(NoBalance("لا يوجد رصيد كافي"));
       } else if (response.statusCode == 404) {
         emit(ReverseRequestError('Request failed: Not Found (404)'));
       } else if (response.statusCode == 500) {

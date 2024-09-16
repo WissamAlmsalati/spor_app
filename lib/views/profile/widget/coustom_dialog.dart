@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sport/utilits/responsive.dart';
 import '../../auth/widgets/coustom_button.dart';
+import 'package:intl/intl.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   final String title;
@@ -14,7 +15,7 @@ class CustomAlertDialog extends StatelessWidget {
   final VoidCallback? onCancel;
   final double? height;
   final double? width;
-  final String? selectedTime; // Add this line
+  final String? selectedTime;
 
   const CustomAlertDialog({
     super.key,
@@ -29,11 +30,15 @@ class CustomAlertDialog extends StatelessWidget {
     this.textColor,
     this.height,
     this.width,
-    this.selectedTime, // Add this line
+    this.selectedTime,
   });
 
   @override
   Widget build(BuildContext context) {
+    final String formattedTime = selectedTime != null
+        ? DateFormat("HH:mm").format(DateFormat("HH:mm:ss").parse(selectedTime!))
+        : '';
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -56,9 +61,9 @@ class CustomAlertDialog extends StatelessWidget {
               ),
             ),
             Text(content, style: TextStyle(fontSize: Responsive.textSize(context, 14))),
-            if (selectedTime != null) // Add this block
+            if (selectedTime != null)
               Text(
-                'Selected time: $selectedTime',
+                'Selected time: $formattedTime',
                 style: TextStyle(
                   fontSize: Responsive.textSize(context, 12),
                   color: Colors.black54,

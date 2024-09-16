@@ -17,6 +17,10 @@ class RefreshCubit {
     context.read<FetchAdsImagesCubit>().fetchAdsImages();
   }
 
+  static void refreshActiveReservations(BuildContext context) {
+    context.read<ReservationCubit>().fetchReservations();
+  }
+
   static void refreshBalance(BuildContext context) {
     context.read<FetchProfileCubit>().fetchProfileInfo();
   }

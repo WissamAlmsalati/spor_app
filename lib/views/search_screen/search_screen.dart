@@ -58,6 +58,13 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
     });
   }
 
+  void _onSearchSubmitted(String query) {
+    setState(() {
+      selectedRegion = query;
+    });
+    context.read<StadiumSearchCubit>().searchStadiums(name: query);
+  }
+
   @override
   Widget build(BuildContext context) {
     setStatusBarColor(Colors.white);
@@ -94,21 +101,24 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                           child: SearchFieldWidget(
                             controller: searchController,
                             onChanged: (String text) {
-                              context
-                                  .read<RegionSearchCubit>()
-                                  .searchRegions(text);
+                              if (text.isEmpty) {
+                                setState(() {
+                                  selectedRegion = null;
+                                });
+                              } else {
+                                context
+                                    .read<RegionSearchCubit>()
+                                    .searchRegions(text);
+                              }
                             },
-                            onSubmitted: (String text) {
-                              context
-                                  .read<StadiumSearchCubit>()
-                                  .searchStadiums(name: text);
-                            },
+                            onSubmitted: _onSearchSubmitted,
                             enabled: true,
                             onTap: () {
                               setState(() {
                                 selectedRegion = null;
                               });
                             },
+                            initialValue: selectedRegion,
                           ),
                         ),
                       ),
@@ -138,6 +148,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                           onTap: () {
                             setState(() {
                               selectedRegion = state.regions[index];
+                              searchController.text = selectedRegion!;
                             });
                             context
                                 .read<StadiumSearchCubit>()
@@ -221,10 +232,9 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                                     margin: EdgeInsets.only(
                                       bottom: Responsive.screenHeight(context) *
                                           0.02,
-
                                     ),
-
-                                      child: StaduimSearchResult(stadium: stadium)));
+                                    child: StaduimSearchResult(stadium: stadium),
+                                  ));
                             },
                           ),
                         );

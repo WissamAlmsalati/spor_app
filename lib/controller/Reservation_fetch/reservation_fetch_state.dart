@@ -27,5 +27,3 @@ class ReservationError extends ReservationState {
 
   ReservationError(this.message);
 }
-
-// Cubit

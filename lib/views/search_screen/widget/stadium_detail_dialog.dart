@@ -6,6 +6,7 @@ import '../../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
 import '../../../controller/check_box_monthe_price/check_box.dart';
 import '../../../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../../../utilits/responsive.dart';
+import '../../naviggation/home_navigation.dart';
 import '../../profile/widget/coustom_dialog.dart';
 
 class StadiumDetailDialog {
@@ -54,8 +55,11 @@ class StadiumDetailDialog {
           content: message,
           canceText: 'إغلاق',
           onCancel: () {
-            Navigator.of(context).pop();
-          },
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomeNavigation()), // Replace `HomeScreen` with your home screen widget
+                  (Route<dynamic> route) => false, // This predicate removes all previous routes
+            );          },
           height: Responsive.screenHeight(context) * 0.2,
           width: Responsive.screenWidth(context) * 0.75,
         );

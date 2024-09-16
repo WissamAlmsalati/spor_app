@@ -1,22 +1,53 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:sport/app/app_cubits.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/models/reservation.dart';
 import 'package:sport/utilits/constants.dart';
 import 'package:sport/utilits/images.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import '../../../controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import '../../auth/widgets/coustom_button.dart';
-import '../../stadium/widget/coustom_appbar.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class CurrentBookWidget extends StatelessWidget {
+
+class CurrentBookWidget extends StatefulWidget {
   final Reservation reservation;
 
   const CurrentBookWidget({super.key, required this.reservation});
+
+  @override
+  _CurrentBookWidgetState createState() => _CurrentBookWidgetState();
+}
+
+class _CurrentBookWidgetState extends State<CurrentBookWidget> {
+  late Timer _timer;
+  bool canDelete = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkTime();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _checkTime();
+    });
+  }
+
+  void _checkTime() {
+    setState(() {
+      canDelete = DateTime.now().difference(widget.reservation.timestamp).inMinutes <= 5;
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   Future<void> _launchGoogleMaps(String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {
@@ -26,24 +57,65 @@ class CurrentBookWidget extends StatelessWidget {
     }
   }
 
+  Future<void> _showConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Cancellation'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to cancel this reservation?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () {
+                try {
+                  context.read<CanceklReservCubit>().cancelReservation(widget.reservation.id.toString());
+                  RefreshCubit.refreshCubits(context);
+                  Navigator.of(context).pop();
+
+                } catch (e) {
+                  print(e);
+                }
+
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final endTime = DateFormat('HH:mm')
-        .format(DateFormat('HH:mm:ss').parse(reservation.endTime));
+        .format(DateFormat('HH:mm:ss').parse(widget.reservation.endTime));
     final startTime = DateFormat('HH:mm')
-        .format(DateFormat('HH:mm:ss').parse(reservation.startTime));
+        .format(DateFormat('HH:mm:ss').parse(widget.reservation.startTime));
     initializeDateFormatting('ar', null);
 
-    DateTime date = DateTime.parse(reservation.date);
+    DateTime date = DateTime.parse(widget.reservation.date);
     String formattedDate = DateFormat('EEEE', 'ar').format(date);
 
     final startDateTime = DateTime(
       date.year,
       date.month,
       date.day,
-      DateFormat('HH:mm:ss').parse(reservation.startTime).hour,
-      DateFormat('HH:mm:ss').parse(reservation.startTime).minute,
-      DateFormat('HH:mm:ss').parse(reservation.startTime).second,
+      DateFormat('HH:mm:ss').parse(widget.reservation.startTime).hour,
+      DateFormat('HH:mm:ss').parse(widget.reservation.startTime).minute,
+      DateFormat('HH:mm:ss').parse(widget.reservation.startTime).second,
     );
 
     bool isMatchStarted = DateTime.now().isAfter(startDateTime);
@@ -61,12 +133,34 @@ class CurrentBookWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              reservation.stadiumName,
-              style: TextStyle(
-                fontSize: Responsive.textSize(context, 20),
-                fontWeight: FontWeight.w700,
-              ),
+            Row(
+              children: [
+                Text(
+                  widget.reservation.stadiumName,
+                  style: TextStyle(
+                    fontSize: Responsive.textSize(context, 20),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (canDelete)
+                  BlocBuilder<CanceklReservCubit, CanceklReservState>(
+                    builder: (BuildContext context, CanceklReservState state) {
+                      return IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          try {
+                            _showConfirmationDialog(context);
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
+                      );
+                    },
+                  ),
+              ],
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -80,7 +174,7 @@ class CurrentBookWidget extends StatelessWidget {
                   ),
                   SizedBox(width: Responsive.screenWidth(context) * 0.02),
                   Text(
-                    reservation.stadiumAddress,
+                    widget.reservation.stadiumAddress,
                     style: TextStyle(
                       fontSize: Responsive.textSize(context, 18),
                       fontWeight: FontWeight.w500,
@@ -151,7 +245,6 @@ class CurrentBookWidget extends StatelessWidget {
                       fontSize: Responsive.textSize(context, 18),
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
-
                     ),
                   ),
                   Container(
@@ -181,7 +274,7 @@ class CurrentBookWidget extends StatelessWidget {
                 children: [
                   CustomButton(
                     onPress: () async {
-                      _launchGoogleMaps(reservation.mapUrl);
+                      _launchGoogleMaps(widget.reservation.mapUrl);
                     },
                     text: 'مكان الملعب',
                     color: Constants.mainColor,
@@ -243,9 +336,6 @@ class CurrentBookWidget extends StatelessWidget {
     }
   }
 }
-
-
-
 class TimerScreen extends StatelessWidget {
   final DateTime selectedTime;
 

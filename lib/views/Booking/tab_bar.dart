@@ -23,9 +23,9 @@ class CoustomTapBar extends StatelessWidget {
                     fontSize: Responsive.textSize(context, 16),
                   ),
                   // Customize the selected tab text size
-                  unselectedLabelStyle:
-                      TextStyle(                    fontFamily: GoogleFonts.cairo().fontFamily,
-                          fontSize: Responsive.textSize(context, 12)),
+                  unselectedLabelStyle: TextStyle(
+                      fontFamily: GoogleFonts.cairo().fontFamily,
+                      fontSize: Responsive.textSize(context, 12)),
                   // Customize the unselected ta
                   tabs: const [
                     Tab(
@@ -37,7 +37,8 @@ class CoustomTapBar extends StatelessWidget {
               ),
               const Expanded(
                 child: TabBarView(
-                  children: [CurrentBooking(), BookingHistoryScreen()],
+                  children: [
+                    CurrentBooking(), BookingHistoryScreen()],
                 ),
               ),
             ],

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../models/avilable_sesion_model.dart';
 import 'TimeSelector.dart';
 
+typedef OnTimeSelected = void Function(int sessionId, String time);
+
 class SessionList extends StatelessWidget {
   final AvailableSession availableSession;
   final int selectedSessionId;
-  final ValueChanged<int> onTimeSelected;
+  final OnTimeSelected onTimeSelected;
 
   const SessionList({
     super.key,

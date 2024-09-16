@@ -8,6 +8,7 @@ class SearchFieldWidget extends StatelessWidget {
   final Function(String)? onSubmitted;
   final bool enabled;
   final VoidCallback? onTap;
+  final String? initialValue;
 
   const SearchFieldWidget({
     super.key,
@@ -16,10 +17,15 @@ class SearchFieldWidget extends StatelessWidget {
     this.onSubmitted,
     required this.enabled,
     this.onTap,
+    this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (controller != null && initialValue != null) {
+      controller!.text = initialValue!;
+    }
+
     return Material(
       elevation: 0, // Remove shadow
       child: GestureDetector(
@@ -33,14 +39,12 @@ class SearchFieldWidget extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 10), // Adjust padding to reduce height
-              hintText: "حدد المنطقة",
+              hintText: "حدد البلدية",
               hintStyle: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontFamily: GoogleFonts.cairo().fontFamily,
                 fontSize: Responsive.textSize(context, 10),
               ),
-
-
               prefixIcon: const Icon(Icons.search),
               alignLabelWithHint: true, // Align the hint text in the center
             ),

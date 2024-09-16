@@ -25,6 +25,11 @@ class DateSelector extends StatelessWidget {
     return DateFormat('d').format(dateTime);
   }
 
+  String getMonthName(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('MMMM', 'ar').format(dateTime);  // Format the month name in Arabic
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -36,7 +41,7 @@ class DateSelector extends StatelessWidget {
             onTap: () => onDateSelected(date),
             child: Container(
               width: Responsive.screenWidth(context) * 0.2,
-              height: Responsive.screenHeight(context) * 0.1,
+              height: Responsive.screenHeight(context) * 0.11,  // Adjust height to accommodate the month name
               margin: const EdgeInsets.only(right: 8.0),
               padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               decoration: BoxDecoration(
@@ -48,8 +53,16 @@ class DateSelector extends StatelessWidget {
                 ),
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  Text(
+                    getMonthName(date),  // Display the month name
+                    style: TextStyle(
+                      fontSize: Responsive.textSize(context, 12),
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   Text(
                     getDayName(date),
                     style: TextStyle(

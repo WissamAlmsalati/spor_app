@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../models/session_model.dart';
 import 'hour_pricker.dart';
 
+typedef OnTimeSelected = void Function(int sessionId, String time);
+
 class TimeSelector extends StatelessWidget {
   final List<Session> sessions;
   final int selectedSessionId;
-  final ValueChanged<int> onTimeSelected;
+  final OnTimeSelected onTimeSelected;
 
   TimeSelector({
     super.key,
@@ -26,7 +28,7 @@ class TimeSelector extends StatelessWidget {
             isSelected: isSelected,
             isReserved: session.isReserved,
             isLocked: session.isLocked,
-            onTap: () => onTimeSelected(session.sessionId),
+            onTap: () => onTimeSelected(session.sessionId, session.startTime),
           );
         }).toList(),
       ),

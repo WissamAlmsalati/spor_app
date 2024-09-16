@@ -44,7 +44,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
           return CommentsShimmer();
         } else {
           return PagedListView<int, Comment>(
-            physics: widget.isScrollable ? const FixedExtentScrollPhysics() : const NeverScrollableScrollPhysics(),
+            physics: widget.isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<Comment>(
               itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
@@ -128,7 +128,7 @@ class CommentWidget extends StatelessWidget {
         Text(
           comment.content,
           style: TextStyle(
-            fontSize: Responsive.textSize(context, 10),
+            fontSize: Responsive.textSize(context, 14),
           ),
           maxLines: 5,
           overflow: TextOverflow.ellipsis,

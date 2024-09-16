@@ -6,6 +6,7 @@ import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
 import 'package:sport/views/naviggation/home_navigation.dart';
 import '../controller/ads_controler/ads_photos_cubit.dart';
+import '../controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import '../controller/change_pass_controler/change_password_cubit.dart';
 import '../controller/region_search_controler/region_search_cubit.dart';
 import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => FetchAdsImagesCubit()),
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),
+        BlocProvider(create: (context) => CanceklReservCubit()),
       ],
       child: Builder(
         builder: (context) {

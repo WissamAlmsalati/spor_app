@@ -8,6 +8,7 @@ class Reservation {
   final String stadiumAddress;
   final String mapUrl;
   final int stadiumId;
+  final DateTime timestamp;
 
   Reservation({
     required this.id,
@@ -19,19 +20,21 @@ class Reservation {
     required this.stadiumAddress,
     required this.mapUrl,
     required this.stadiumId,
+    required this.timestamp,
   });
 
   factory Reservation.fromJson(Map<String, dynamic> json) {
     return Reservation(
-      id: json['id']??0,
-      date: json['date']??'',
-      weekDay: json['week_day']??0,
-      startTime: json['start_time']??'',
-      endTime: json['end_time']??'',
-      stadiumName: json['stadium_name']??'',
-      stadiumAddress: json['stadium_address']??'',
-      mapUrl: json['map_url']??'',
-      stadiumId: json['stadium_id']??0,
+      id: json['id'] ?? 0,
+      date: json['date'] ?? '',
+      weekDay: json['week_day'] ?? 0,
+      startTime: json['start_time'] ?? '',
+      endTime: json['end_time'] ?? '',
+      stadiumName: json['stadium_name'] ?? '',
+      stadiumAddress: json['stadium_address'] ?? '',
+      mapUrl: json['map_url'] ?? '',
+      stadiumId: json['stadium_id'] ?? 0,
+      timestamp: json['timestamp'] != null ? DateTime.parse(json['timestamp']) : DateTime.now(),
     );
   }
 

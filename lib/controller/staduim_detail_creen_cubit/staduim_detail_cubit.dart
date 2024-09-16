@@ -16,7 +16,7 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
   StadiumDetailCubit(this.stadiumRepository) : super(StaduimDetailInitial());
 
   String selectedDate = '';
-  int selectedSessionId = -1;
+  int? selectedSessionId;
   String selectedTime = '';
 
   Future<void> fetchStadiumById(int stadiumId) async {
@@ -42,8 +42,8 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
           emit(StaduimDetailLoadedEmptySession(stadiumInfo: stadiumInfo));
         } else {
           selectedDate = availableSessions.first.date;
-          selectedSessionId = availableSessions.first.sessions.first.sessionId;
-          selectedTime = availableSessions.first.sessions.first.startTime;
+          selectedSessionId = null; // No session selected initially
+          selectedTime = '';
           emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions, isFavorite: stadiumInfo.isFavourite));
         }
       } else {
@@ -60,6 +60,8 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
 
   void setSelectedDate(String date) {
     selectedDate = date;
+    selectedSessionId = null; // Reset session selection when date changes
+    selectedTime = '';
     if (state is StaduimDetailLoaded) {
       emit(StaduimDetailLoaded(
         stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
@@ -69,16 +71,17 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
     }
   }
 
-  void setSelectedSessionId(int sessionId) {
-    selectedSessionId = sessionId;
-    if (state is StaduimDetailLoaded) {
-      emit(StaduimDetailLoaded(
-        stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
-        availableSessions: (state as StaduimDetailLoaded).availableSessions,
-        isFavorite: (state as StaduimDetailLoaded).isFavorite,
-      ));
-    }
+void setSelectedSessionId(int? sessionId, String time) {
+  selectedSessionId = sessionId;
+  selectedTime = time;
+  if (state is StaduimDetailLoaded) {
+    emit(StaduimDetailLoaded(
+      stadiumInfo: (state as StaduimDetailLoaded).stadiumInfo,
+      availableSessions: (state as StaduimDetailLoaded).availableSessions,
+      isFavorite: (state as StaduimDetailLoaded).isFavorite,
+    ));
   }
+}
 
   void setSelectedTime(String time) {
     selectedTime = time;

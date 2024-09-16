@@ -10,6 +10,12 @@ class ReverseRequestLoading extends ReverseRequestState {}
 
 class ReverseRequestSuccess extends ReverseRequestState {}
 
+class NoBalance extends ReverseRequestState {
+  final String message;
+
+  NoBalance(this.message);
+}
+
 class ReverseRequestError extends ReverseRequestState {
   final String message;
 
