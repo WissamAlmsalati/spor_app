@@ -28,6 +28,7 @@ class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
       final decodedResponse = utf8.decode(response.bodyBytes);
 
       if (response.statusCode == 200) {
+      print(decodedResponse);
         final data = json.decode(decodedResponse)['results'] as List;
         final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
         emit(FetchFavoriteLoaded(stadiums));
@@ -49,3 +50,5 @@ class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
   }
 }
+
+

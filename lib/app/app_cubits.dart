@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../controller/ads_controler/ads_photos_cubit.dart';
+import '../controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
 import 'app_packges.dart';
 
 class RefreshCubit {
@@ -15,6 +16,7 @@ class RefreshCubit {
     context.read<AuthenticationCubit>();
     context.read<OldReservationFetchCubit>().fetchOldReservations();
     context.read<FetchAdsImagesCubit>().fetchAdsImages();
+    context.read<FetchRecomendedStaduimCubit>().fetchRecomendedStaduims();
   }
 
   static void refreshActiveReservations(BuildContext context) {

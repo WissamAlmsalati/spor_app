@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sport/utilits/responsive.dart';
 import '../../../utilits/constants.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String labeltext;
   final double? hintSize;
@@ -28,26 +28,33 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  _CustomTextFieldState createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _obscureText = true;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          labeltext,
+          widget.labeltext,
           style: TextStyle(
             fontFamily: GoogleFonts.cairo().fontFamily,
             color: Constants.txtColor,
             fontWeight: FontWeight.w500,
-            fontSize: lableSize ?? 18,
+            fontSize: widget.lableSize ?? 18,
           ),
         ),
         SizedBox(height: Responsive.screenHeight(context) * 0.01),
         Container(
           height: Responsive.screenHeight(context) * 0.06,
           child: TextFormField(
-            keyboardType: keyboardType ?? TextInputType.text,
-            controller: controller,
-            obscureText: isPasswordField,
+            keyboardType: widget.keyboardType ?? TextInputType.text,
+            controller: widget.controller,
+            obscureText: widget.isPasswordField ? _obscureText : false,
             decoration: InputDecoration(
               filled: true,
               enabledBorder: OutlineInputBorder(
@@ -64,10 +71,10 @@ class CustomTextField extends StatelessWidget {
                   width: 1.2,
                 ),
               ),
-              hintText: labeltext,
+              hintText: widget.labeltext,
               hintStyle: TextStyle(
                 color: Constants.thirdColor,
-                fontSize: hintSize ?? 14,
+                fontSize: widget.hintSize ?? 14,
                 fontFamily: GoogleFonts.cairo().fontFamily,
               ),
               errorBorder: const OutlineInputBorder(
@@ -79,24 +86,36 @@ class CustomTextField extends StatelessWidget {
               ),
               errorStyle: GoogleFonts.cairo(
                 color: Colors.red,
-                fontSize: validatorSize,
+                fontSize: widget.validatorSize,
                 fontWeight: FontWeight.bold,
               ),
               contentPadding: const EdgeInsets.symmetric(
                 vertical: 2.0,
                 horizontal: 8.0,
               ),
+              suffixIcon: widget.isPasswordField
+                  ? IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    )
+                  : null,
             ),
             style: TextStyle(
               color: Colors.black,
-              fontSize: hintSize,
+              fontSize: widget.hintSize,
             ),
-            validator: validator ?? (value) {
+            validator: widget.validator ?? (value) {
               if (value == null || value.isEmpty) {
-                return validatorText;
+                return widget.validatorText;
               }
-              if (isPasswordField && !validatePassword(value)) {
-                return 'Password must be at least 8 characters long and contain an uppercase letter or a special character.';
+              if (widget.isPasswordField && !validatePassword(value)) {
+                return 'Password must be at least 8 characters long, contain an uppercase letter, and a mix of numbers and letters.';
               }
               return null;
             },
@@ -105,11 +124,13 @@ class CustomTextField extends StatelessWidget {
       ],
     );
   }
+
   bool validatePassword(String password) {
     final minLength = 8;
     final hasUpperCase = RegExp(r'[A-Z]').hasMatch(password);
-    final hasSpecialCharacter = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password);
+    final hasNumber = RegExp(r'[0-9]').hasMatch(password);
+    final hasLetter = RegExp(r'[a-zA-Z]').hasMatch(password);
 
-    return password.length >= minLength && (hasUpperCase || hasSpecialCharacter);
+    return password.length >= minLength && hasUpperCase && hasNumber && hasLetter;
   }
 }

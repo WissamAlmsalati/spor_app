@@ -132,53 +132,34 @@ class StaduimPhotoStack extends StatelessWidget {
             right: 0,
             child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
               builder: (BuildContext context, StaduimDetailState state) {
-                if (state is StaduimDetailLoaded) {
-                  final bool isFavorite = state.isFavorite;
-                  return IconButton(
-                    onPressed: () {
+                final bool isFavorite = state is StaduimDetailLoaded && state.isFavorite;
+                return IconButton(
+                  onPressed: () {
+                    if (state is StaduimDetailLoaded) {
                       context.read<StadiumDetailCubit>().toggleFavoriteStatus();
                       if (isFavorite) {
                         context.read<AddToFavoriteCubit>().removeFromFavorite(stdId, context);
                       } else {
                         context.read<AddToFavoriteCubit>().addToFavorite(stdId, context);
                       }
-                    },
-                    icon: SizedBox(
-                      height: Responsive.screenHeight(context) * 0.070,
-                      width: Responsive.screenHeight(context) * 0.070,
-                      child: Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(
-                            isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
-                            color: isFavorite ? Colors.red : Colors.black,
-                            height: Responsive.screenHeight(context) * 0.05,
-                          ),
+                    }
+                  },
+                  icon: SizedBox(
+                    height: Responsive.screenHeight(context) * 0.070,
+                    width: Responsive.screenHeight(context) * 0.070,
+                    child: Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgPicture.asset(
+                          isFavorite ? AppPhotot.fillFav : AppPhotot.favoriteBg,
+                          color: isFavorite ? Colors.red : Colors.black,
+                          height: Responsive.screenHeight(context) * 0.05,
                         ),
                       ),
                     ),
-                  );
-                } else {
-                  return IconButton(
-                    onPressed: null,
-                    icon: SizedBox(
-                      height: Responsive.screenHeight(context) * 0.070,
-                      width: Responsive.screenHeight(context) * 0.070,
-                      child: Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(
-                            AppPhotot.favoriteBg,
-                            color: Colors.black,
-                            height: Responsive.screenHeight(context) * 0.05,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }
+                  ),
+                );
               },
             ),
           ),

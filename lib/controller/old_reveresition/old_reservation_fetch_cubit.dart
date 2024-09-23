@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:sport/models/reservation.dart';
@@ -13,7 +14,7 @@ part 'old_reservation_fetch_state.dart';
 class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
   OldReservationFetchCubit() : super(OldReservationLoading());
 
-  Future<void> fetchOldReservations() async {
+  Future<void> fetchOldReservations({int pageKey = 1}) async {
     emit(OldReservationLoading());
     try {
       final token = await SecureStorageData.getToken();
@@ -22,7 +23,7 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
       }
 
       final response = await http.get(
-        Uri.parse(Apis.oldReservations),
+        Uri.parse('${Apis.oldReservations}?page=$pageKey'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -39,10 +40,11 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
         final data = json.decode(decodedResponse);
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
-          if (reservations.isEmpty) {
+          final isLastPage = data['next'] == null;
+          if (reservations.isEmpty && pageKey == 1) {
             emit(OldReservationEmpty('ليس لديك حجوزات سابقة'));
           } else {
-            emit(OldReservationLoaded(reservations));
+            emit(OldReservationLoaded(reservations: reservations, isLastPage: isLastPage));
           }
         } else {
           emit(OldReservationError('Invalid data format'));

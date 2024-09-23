@@ -8,6 +8,7 @@ import 'package:sport/views/naviggation/home_navigation.dart';
 import '../controller/ads_controler/ads_photos_cubit.dart';
 import '../controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import '../controller/change_pass_controler/change_password_cubit.dart';
+import '../controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
 import '../controller/region_search_controler/region_search_cubit.dart';
 import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../controller/review_comment_controller/comment_review_cubit.dart';
@@ -18,6 +19,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SecureStorageData.getIsSign();
 
+  // Lock the orientation to portrait mode
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -26,7 +33,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => OnboardingCubit()),
@@ -50,6 +56,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),
         BlocProvider(create: (context) => CanceklReservCubit()),
+        BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
       ],
       child: Builder(
         builder: (context) {
@@ -89,7 +96,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 class AuthenticationWrapper extends StatelessWidget {
   const AuthenticationWrapper({super.key});

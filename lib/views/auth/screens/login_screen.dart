@@ -26,7 +26,7 @@ class SignIn extends StatelessWidget {
             duration: const Duration(seconds: 5),
             backgroundColor: Colors.red,
             borderRadius: BorderRadius.circular(
-                Responsive.screenHeight(context) * 0.02),
+            Responsive.screenHeight(context) * 0.02),
             textStyle: const TextStyle(color: Colors.white, fontSize: 16.0),
             alignment: Alignment.center,
             animation: StyledToastAnimation.fade,
@@ -47,24 +47,29 @@ class SignIn extends StatelessWidget {
           );
         }
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: Responsive.screenWidth(context) * 0.07,
-                  right: Responsive.screenWidth(context) * 0.07,
-                  top: Responsive.screenHeight(context) * 0.10),
-              child: Column(
-                children: [
-                  const TitleLogoTitle(
-                    logo: AppPhotot.signLogo,
-                    title: AppText.signInTxt,
-                    description: AppText.signInDes,
-                  ),
-                  SizedBox(height: Responsive.screenHeight(context) * 0.05),
-                  const LoginFormWidget(),
-                ],
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: Responsive.screenWidth(context) * 0.07,
+                    right: Responsive.screenWidth(context) * 0.07,
+                    top: Responsive.screenHeight(context) * 0.10),
+                child: Column(
+                  children: [
+                    const TitleLogoTitle(
+                      logo: AppPhotot.signLogo,
+                      title: AppText.signInTxt,
+                      description: AppText.signInDes,
+                    ),
+                    SizedBox(height: Responsive.screenHeight(context) * 0.05),
+                    const LoginFormWidget(),
+                  ],
+                ),
               ),
             ),
           ),

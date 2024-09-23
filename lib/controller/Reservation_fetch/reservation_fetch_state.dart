@@ -12,14 +12,15 @@ class ReservationLoading extends ReservationState {}
 
 class ReservationLoaded extends ReservationState {
   final List<Reservation> reservations;
+  final bool isLastPage;
 
-  ReservationLoaded(this.reservations);
+  ReservationLoaded(this.reservations, {required this.isLastPage});
 }
 
-class SuccessReservation extends ReservationState {
-  final String message;
+class ReservationDeleted extends ReservationState {
+  final int reservationId;
 
-  SuccessReservation(this.message);
+  ReservationDeleted(this.reservationId);
 }
 
 class ReservationError extends ReservationState {

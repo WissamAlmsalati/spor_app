@@ -24,13 +24,14 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
     try {
       final token = await SecureStorageData.getToken();
 
-      final response = await http.get(
-        Uri.parse('https://api.sport.com.ly/player/stadium-info?stadium_id=$stadiumId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
+final url = 'https://api.sport.com.ly/player/stadium-info?stadium_id=$stadiumId';
+print('Fetching stadium details from: $url');
+final response = await http.get(
+  Uri.parse(url),
+  headers: {
+    'Authorization': 'Bearer $token',
+  },
+);
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
         final stadiumInfo = StadiumInfo.fromJson(data['stadium_info']);
@@ -47,9 +48,11 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
           emit(StaduimDetailLoaded(stadiumInfo: stadiumInfo, availableSessions: availableSessions, isFavorite: stadiumInfo.isFavourite));
         }
       } else {
+
         emit(StaduimDetailError(message: 'Failed to load stadium details'));
       }
     } catch (e) {
+      print('An error occurred: $e');
       emit(StaduimDetailError(message: e.toString()));
     }
   }

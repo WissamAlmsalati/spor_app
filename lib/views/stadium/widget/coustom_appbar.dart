@@ -5,20 +5,22 @@ import '../../../utilits/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CoustomAppBr extends StatelessWidget {
-  final String logo;
+  final String? logo;
   final String title;
   final Color? color;
   final double? height;
   final double? width;
   final VoidCallback? onPressed;
+  final VoidCallback? onPressedFav;
   final Widget? child;
   final bool isLoading;
   final Widget? loadingWidget;
   final String? userName;
+  final bool isHomeScreen;
 
   const CoustomAppBr({
     super.key,
-    required this.logo,
+    this.logo,
     required this.title,
     this.color,
     this.height,
@@ -26,7 +28,10 @@ class CoustomAppBr extends StatelessWidget {
     this.onPressed,
     this.child,
     this.isLoading = false,
-    this.loadingWidget, this.userName,
+    this.loadingWidget,
+    this.userName,
+    required this.isHomeScreen,
+    this.onPressedFav,
   });
 
   @override
@@ -49,42 +54,66 @@ class CoustomAppBr extends StatelessWidget {
                 ),
               )
             : Row(
-              children: [
-                Text(
+                children: [
+                  Text(
                     title,
                     style: TextStyle(
                         fontSize: Responsive.textSize(context, 20), color: color),
                   ),
-                Text(
-                  userName ?? '',
-                  style: TextStyle(
-                      fontSize: Responsive.textSize(context, 20), color: Constants.mainColor),
-                ),
-              ],
-            ),
-        loadingWidget ??
-        IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: onPressed,
-          icon: SizedBox(
-            height: height,
-            width: width,
-            child: Card(
-              margin: EdgeInsets.zero,
-              elevation: 1,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.025),
+                  Text(
+                    userName ?? '',
+                    style: TextStyle(
+                        fontSize: Responsive.textSize(context, 20), color: Constants.mainColor),
+                  ),
+                ],
               ),
-              child: Padding(
-                padding: EdgeInsets.all(
-                    Responsive.screenWidth(context) * 0.02),
-                child: SvgPicture.asset(
-
-                  logo,
+        Row(
+          children: [
+            if (isHomeScreen)
+              IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: onPressedFav,
+                icon: SizedBox(
+                  height: height,
+                  width: width,
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.025),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.02),
+                      child: SvgPicture.asset(
+                        AppPhotot.favoriteBg,
+                      ),
+                    ),
+                  ),
                 ),
-              ) ?? child,
-            ),
-          ),
+              ),
+            if (logo != null)
+              IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: onPressed,
+                icon: SizedBox(
+                  height: height,
+                  width: width,
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.025),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.02),
+                      child: SvgPicture.asset(
+                        logo!,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
       ],
     );

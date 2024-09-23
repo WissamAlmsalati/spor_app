@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:sport/app/app_cubits.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/models/reservation.dart';
 import 'package:sport/utilits/constants.dart';
 import 'package:sport/utilits/images.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:sport/views/profile/widget/coustom_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
 import '../../../controller/cancel_reservation/cancekl_reserv_cubit.dart';
+import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../auth/widgets/coustom_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -62,37 +64,18 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm Cancellation'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Are you sure you want to cancel this reservation?'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Confirm'),
-              onPressed: () {
-                try {
-                  context.read<CanceklReservCubit>().cancelReservation(widget.reservation.id.toString());
-                  RefreshCubit.refreshCubits(context);
-                  Navigator.of(context).pop();
-
-                } catch (e) {
-                  print(e);
-                }
-
-              },
-            ),
-          ],
+        return CustomAlertDialog(
+          title: "الغاء الحجز",
+          content: "هل انت متأكد من الغاء الحجز",
+          canceText: "الغاء",
+          confirmText: "تأكيد",
+          onConfirm: () {
+            context.read<CanceklReservCubit>().cancelReservation(widget.reservation.id.toString(), context);
+            Navigator.of(context).pop();
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+          },
         );
       },
     );
@@ -120,207 +103,216 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
 
     bool isMatchStarted = DateTime.now().isAfter(startDateTime);
 
-    return Card(
-      margin: EdgeInsets.all(Responsive.screenWidth(context) * 0.03),
-      elevation: 1,
-      child: Padding(
-        padding: EdgeInsets.only(
-          top: Responsive.screenHeight(context) * 0.02,
-          left: Responsive.screenWidth(context) * 0.05,
-          right: Responsive.screenWidth(context) * 0.05,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  widget.reservation.stadiumName,
-                  style: TextStyle(
-                    fontSize: Responsive.textSize(context, 20),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                if (canDelete)
-                  BlocBuilder<CanceklReservCubit, CanceklReservState>(
-                    builder: (BuildContext context, CanceklReservState state) {
-                      return IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          try {
-                            _showConfirmationDialog(context);
-                          } catch (e) {
-                            print(e);
-                          }
-                        },
-                      );
-                    },
-                  ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: Responsive.screenHeight(context) * 0.013),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    AppPhotot.locationIco,
-                    color: Colors.green,
-                    fit: BoxFit.fill,
-                  ),
-                  SizedBox(width: Responsive.screenWidth(context) * 0.02),
-                  Text(
-                    widget.reservation.stadiumAddress,
-                    style: TextStyle(
-                      fontSize: Responsive.textSize(context, 18),
-                      fontWeight: FontWeight.w500,
-                      color: Constants.txtColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: Responsive.screenHeight(context) * 0.05,
-              width: Responsive.screenWidth(context) * 0.5,
-              child: Row(
+    return BlocListener<CanceklReservCubit, CanceklReservState>(
+      listener: (context, state) {
+        if (state is CanceklReservSuccess) {
+          context.read<ReservationCubit>().fetchReservations(pageKey: 1);
+          FetchFavoriteCubit.refreshFavoriteStadiums(context);
+        }
+      },
+      child: Card(
+        margin: EdgeInsets.all(Responsive.screenWidth(context) * 0.03),
+        elevation: 1,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: Responsive.screenHeight(context) * 0.02,
+            left: Responsive.screenWidth(context) * 0.05,
+            right: Responsive.screenWidth(context) * 0.05,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "يوم الحجز: ",
+                    widget.reservation.stadiumName,
                     style: TextStyle(
-                      fontSize: Responsive.textSize(context, 16),
-                      fontWeight: FontWeight.w500,
-                      color: Constants.txtColor,
+                      fontSize: Responsive.textSize(context, 20),
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Text(
-                    formattedDate,
-                    style: TextStyle(
-                      fontSize: Responsive.textSize(context, 18),
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Container(
-                    height: Responsive.screenHeight(context) * 0.005,
-                    width: Responsive.screenWidth(context) * 0.04,
-                    decoration: BoxDecoration(
-                      color: Constants.txtColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  Text(
-                    date.day.toString(),
-                    style: TextStyle(
-                      fontSize: Responsive.textSize(context, 18),
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: Responsive.screenHeight(context) * 0.05,
-              width: Responsive.screenWidth(context) * 0.6,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "ساعة الحجز: ",
-                    style: TextStyle(
-                      fontSize: Responsive.textSize(context, 16),
-                      fontWeight: FontWeight.w500,
-                      color: Constants.txtColor,
-                    ),
-                  ),
-                  Text(
-                    startTime,
-                    style: TextStyle(
-                      fontSize: Responsive.textSize(context, 18),
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Container(
-                    height: Responsive.screenHeight(context) * 0.005,
-                    width: Responsive.screenWidth(context) * 0.04,
-                    decoration: BoxDecoration(
-                      color: Constants.txtColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  Text(
-                    endTime,
-                    style: TextStyle(
-                      fontSize: Responsive.textSize(context, 18),
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: Responsive.screenHeight(context) * 0.09,
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomButton(
-                    onPress: () async {
-                      _launchGoogleMaps(widget.reservation.mapUrl);
-                    },
-                    text: 'مكان الملعب',
-                    color: Constants.mainColor,
-                    textColor: Colors.white,
-                    height: Responsive.screenHeight(context) * 0.05,
-                    width: Responsive.screenWidth(context) * 0.4,
-                    textSize: Responsive.textSize(context, 12),
-                    fontWeight: FontWeight.w700,
-                  ),
-                  CustomButton(
-                    onPress: isMatchStarted
-                        ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return TimerScreen(
-                                selectedTime: startDateTime);
+                  if (canDelete)
+                    BlocBuilder<CanceklReservCubit, CanceklReservState>(
+                      builder: (BuildContext context, CanceklReservState state) {
+                        return IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            try {
+                              _showConfirmationDialog(context);
+                            } catch (e) {
+                              print(e);
+                            }
                           },
-                        ),
-                      );
-                    }
-                        : () {
-                      CustomToast.show(
-                        context,
-                        _getFormattedDurationText(
-                            startDateTime.difference(DateTime.now())),
-                      );
-                    },
-                    text: isMatchStarted ? 'المبارة بدأت' : 'الوقت المتبقي',
-                    color: Colors.transparent,
-                    textColor: isMatchStarted ? Colors.red : Constants.mainColor,
-                    brWidth: 1.5,
-                    height: Responsive.screenHeight(context) * 0.05,
-                    width: Responsive.screenWidth(context) * 0.4,
-                    hasBorder: true,
-                    borderColor: isMatchStarted
-                        ? Colors.red
-                        : Constants.mainColor,
-                    textSize: Responsive.textSize(context, 12),
-                    fontWeight: FontWeight.w700,
-                  ),
+                        );
+                      },
+                    ),
                 ],
               ),
-            )
-          ],
+              Padding(
+                padding: EdgeInsets.only(
+                    top: Responsive.screenHeight(context) * 0.013),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      AppPhotot.locationIco,
+                      color: Colors.green,
+                      fit: BoxFit.fill,
+                    ),
+                    SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                    Text(
+                      widget.reservation.stadiumAddress,
+                      style: TextStyle(
+                        fontSize: Responsive.textSize(context, 18),
+                        fontWeight: FontWeight.w500,
+                        color: Constants.txtColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: Responsive.screenHeight(context) * 0.05,
+                width: Responsive.screenWidth(context) * 0.5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "يوم الحجز: ",
+                      style: TextStyle(
+                        fontSize: Responsive.textSize(context, 16),
+                        fontWeight: FontWeight.w500,
+                        color: Constants.txtColor,
+                      ),
+                    ),
+                    Text(
+                      formattedDate,
+                      style: TextStyle(
+                        fontSize: Responsive.textSize(context, 18),
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.005,
+                      width: Responsive.screenWidth(context) * 0.04,
+                      decoration: BoxDecoration(
+                        color: Constants.txtColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Text(
+                      date.day.toString(),
+                      style: TextStyle(
+                        fontSize: Responsive.textSize(context, 18),
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: Responsive.screenHeight(context) * 0.05,
+                width: Responsive.screenWidth(context) * 0.6,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "ساعة الحجز: ",
+                      style: TextStyle(
+                        fontSize: Responsive.textSize(context, 16),
+                        fontWeight: FontWeight.w500,
+                        color: Constants.txtColor,
+                      ),
+                    ),
+                    Text(
+                      startTime,
+                      style: TextStyle(
+                        fontSize: Responsive.textSize(context, 18),
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.005,
+                      width: Responsive.screenWidth(context) * 0.04,
+                      decoration: BoxDecoration(
+                        color: Constants.txtColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Text(
+                      endTime,
+                      style: TextStyle(
+                        fontSize: Responsive.textSize(context, 18),
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: Responsive.screenHeight(context) * 0.09,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomButton(
+                      onPress: () async {
+                        _launchGoogleMaps(widget.reservation.mapUrl);
+                      },
+                      text: 'مكان الملعب',
+                      color: Constants.mainColor,
+                      textColor: Colors.white,
+                      height: Responsive.screenHeight(context) * 0.05,
+                      width: Responsive.screenWidth(context) * 0.4,
+                      textSize: Responsive.textSize(context, 12),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    CustomButton(
+                      onPress: isMatchStarted
+                          ? () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) {
+                  //           return TimerScreen(
+                  //               selectedTime: startDateTime);
+                  //         },
+                  //       ),
+                  //     );
+                      }
+                          : () {
+                        CustomToast.show(
+                          context,
+                          _getFormattedDurationText(
+                              startDateTime.difference(DateTime.now())),
+                        );
+                      },
+                      text: isMatchStarted ? 'المبارة بدأت' : 'الوقت المتبقي',
+                      color: Colors.transparent,
+                      textColor: isMatchStarted ? Colors.red : Constants.mainColor,
+                      brWidth: 1.5,
+                      height: Responsive.screenHeight(context) * 0.05,
+                      width: Responsive.screenWidth(context) * 0.4,
+                      hasBorder: true,
+                      borderColor: isMatchStarted
+                          ? Colors.red
+                          : Constants.mainColor,
+                      textSize: Responsive.textSize(context, 12),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

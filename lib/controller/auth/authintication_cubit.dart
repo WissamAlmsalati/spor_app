@@ -122,14 +122,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         await _secureStorage.write(key: 'userId', value: responseBody['id'].toString());
         await _secureStorage.write(key: 'phoneVerified', value: responseBody['phone_verified'].toString());
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
-      // await SecureStorageData.setIsSignedUp(true);
-      // Navigator.pushAndRemoveUntil(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => OtpScreen(userId: responseBody['id'])),
-      //       (route) => false,
-      // );
-
+        await SecureStorageData.setIsSignedUp(true);
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => OtpScreen(userId: responseBody['id'])),
+           
+        );
       } else {
         emit(AuthenticationFailure('Sign up failed'));
       }

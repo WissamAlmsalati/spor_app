@@ -1,20 +1,19 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport/app/app_packges.dart';
+import 'package:sport/controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
 import 'package:sport/controller/profile/fetch_profile_cubit.dart';
-import 'package:sport/views/stadium/screens/widget/cursol_photo.dart';
-import 'package:sport/views/stadium/screens/widget/favorite_staduim.dart';
+import 'package:sport/controller/ads_controler/ads_photos_cubit.dart';
+import 'package:sport/controller/fetch_favorite/fetch_favorite_cubit.dart';
+import 'package:sport/utilits/constants.dart';
+import 'package:sport/utilits/responsive.dart';
 import 'package:sport/views/stadium/screens/widget/profile_appbar.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
-import '../../../controller/ads_controler/ads_photos_cubit.dart';
-import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
-import '../../../utilits/constants.dart';
-import '../../../utilits/images.dart';
-import '../../../utilits/responsive.dart';
-import '../../search_screen/search_screen.dart';
+
+import '../../recomended_staduim/recomended_staduim_screeen.dart';
 import '../../search_screen/widget/ads_photo_cursol.dart';
 import '../widget/logo_text.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StadiumScreen extends StatelessWidget {
   const StadiumScreen({super.key});
@@ -23,12 +22,12 @@ class StadiumScreen extends StatelessWidget {
     context.read<FetchProfileCubit>().fetchProfileInfo();
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
     context.read<FetchAdsImagesCubit>().fetchAdsImages();
+    context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
+    context.read<FetchRecomendedStaduimCubit>()..fetchRecomendedStaduims();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: ProfileAppBar.build(context),
       body: SafeArea(
@@ -37,9 +36,8 @@ class StadiumScreen extends StatelessWidget {
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.only(
-                left: Responsive.screenWidth(context) * 0.040,
-                right: Responsive.screenWidth(context) * 0.040,
+              padding: EdgeInsets.symmetric(
+                horizontal: Responsive.screenWidth(context) * 0.040,
               ),
               child: Column(
                 children: [
@@ -48,8 +46,8 @@ class StadiumScreen extends StatelessWidget {
                       top: Responsive.screenHeight(context) * 0.02,
                     ),
                     child: OpenContainer(
-                      closedElevation: 0, // Removes shadow when closed
-                      openElevation: 0,   // Removes shadow when opened
+                      closedElevation: 0,
+                      openElevation: 0,
                       closedShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.022),
                       ),
@@ -57,7 +55,7 @@ class StadiumScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.05),
                       ),
                       transitionType: ContainerTransitionType.fadeThrough,
-                      transitionDuration: const Duration(milliseconds: 300), // Adjust duration for smoothness
+                      transitionDuration: const Duration(milliseconds: 300),
                       openBuilder: (context, _) => StadiumSearchScreen(),
                       closedBuilder: (context, openContainer) => SearchFieldWidget(
                         controller: null,
@@ -72,14 +70,36 @@ class StadiumScreen extends StatelessWidget {
                     text: "عروض خاصة",
                   ),
                   AdsCarouselSlider(),
-                  const LogoText(
-                    logo: AppPhotot.hearth,
-                    text: " الملاعب المفضلة",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "افضل الملاعب",
+                        style: TextStyle(
+                          fontSize: Responsive.textSize(context, 16),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RecomendedStadiumScreen()),
+                          );
+                        },
+                        child: Text(
+                          "عرض الكل",
+                          style: TextStyle(
+                            fontSize: Responsive.textSize(context, 12),
+                            color: Constants.mainColor,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: GoogleFonts.cairo().fontFamily,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: FavoriteStadium(),
-                  ),
+                  const RecommendedStadiums(),
                 ],
               ),
             ),
@@ -89,3 +109,5 @@ class StadiumScreen extends StatelessWidget {
     );
   }
 }
+
+

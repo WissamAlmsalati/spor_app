@@ -29,11 +29,10 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     CoustomAppBr(
-                      logo: AppPhotot.notificationLogo,
                       title: 'الحساب',
                       color: Constants.mainColor,
                       height: Responsive.screenHeight(context) * 0.045,
-                      width: Responsive.screenHeight(context) * 0.045,
+                      width: Responsive.screenHeight(context) * 0.045, isHomeScreen: false,
                     ),
                     SizedBox(
                       height: Responsive.screenHeight(context) * 0.01,

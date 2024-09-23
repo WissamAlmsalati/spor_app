@@ -36,7 +36,7 @@ class ConfairmChangePass extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      color: Constants.mainColor),
+                      color: Constants.mainColor, isHomeScreen:  false,),
                   SizedBox(
                     height: Responsive.blockHeight(context) * 3,
                   ),

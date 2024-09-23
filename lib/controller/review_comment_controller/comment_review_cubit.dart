@@ -71,15 +71,7 @@ class CommentReviewCubit extends Cubit<CommentReviewState> {
     final body = {
       'stadium': stadiumId,
       'player': playerId,
-      'review': [
-        {
-          'key': 'rating',
-          'value': rating.toString(),
-          'description': '',
-          'type': 'text',
-          'enabled': true,
-        }
-      ],
+      'review': rating,
     };
 
     final response = await http.post(
@@ -94,11 +86,11 @@ class CommentReviewCubit extends Cubit<CommentReviewState> {
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       Navigator.of(context).pop(); // Close the current dialog
       _showSuccessDialog(context); // Show the success dialog
     } else {
-      throw Exception('review aded: ${response.body}');
+      throw Exception(utf8.decode(response.bodyBytes));
     }
   }
 

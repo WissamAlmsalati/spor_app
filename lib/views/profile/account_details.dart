@@ -44,7 +44,7 @@ class AccountDetailsState extends State<AccountDetails> {
                 title: 'الحساب',
                 color: Constants.mainColor,
                 height: Responsive.screenHeight(context) * 0.045,
-                width: Responsive.screenHeight(context) * 0.045,
+                width: Responsive.screenHeight(context) * 0.045, isHomeScreen: false,
               ),
               Stack(
                 alignment: Alignment.topCenter,

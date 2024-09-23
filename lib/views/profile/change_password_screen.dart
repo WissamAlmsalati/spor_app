@@ -52,7 +52,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   title: 'الحساب',
                   color: Constants.mainColor,
                   height: Responsive.screenHeight(context) * 0.045,
-                  width: Responsive.screenHeight(context) * 0.045,
+                  width: Responsive.screenHeight(context) * 0.045, isHomeScreen: false,
                 ),
                 SizedBox(
                   height: Responsive.screenHeight(context) * 0.03,

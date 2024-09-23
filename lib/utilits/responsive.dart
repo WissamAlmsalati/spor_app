@@ -19,6 +19,6 @@ class Responsive {
   static double textSize(BuildContext context, double size) {
     final width = MediaQuery.of(context).size.width;
     double val = (width / 390) * size;
-    return max(12, val); // Ensure the text size is at least 12
+    return max(12, val);
   }
 }

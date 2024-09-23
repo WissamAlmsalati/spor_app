@@ -267,7 +267,7 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
                 height: Responsive.screenHeight(context) * 0.08, // Adjust height as needed
                 child: Lottie.asset('assets/lottifies/Animation - 1725636111104.json'),
               ),
-              const SizedBox(height: 20),
+               SizedBox(height: Responsive.screenHeight(context) * 0.02),
               Text(message), // Display the message
             ],
           ),
@@ -288,7 +288,7 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
     return BlocListener<CommentReviewCubit, CommentReviewState>(
       listener: (context, state) {
         if (state is CommentReviewSuccess) {
-          _showCommentDialog(context, 'تم نشر تعليقك'); // Show success animation dialog
+          _showCommentDialog(context, 'تم نشر مراجعتك'); // Show success animation dialog
         } else if (state is CommentReviewError) {
           _showCommentDialog(context, state.message); // Show error message dialog
         }
@@ -312,7 +312,7 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
               labeltext: 'تعليق',
               lableSize: Responsive.textSize(context, 12),
               hintSize: Responsive.textSize(context, 12),
-              validatorText: 'Please enter a comment',
+              validatorText: 'الرجاء ادخال تعليق',
               keyboardType: TextInputType.text,
             ),
             const SizedBox(height: 16),

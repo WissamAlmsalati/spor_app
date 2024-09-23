@@ -135,18 +135,15 @@ class StadiumDetailBody extends StatelessWidget {
           ),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
           SizedBox(
-            height: Responsive.screenHeight(context) * 0.5  ,
-              child: CommentsWidget(
-                  isScrollable: false,
-                  stadiumId: stadium.id)),
-
-
+            height: Responsive.screenHeight(context) * 0.5,
+            child: CommentsWidget(
+                isScrollable: false,
+                stadiumId: stadium.id)),
         ],
       ),
     );
   }
 }
-
 
 class AllCommentsScreen extends StatelessWidget {
   final int stadiumId;

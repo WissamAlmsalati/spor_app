@@ -13,35 +13,23 @@ import '../../../utilits/responsive.dart';
 import '../../Booking/booking_screen.dart';
 import 'stadium_detail_dialog.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sport/app/app_packges.dart';
-import 'package:sport/views/auth/widgets/coustom_button.dart';
-import '../../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
-import '../../../controller/reverse_request/reverse_requestt_dart__cubit.dart';
-import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
-import '../../../utilits/constants.dart';
-import '../../../utilits/responsive.dart';
-import 'stadium_detail_dialog.dart';
-
 class StadiumDetailFooter extends StatelessWidget {
   final stadium;
   final StadiumDetailCubit cubit;
 
-  const StadiumDetailFooter(
-      {super.key, required this.stadium, required this.cubit});
+  const StadiumDetailFooter({
+    super.key,
+    required this.stadium,
+    required this.cubit,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final bool isReverseCompleted = false;
-    final bool noSessions = cubit.selectedSessionId == null;
-
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: Responsive.screenHeight(context) * 0.1,
       child: Container(
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.white),
         padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
         child: BlocBuilder<AuthenticationCubit, AuthenticationState>(
           builder: (context, state) {
@@ -49,90 +37,79 @@ class StadiumDetailFooter extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BlocConsumer<ReverseRequestCubit, ReverseRequestState>(
-                    listener: (context, state) {
-                      if (state is ReverseRequestSuccess) {
-                        StadiumDetailDialog.showReservationStatusDialog(
-                            context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
-                        context.read<ReservationCubit>().fetchReservations();
-                      } else if (state is ReverseRequestError) {
-                        StadiumDetailDialog.showReservationStatusDialog(
-                            context, 'خطأ', state.message);
-                      } else if (state is NoBalance) {
-                        StadiumDetailDialog.showReservationStatusDialog(
-                            context, 'خطأ', 'رصيدك غير كافي');
-                      }
-                    },
-                    builder: (context, state) {
-                      return BlocBuilder<StadiumDetailCubit,
-                          StaduimDetailState>(
-                        builder: (BuildContext context,
-                            StaduimDetailState state) {
-                          return CustomButton(
-                            textSize: Responsive.textSize(context, 14),
-                            onPress: () {
-                              if (cubit.selectedSessionId == null) {
+                  BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
+                    builder: (BuildContext context, StaduimDetailState state) {
+                      return CustomButton(
+                        textSize: Responsive.textSize(context, 14),
+                        onPress: () async {
+                          if (cubit.selectedSessionId == null) {
+                            Fluttertoast.showToast(
+                              msg: "يرجى اختيار توقيت الحجز",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                            return;
+                          }
+                          if (state is! StaduimDetailLoadedEmptySession) {
+                            final result = await showModalBottomSheet<bool>(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16.0)),
+                              ),
+                              builder: (context) => AcceptReservationBottomSheet(
+                                stadiumName: stadium.name,
+                                date: cubit.selectedDate,
+                                time: cubit.selectedTime,
+                                price: "${stadium.sessionPrice} دينار",
+                                title: 'تأكيد الحجز',
+                                confirmText: 'تأكيد',
+                                cancelText: 'إلغاء',
+                                onConfirm: () {
+                                  Navigator.of(context).pop(true);
+                                },
+                                onCancel: () {
+                                  Navigator.of(context).pop(false);
+                                },
+                              ),
+                            );
+
+                            if (result == true) {
+                              try {
+                                await context.read<ReverseRequestCubit>().sendReverseRequest(
+                                  stadium.id,
+                                  cubit.selectedDate,
+                                  cubit.selectedSessionId!,
+                                  false,
+                                  1,
+                                  context,
+                                );
+                              } catch (e) {
                                 Fluttertoast.showToast(
-                                  msg: "يرجى اختيار توقيت الحجز",
+                                  msg: "Error: $e",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
                                   backgroundColor: Colors.red,
                                   textColor: Colors.white,
-                                  fontSize: 16.0,
                                 );
-                                return;
                               }
-                              state is StaduimDetailLoadedEmptySession
-                                  ? null
-                                  : showModalBottomSheet(
-                                context: context,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(16.0)),
-                                ),
-                                builder: (context) =>
-                                    AcceptReservationBottomSheet(
-                                      stadiumName: stadium.name,
-                                      date: cubit.selectedDate,
-                                      time: cubit.selectedTime,
-                                      price: "${stadium.sessionPrice} دينار",
-                                      title: 'تأكيد الحجز',
-                                      confirmText: 'تأكيد',
-                                      cancelText: 'إلغاء',
-                                      onConfirm: () {
-                                        try {
-                                          Navigator.of(context).pop();
-                                          context.read<ReverseRequestCubit>()
-                                              .sendReverseRequest(
-                                            stadium.id,
-                                            cubit.selectedDate,
-                                            cubit.selectedSessionId!,
-                                            false,
-                                            1,
-                                          );
-                                        } catch (e) {
-                                          print(e);
-                                        }
-                                      },
-                                      onCancel: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                              );
-                            },
-                            text: state is StaduimDetailLoadedEmptySession
-                                ? 'غير متوفر'
-                                : 'احجز الان',
-                            color: state is StaduimDetailLoadedEmptySession
-                                ? Colors.red
-                                : Constants.mainColor,
-                            textColor: Colors.white,
-                            height: Responsive.screenHeight(context) * 0.06,
-                            width: Responsive.screenWidth(context) * 0.4,
-                            isDisabled: state is StaduimDetailLoadedEmptySession,
-                          );
+                            }
+                          }
                         },
+                        text: state is StaduimDetailLoadedEmptySession
+                            ? 'غير متوفر'
+                            : 'احجز الان',
+                        color: state is StaduimDetailLoadedEmptySession
+                            ? Colors.red
+                            : Constants.mainColor,
+                        textColor: Colors.white,
+                        height: Responsive.screenHeight(context) * 0.06,
+                        width: Responsive.screenWidth(context) * 0.4,
+                        isDisabled: state is StaduimDetailLoadedEmptySession,
                       );
                     },
                   ),
@@ -146,14 +123,15 @@ class StadiumDetailFooter extends StatelessWidget {
               );
             } else {
               return CustomButton(
-                  onPress: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  text: 'تسجيل الدخول',
-                  color: Constants.mainColor,
-                  textColor: Colors.white,
-                  height: Responsive.screenHeight(context) * 0.06,
-                  width: Responsive.screenWidth(context) * 0.4);
+                onPress: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                text: 'تسجيل الدخول',
+                color: Constants.mainColor,
+                textColor: Colors.white,
+                height: Responsive.screenHeight(context) * 0.06,
+                width: Responsive.screenWidth(context) * 0.4,
+              );
             }
           },
         ),
@@ -161,8 +139,6 @@ class StadiumDetailFooter extends StatelessWidget {
     );
   }
 }
-
-
 class AcceptReservationBottomSheet extends StatelessWidget {
   final String stadiumName;
   final String date;
@@ -195,7 +171,7 @@ class AcceptReservationBottomSheet extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.black12,
             blurRadius: 8,
             spreadRadius: 2,
@@ -218,35 +194,33 @@ class AcceptReservationBottomSheet extends StatelessWidget {
           DottedRowDivider(height: Responsive.screenHeight(context) * 0.001),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
 
-          // Stadium Name
           _buildReservationDetailRow(
             context,
             'الملعب:',
             stadiumName,
           ),
 
-          // Date
           _buildReservationDetailRow(
             context,
             'التاريخ:',
             date,
           ),
 
-          // Time
           _buildReservationDetailRow(
             context,
             'الوقت:',
             time,
           ),
 
-          // Price
           _buildReservationDetailRow(
             context,
             'السعر:',
-            '$price دينار',
+            '$price ',
           ),
 
-          SizedBox(height: Responsive.screenHeight(context) * 0.02),
+          SizedBox(
+            height: Responsive.screenHeight(context) * 0.03,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -270,16 +244,16 @@ class AcceptReservationBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-
-          // Add the dotted border below the buttons
-
+          SizedBox(
+            height: Responsive.screenHeight(context) * 0.03,
+          )
         ],
       ),
     );
   }
 
-  Widget _buildReservationDetailRow(BuildContext context, String label,
-      String value) {
+  Widget _buildReservationDetailRow(
+      BuildContext context, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -306,7 +280,6 @@ class AcceptReservationBottomSheet extends StatelessWidget {
     );
   }
 }
-
 
 class DottedRowDivider extends StatelessWidget {
   final double height;

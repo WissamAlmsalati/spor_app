@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sport/views/auth/widgets/coustom_button.dart';
-import 'package:sport/views/search_screen/widget/HorizontalCalendar.dart';
 import 'package:sport/views/search_screen/widget/screen_detail_shimmer.dart';
-import 'package:sport/views/search_screen/widget/session_list.dart';
 import 'package:sport/views/search_screen/widget/stadium_detail_body.dart';
 import 'package:sport/views/search_screen/widget/stadium_detail_footer.dart';
 import 'package:sport/views/search_screen/widget/stadium_detail_header.dart';
-import 'package:sport/views/search_screen/widget/staduim_photo_stack.dart';
 import 'package:sport/views/search_screen/widget/staduim_rating.dart';
-import 'package:sport/views/stadium/screens/widget/comments_widget.dart';
 import '../../app/app_packges.dart';
-import '../../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../controller/add_to_favorit/favorite_mangment_cubit.dart';
-import '../profile/widget/coustom_dialog.dart';
 
 class StadiumDetailScreen extends StatelessWidget {
   final int stadiumId;
@@ -36,14 +29,14 @@ class StadiumDetailScreen extends StatelessWidget {
               listener: (context, state) {
                 if (state is AdedToFavorite) {
                   Fluttertoast.showToast(
-                    msg: 'Stadium added to favorites',
+                    msg: 'تم الاضافة الى المفضلة',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 2,
                   );
                 } else if (state is RemovedFromFavorite) {
                   Fluttertoast.showToast(
-                    msg: 'Stadium removed from favorites',
+                    msg: 'تم الحذف من المفضلة',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 2,
@@ -172,7 +165,7 @@ class StadiumDetailScreen extends StatelessWidget {
                   ],
                 );
               } else if (state is StaduimDetailError) {
-                return Center(child: Text("حدث خطا ما"));
+                return const Center(child: Text("حدث خطا ما"));
               }
               return Container();
             },

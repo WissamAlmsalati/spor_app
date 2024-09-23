@@ -41,8 +41,8 @@ class CurrentBooking extends StatelessWidget {
               child: Text(
                 state.message,
                 style: TextStyle(
-                    fontSize: Responsive.textSize(context, 12),
-                fontWeight: FontWeight.w600,
+                  fontSize: Responsive.textSize(context, 12),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             );
@@ -54,6 +54,10 @@ class CurrentBooking extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 class ShimmerLoadingWidget extends StatelessWidget {
   const ShimmerLoadingWidget({super.key});
@@ -68,38 +72,44 @@ class ShimmerLoadingWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text shimmer
+            // Big Box with small boxes inside
             Container(
-              height: 20,
-              width: 200,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 20,
-              width: 150,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 20),
-            // Button shimmer
-            Container(
-              height: 40,
+              height: Responsive.screenHeight(context) * 0.3,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white,
               ),
-            ),
-            const SizedBox(height: 20),
-            // Smaller button shimmer
-            Container(
-              height: 40,
-              width: 150,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Small Box 1 (simulating text)
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.6,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 10),
+                    // Small Box 2 (simulating text)
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.4,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 20),
+                    // Small Box 3 (simulating button)
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.05,
+                      width: Responsive.screenWidth(context) * 0.3,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
               ),
             ),
+
           ],
         ),
       ),

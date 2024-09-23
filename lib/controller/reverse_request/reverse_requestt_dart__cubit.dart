@@ -1,10 +1,11 @@
-import 'dart:convert';
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../repostry/staduim_repostry.dart';
-import '../../utilits/secure_data.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../utilits/secure_data.dart';
+import '../../views/search_screen/widget/stadium_detail_dialog.dart';
+import '../Reservation_fetch/reservation_fetch_cubit.dart';
 
 part 'reverse_requestt_dart__state.dart';
 
@@ -13,7 +14,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
     _loadReservationState();
   }
 
-  Future<void> sendReverseRequest(int stadiumId, String selectedDate, int selectedSessionId, bool isMonthlyReservation, int paymentType) async {
+  Future<void> sendReverseRequest(int stadiumId, String selectedDate, int selectedSessionId, bool isMonthlyReservation, int paymentType, BuildContext context) async {
     emit(ReverseRequestLoading());
     try {
       final token = await SecureStorageData.getToken();
@@ -32,24 +33,18 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         'Content-Type': 'application/json',
       };
 
-      print('Request URL: https://api.sport.com.ly/player/reserve');
-      print('Request Headers: $requestHeaders');
-      print('Request Body: $requestBody');
-
       final response = await http.post(
         Uri.parse('https://api.sport.com.ly/player/reserve'),
         headers: requestHeaders,
         body: requestBody,
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
       if (response.statusCode == 201) {
         await _saveReservationState(true);
         emit(ReverseRequestSuccess());
-      } else if (response.statusCode == 400) {
-        print('Response body: ${utf8.decode(response.bodyBytes)}');
+        StadiumDetailDialog.showReservationStatusDialog(
+            context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
+        context.read<ReservationCubit>().fetchReservations();      } else if (response.statusCode == 400) {
         emit(NoBalance("لا يوجد رصيد كافي"));
       } else if (response.statusCode == 404) {
         emit(ReverseRequestError('Request failed: Not Found (404)'));
@@ -75,4 +70,6 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
       emit(ReverseRequestSuccess());
     }
   }
+
+
 }

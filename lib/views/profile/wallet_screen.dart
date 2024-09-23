@@ -38,7 +38,7 @@ class WalletScreen extends StatelessWidget {
                         title: "المحفظة",
                         color: Constants.mainColor,
                         height: Responsive.screenHeight(context) * 0.045,
-                        width: Responsive.screenHeight(context) * 0.045,
+                        width: Responsive.screenHeight(context) * 0.045, isHomeScreen: false,
                       ),
                       Padding(
                         padding: EdgeInsets.only(

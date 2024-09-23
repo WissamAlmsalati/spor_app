@@ -25,9 +25,10 @@ class StadiumDetailDialog {
               context.read<ReverseRequestCubit>().sendReverseRequest(
                 stadium.id,
                 selectedDate,
-                int.parse(selectedTime), // Convert selectedTime to int
+                int.parse(selectedTime),
                 isMonthlyReservation,
-                selectedSessionId, // Pass the selectedSessionId
+                selectedSessionId,
+                context,
               );
               isReserved = true;
             } catch (e) {
@@ -57,8 +58,8 @@ class StadiumDetailDialog {
           onCancel: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => HomeNavigation()), // Replace `HomeScreen` with your home screen widget
-                  (Route<dynamic> route) => false, // This predicate removes all previous routes
+              MaterialPageRoute(builder: (context) => HomeNavigation()),
+                  (Route<dynamic> route) => false,
             );          },
           height: Responsive.screenHeight(context) * 0.2,
           width: Responsive.screenWidth(context) * 0.75,
