@@ -21,3 +21,6 @@ class FetchRecomendedStaduimError extends FetchRecomendedStaduimState {
 }
 
 class FetchRecomendedStaduimSocketExceptionError extends FetchRecomendedStaduimState {}
+
+
+class RecomendedSocketExaption extends FetchRecomendedStaduimState{}

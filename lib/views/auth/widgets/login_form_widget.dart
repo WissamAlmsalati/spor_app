@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport/views/auth/screens/forget_password_screen.dart';
 import '../../../controller/auth/authintication_cubit.dart';
 import '../../../utilits/constants.dart';
 import '../../../utilits/responsive.dart';
@@ -40,16 +41,30 @@ class LoginFormWidget extends StatelessWidget {
                 keyboardType: TextInputType.phone,
                 validator: (value) => (value == null || value.isEmpty) ? 'ادخل رقم الهاتف' : null,
               ),
+
               CustomTextField(
-                lableSize: Responsive.textSize(context, 8),
-                hintSize: Responsive.textSize(context, 8),
-                validatorSize: Responsive.textSize(context, 6),
-                isPasswordField: true,
-                controller: passwordController,
-                labeltext: 'كلمة المرور',
-                validatorText: 'ادخل كلمة المرور',
-                validator: (value) => (value == null || value.isEmpty) ? 'ادخل كلمة المرور' : null,
-              ),
+  lableSize: Responsive.textSize(context, 8),
+  hintSize: Responsive.textSize(context, 8),
+  validatorSize: Responsive.textSize(context, 6),
+  controller: passwordController,
+  labeltext: 'كلمة المرور',
+  validatorText: 'ادخل كلمة المرور',
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'الرجاء ادخال كلمة المرور';
+    } else if (value.length < 8) {
+      return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+    } else if (!RegExp(r'^[A-Z]').hasMatch(value)) {
+      return 'يجب أن تبدأ كلمة المرور بحرف كبير';
+    }
+    return null;
+  },
+  showForgotPassword: true,
+  onForgotPassword: () {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgetPasswordScreen()));
+  },
+),
+
               CustomButton(
                 fontWeight: FontWeight.w600,
                 textSize: Responsive.textSize(context, 16),
@@ -84,6 +99,7 @@ class LoginFormWidget extends StatelessWidget {
                   );
                 },
               ),
+
             ],
           ),
         ),

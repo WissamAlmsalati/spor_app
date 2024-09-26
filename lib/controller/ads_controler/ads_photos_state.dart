@@ -19,6 +19,8 @@ class AdsImagesError extends AdsImagesState {
   AdsImagesError(this.error);
 }
 
+class AdsSocketExaption extends AdsImagesState{}
+
 class SendAdsImagesLoading extends AdsImagesState {}
 
 class SendAdsImagesSuccess extends AdsImagesState {}
@@ -28,3 +30,4 @@ class SendAdsImagesError extends AdsImagesState {
 
   SendAdsImagesError(this.error);
 }
+

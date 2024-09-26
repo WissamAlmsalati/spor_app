@@ -5,15 +5,16 @@ import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit
 import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
 import 'package:sport/views/naviggation/home_navigation.dart';
-import '../controller/ads_controler/ads_photos_cubit.dart';
-import '../controller/cancel_reservation/cancekl_reserv_cubit.dart';
-import '../controller/change_pass_controler/change_password_cubit.dart';
-import '../controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
-import '../controller/region_search_controler/region_search_cubit.dart';
-import '../controller/reverse_request/reverse_requestt_dart__cubit.dart';
-import '../controller/review_comment_controller/comment_review_cubit.dart';
-import '../repostry/staduim_repostry.dart';
-import 'app_packges.dart';
+import 'controller/ads_controler/ads_photos_cubit.dart';
+import 'controller/cancel_reservation/cancekl_reserv_cubit.dart';
+import 'controller/change_pass_controler/change_password_cubit.dart';
+import 'controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
+import 'controller/forget_password/forget_password_cubit.dart';
+import 'controller/region_search_controler/region_search_cubit.dart';
+import 'controller/reverse_request/reverse_requestt_dart__cubit.dart';
+import 'controller/review_comment_controller/comment_review_cubit.dart';
+import 'repostry/staduim_repostry.dart';
+import 'app/app_packges.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CommentReviewCubit()),
         BlocProvider(create: (context) => CanceklReservCubit()),
         BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
+        BlocProvider(create: (context) => ForgetPasswordCubit()),
       ],
       child: Builder(
         builder: (context) {

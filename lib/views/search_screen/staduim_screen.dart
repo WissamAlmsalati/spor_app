@@ -150,6 +150,7 @@ class StadiumDetailScreen extends StatelessWidget {
                                       fontSize: Responsive.textSize(context, 16),
                                       fontWeight: FontWeight.w600,
                                     ),
+
                                   ),
                                 ],
                               ),

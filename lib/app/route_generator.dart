@@ -57,7 +57,6 @@ class RouteGenerator {
       case '/createOrLoginScreen':
         return MaterialPageRoute(builder: (_) => const CreateOrLoginScreen());
 
-
       case '/otpScreen':
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(

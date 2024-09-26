@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:sport/app/app_packges.dart';
 import 'dart:convert';
 import 'package:sport/models/reservation.dart';
 import '../../utilits/secure_data.dart';
@@ -65,7 +66,11 @@ class ReservationCubit extends Cubit<ReservationState> {
         emit(ReservationError('Failed to delete reservation: ${response.reasonPhrase}'));
       }
     } catch (e) {
-      emit(ReservationError('An error occurred: $e'));
+      if (e is SocketExceptionError) {
+        emit(OldReservSocketError());
+      } else {
+        emit(ReservationError('An error occurred: $e'));
+      }
     }
   }
 }

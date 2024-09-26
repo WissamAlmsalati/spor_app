@@ -58,7 +58,6 @@ dev_dependencies:
   shared_preferences: ^2.2.3
   get: ^4.6.6
   bloc: ^8.1.4
-
   calendar_date_picker2: ^1.1.5
   google_fonts: ^6.2.1
   flutter_lints: ^3.0.0

@@ -197,7 +197,6 @@ class PasswordAndBirthDayForm extends StatelessWidget {
                 value == null || value.isEmpty ? 'الرجاء ادخال تاريخ الميلاد' : null,
               ),
               CustomTextField(
-                isPasswordField: true,
                 lableSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
@@ -214,7 +213,6 @@ class PasswordAndBirthDayForm extends StatelessWidget {
                 },
               ),
               CustomTextField(
-                isPasswordField: true,
                 lableSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),

@@ -46,6 +46,12 @@ class CurrentBooking extends StatelessWidget {
                 ),
               ),
             );
+          }else if (state is OldReservSocketError)
+            {
+              return Center( child:  Text(
+                "لايوجد اتصال بالانترنت"
+              ),
+          );
           } else {
             return const Center(child: Text('Unknown state'));
           }
@@ -72,7 +78,6 @@ class ShimmerLoadingWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Big Box with small boxes inside
             Container(
               height: Responsive.screenHeight(context) * 0.3,
               width: double.infinity,

@@ -49,7 +49,46 @@ class AdsCarouselSlider extends StatelessWidget {
               ),
             ],
           );
-        } else if (state is AdsImagesLoaded) {
+        }else if (state is AdsSocketExaption){
+
+          return  Column(
+            children: [
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    top: Responsive.screenHeight(context) * 0.02,
+                  ),
+                  height: Responsive.screenHeight(context) * 0.18, // Match CarouselSlider height
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.03), // Match border radius
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) { // Placeholder for dots
+                  return Container(
+                    width: Responsive.screenWidth(context) * 0.04,
+                    height: Responsive.screenHeight(context) * 0.01,
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.01),
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]!,
+                    ),
+                  );
+                }),
+              ),
+            ],
+          );
+
+        }
+
+        else if (state is AdsImagesLoaded) {
           return Column(
             children: [
               CarouselSlider(

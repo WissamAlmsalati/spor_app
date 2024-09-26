@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
+import 'package:sport/app/app_packges.dart';
 
 import '../../models/ads_photo_model.dart';
 import '../../services/apis.dart';
@@ -25,6 +27,9 @@ class FetchAdsImagesCubit extends Cubit<AdsImagesState> {
         emit(AdsImagesError('Failed to load ads images'));
       }
     } catch (e) {
+      if (e is SocketExceptionError){
+        emit(AdsSocketExaption());
+      }
       emit(AdsImagesError(e.toString()));
     }
   }

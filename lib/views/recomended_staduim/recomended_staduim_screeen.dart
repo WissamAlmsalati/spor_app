@@ -166,8 +166,12 @@ class RecommendedStadiums extends StatelessWidget {
               );
             },
           );
-        } else {
-          return const Center(child: Text('Unknown state'));
+        } else if (state is FetchRecomendedStaduimSocketExceptionError){
+          return SizedBox(
+            height: Responsive.screenHeight(context)*0.4,
+              child: const Center(child:Text("لا يوجد اتصال بالانترنت")));}
+          else {
+          return const Center(child: Text('حدث خطأ'));
         }
       },
     );
