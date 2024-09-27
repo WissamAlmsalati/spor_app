@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:sport/utilits/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:sport/utilits/constants.dart';
+import 'package:sport/utilits/images.dart';
+import 'package:sport/utilits/loading_animation.dart';
+import 'package:sport/utilits/responsive.dart';
+import 'package:sport/views/auth/widgets/coustom_button.dart';
 import '../../../controller/profile/fetch_profile_cubit.dart';
-import '../../../utilits/images.dart';
-import '../../../utilits/loading_animation.dart';
-import '../../../utilits/responsive.dart';
-import '../../auth/widgets/coustom_button.dart';
+import '../../../controller/profile_picture/profile_picture_cubit.dart';
 
 class UserInfo extends StatelessWidget {
   const UserInfo({super.key});
@@ -14,9 +18,25 @@ class UserInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: Responsive.blockHeight(context) * 5,
-          backgroundImage: const AssetImage(AppPhotot.userAvatar),
+        Stack(
+          children: [
+            BlocBuilder<ProfilePictureCubit, ProfilePictureState>(
+              builder: (context, state) {
+                return GestureDetector(
+                  onTap: () => context.read<ProfilePictureCubit>().pickImage(),
+                  child: CircleAvatar(
+                    radius: Responsive.blockHeight(context) * 5,
+                    backgroundImage: state is ProfilePictureSelected
+                        ? FileImage(File(state.imagePath))
+                        : const AssetImage(AppPhotot.userAvatar) as ImageProvider,
+                  ),
+                );
+              },
+            ),
+            ProfilePictureOverlay(
+              onTap: () => context.read<ProfilePictureCubit>().pickImage(),
+            ),
+          ],
         ),
         SizedBox(
           height: Responsive.blockHeight(context) * 2,
@@ -81,6 +101,24 @@ class UserInfo extends StatelessWidget {
         SizedBox(
           height: Responsive.blockHeight(context) * 1,
         ),
+        BlocBuilder<ProfilePictureCubit, ProfilePictureState>(
+          builder: (context, state) {
+            if (state is ProfilePictureSelected) {
+              return CustomButton(
+                height: Responsive.screenWidth(context) * 0.1,
+                color: Constants.mainColor,
+                onPress: () {
+                  context.read<ProfilePictureCubit>().uploadImage(state.imagePath);
+                },
+                text: "Upload Picture",
+                textColor: Colors.white,
+                textSize: Responsive.textSize(context, 8),
+                width: Responsive.screenWidth(context) * 0.31,
+              );
+            }
+            return SizedBox.shrink();
+          },
+        ),
         SizedBox(
           height: Responsive.blockHeight(context) * 1,
         ),
@@ -88,3 +126,42 @@ class UserInfo extends StatelessWidget {
     );
   }
 }
+
+
+
+
+class ProfilePictureOverlay extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const ProfilePictureOverlay({required this.onTap, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      right: 0,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: Responsive.blockHeight(context) * 5,
+          height: Responsive.blockHeight(context) * 2.5,
+          decoration: BoxDecoration(
+            color: Constants.mainColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(Responsive.blockHeight(context) * 2.5),
+              bottomRight: Radius.circular(Responsive.blockHeight(context) * 2.5),
+            ),
+          ),
+          child: Center(
+            child: Icon(
+              Icons.camera_alt,
+              color: Colors.white,
+              size: Responsive.blockHeight(context) * 2,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

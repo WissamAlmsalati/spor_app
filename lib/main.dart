@@ -10,6 +10,7 @@ import 'controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import 'controller/change_pass_controler/change_password_cubit.dart';
 import 'controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
 import 'controller/forget_password/forget_password_cubit.dart';
+import 'controller/profile_picture/profile_picture_cubit.dart';
 import 'controller/region_search_controler/region_search_cubit.dart';
 import 'controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import 'controller/review_comment_controller/comment_review_cubit.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CanceklReservCubit()),
         BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
         BlocProvider(create: (context) => ForgetPasswordCubit()),
+        BlocProvider(create: (context) => ProfilePictureCubit()),
       ],
       child: Builder(
         builder: (context) {

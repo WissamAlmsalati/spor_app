@@ -401,7 +401,6 @@ class TimerScreen extends StatelessWidget {
 
 
 
-
 class CustomToast {
   static void show(BuildContext context, String message) {
     OverlayEntry overlayEntry = OverlayEntry(
@@ -460,7 +459,6 @@ class _AnimatedToast extends StatelessWidget {
             color: Constants.mainColor,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.03),
-
           ),
           child: Text(
             message,
@@ -476,6 +474,3 @@ class _AnimatedToast extends StatelessWidget {
     );
   }
 }
-
-// Usage example in your code:
-

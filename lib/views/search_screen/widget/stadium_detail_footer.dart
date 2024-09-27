@@ -70,7 +70,10 @@ class StadiumDetailFooter extends StatelessWidget {
                                 confirmText: 'تأكيد',
                                 cancelText: 'إلغاء',
                                 onConfirm: () {
+                                  print ('stadium.id: ${stadium.id}+cubit.selectedDate: ${cubit.selectedDate}+cubit.selectedSessionId: ${cubit.selectedSessionId}');
+
                                   Navigator.of(context).pop(true);
+
                                 },
                                 onCancel: () {
                                   Navigator.of(context).pop(false);
@@ -79,6 +82,7 @@ class StadiumDetailFooter extends StatelessWidget {
                             );
 
                             if (result == true) {
+                              print ('stadium.id: ${stadium.id}+cubit.selectedDate: ${cubit.selectedDate}+cubit.selectedSessionId: ${cubit.selectedSessionId}');
                               try {
                                 await context.read<ReverseRequestCubit>().sendReverseRequest(
                                   stadium.id,

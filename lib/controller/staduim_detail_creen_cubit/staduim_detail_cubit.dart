@@ -40,7 +40,7 @@ final response = await http.get(
             .toList();
 
         if (availableSessions.isEmpty) {
-          emit(StaduimDetailLoadedEmptySession(stadiumInfo: stadiumInfo));
+          emit(StaduimDetailLoadedEmptySession(stadiumInfo: stadiumInfo, isFavorite: stadiumInfo.isFavourite));
         } else {
           selectedDate = availableSessions.first.date;
           selectedSessionId = null; // No session selected initially
@@ -97,14 +97,20 @@ void setSelectedSessionId(int? sessionId, String time) {
     }
   }
 
-  void toggleFavoriteStatus() {
-    if (state is StaduimDetailLoaded) {
-      final currentState = state as StaduimDetailLoaded;
-      emit(StaduimDetailLoaded(
-        stadiumInfo: currentState.stadiumInfo,
-        availableSessions: currentState.availableSessions,
-        isFavorite: !currentState.isFavorite,
-      ));
-    }
+void toggleFavoriteStatus() {
+  if (state is StaduimDetailLoaded) {
+    final currentState = state as StaduimDetailLoaded;
+    emit(StaduimDetailLoaded(
+      stadiumInfo: currentState.stadiumInfo,
+      availableSessions: currentState.availableSessions,
+      isFavorite: !currentState.isFavorite,
+    ));
+  } else if (state is StaduimDetailLoadedEmptySession) {
+    final currentState = state as StaduimDetailLoadedEmptySession;
+    emit(StaduimDetailLoadedEmptySession(
+      stadiumInfo: currentState.stadiumInfo,
+      isFavorite: !currentState.isFavorite,
+    ));
   }
+}
 }

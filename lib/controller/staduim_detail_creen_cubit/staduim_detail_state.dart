@@ -21,8 +21,9 @@ class StaduimDetailLoaded extends StaduimDetailState {
 
 class StaduimDetailLoadedEmptySession extends StaduimDetailState {
   final StadiumInfo stadiumInfo;
+  final bool isFavorite;
 
-  StaduimDetailLoadedEmptySession({required this.stadiumInfo});
+  StaduimDetailLoadedEmptySession({required this.isFavorite, required this.stadiumInfo});
 }
 
 class StaduimDetailError extends StaduimDetailState {

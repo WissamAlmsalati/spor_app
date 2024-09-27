@@ -16,7 +16,9 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
 
   Future<void> sendReverseRequest(int stadiumId, String selectedDate, int selectedSessionId, bool isMonthlyReservation, int paymentType, BuildContext context) async {
     emit(ReverseRequestLoading());
+    print('Sending reverse request...');
     try {
+
       final token = await SecureStorageData.getToken();
       final requestBody = jsonEncode({
         "session": {
@@ -40,20 +42,35 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
       );
 
       if (response.statusCode == 201) {
+        print('Failed to send request: ${response.reasonPhrase}');
+
+        print('Request sent successfully');
         await _saveReservationState(true);
         emit(ReverseRequestSuccess());
         StadiumDetailDialog.showReservationStatusDialog(
             context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
         context.read<ReservationCubit>().fetchReservations();      } else if (response.statusCode == 400) {
         emit(NoBalance("لا يوجد رصيد كافي"));
+      }else if (response.statusCode == 400){
+        print('Failed to send request: ${response.reasonPhrase}');
+        emit(ReverseRequestError('حدث خطأ ما'));
       } else if (response.statusCode == 404) {
+        print('Failed to send request: ${response.reasonPhrase}');
+
+        print('Request failed: Not Found (404)');
         emit(ReverseRequestError('Request failed: Not Found (404)'));
       } else if (response.statusCode == 500) {
+        print('Failed to send request: ${response.reasonPhrase}');
+
+        print('Request failed: Internal Server Error (500)');
         emit(ReverseRequestError('Request failed: Internal Server Error (500)'));
       } else {
+        print('Failed to send request: ${response.reasonPhrase}');
         emit(ReverseRequestError('Failed to send request: ${response.reasonPhrase}'));
       }
     } catch (e) {
+
+      print('An error occurred: $e');
       emit(ReverseRequestError('An error occurred: $e'));
     }
   }
@@ -70,6 +87,4 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
       emit(ReverseRequestSuccess());
     }
   }
-
-
 }

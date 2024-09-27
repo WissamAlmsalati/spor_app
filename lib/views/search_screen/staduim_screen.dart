@@ -94,6 +94,7 @@ class StadiumDetailScreen extends StatelessWidget {
                 );
               } else if (state is StaduimDetailLoadedEmptySession) {
                 final stadium = state.stadiumInfo;
+
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

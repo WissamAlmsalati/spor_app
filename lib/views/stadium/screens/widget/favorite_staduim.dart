@@ -74,6 +74,7 @@ class FavoriteStadium extends StatelessWidget {
                   itemCount: state.stadiums.length,
                   itemBuilder: (context, index) {
                     return StadiumBoxWidget(
+                      isFavoriteWidget: true,
                       imageUrl: state.stadiums[index].image,
                       name: state.stadiums[index].name,
                       isAvailable: state.stadiums[index].isAvailable,
@@ -173,13 +174,14 @@ class StadiumBoxWidget extends StatelessWidget {
   final String name;
   final bool isAvailable;
   final VoidCallback onTap;
+  final isFavoriteWidget;
 
   const StadiumBoxWidget({
     required this.imageUrl,
     required this.name,
     required this.isAvailable,
     required this.onTap,
-    Key? key,
+    Key? key, this.isFavoriteWidget,
   }) : super(key: key);
 
   @override
@@ -210,10 +212,11 @@ class StadiumBoxWidget extends StatelessWidget {
                       image: DecorationImage(
                         image: NetworkImage(imageUrl),
                         fit: BoxFit.cover,
-                      ),
+         ),
                     ),
                   ),
-                  Positioned(
+                  isFavoriteWidget != null
+                  ? Positioned(
                     right: Responsive.screenWidth(context) * 0.04,
                     top: Responsive.screenHeight(context) * 0.02,
                     child: SvgPicture.asset(
@@ -222,7 +225,8 @@ class StadiumBoxWidget extends StatelessWidget {
                       width: Responsive.screenWidth(context) * 0.025,
                       height: Responsive.screenHeight(context) * 0.020,
                     ),
-                  ),
+                  )
+                  : Container(),
                 ],
               ),
               Padding(

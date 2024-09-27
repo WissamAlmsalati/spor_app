@@ -56,7 +56,7 @@ class LoginFormWidget extends StatelessWidget {
       return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
     } else if (!RegExp(r'^[A-Z]').hasMatch(value)) {
       return 'يجب أن تبدأ كلمة المرور بحرف كبير';
-    }
+      }
     return null;
   },
   showForgotPassword: true,

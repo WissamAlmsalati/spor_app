@@ -132,10 +132,10 @@ class StaduimPhotoStack extends StatelessWidget {
             right: 0,
             child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
               builder: (BuildContext context, StaduimDetailState state) {
-                final bool isFavorite = state is StaduimDetailLoaded && state.isFavorite;
+                final bool isFavorite = (state is StaduimDetailLoaded && state.isFavorite) || (state is StaduimDetailLoadedEmptySession && state.isFavorite);
                 return IconButton(
                   onPressed: () {
-                    if (state is StaduimDetailLoaded) {
+                    if (state is StaduimDetailLoaded || state is StaduimDetailLoadedEmptySession) {
                       context.read<StadiumDetailCubit>().toggleFavoriteStatus();
                       if (isFavorite) {
                         context.read<AddToFavoriteCubit>().removeFromFavorite(stdId, context);
