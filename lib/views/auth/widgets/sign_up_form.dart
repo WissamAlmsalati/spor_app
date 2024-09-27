@@ -35,31 +35,32 @@ class SignUpForm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomTextField(
-                lableSize: Responsive.textSize(context, 8),
+                labelSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: firstnameController,
-                labeltext: 'الاسم',
+                labelText: 'الاسم',
                 validatorText: 'الرجاء ادخال الاسم',
                 validator: (value) =>
                     value == null || value.isEmpty ? 'الرجاء ادخال الاسم' : null,
               ),
               CustomTextField(
-                lableSize: Responsive.textSize(context, 8),
+                labelSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: lastnameController,
-                labeltext: 'اللقب',
+                keyboardType: TextInputType.name,
+                labelText: 'اللقب',
                 validatorText: 'الرجاء ادخال اللقب',
                 validator: (value) =>
                     value == null || value.isEmpty ? 'الرجاء ادخال اللقب' : null,
               ),
               CustomTextField(
-                lableSize: Responsive.textSize(context, 8),
+                labelSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: phoneController,
-                labeltext: 'رقم الهاتف',
+                labelText: 'رقم الهاتف',
                 validatorText: 'الرجاء ادخال رقم الهاتف',
                 keyboardType: TextInputType.phone,
                 validator: (value) =>
@@ -195,13 +196,15 @@ class PasswordAndBirthDayForm extends StatelessWidget {
                 validatorText: 'الرجاء ادخال تاريخ الميلاد',
                 validator: (value) =>
                 value == null || value.isEmpty ? 'الرجاء ادخال تاريخ الميلاد' : null,
+
               ),
               CustomTextField(
-                lableSize: Responsive.textSize(context, 8),
+                labelSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: passwordController,
-                labeltext: 'كلمة المرور',
+
+                labelText: 'كلمة المرور',
                 validatorText: 'الرجاء ادخال كلمة المرور',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -213,11 +216,11 @@ class PasswordAndBirthDayForm extends StatelessWidget {
                 },
               ),
               CustomTextField(
-                lableSize: Responsive.textSize(context, 8),
+                labelSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: confirmPasswordController,
-                labeltext: 'تأكيد كلمة المرور',
+                labelText: 'تأكيد كلمة المرور',
                 validatorText: 'الرجاء ادخال تأكيد كلمة المرور',
                 validator: (value) {
                   if (value == null || value.isEmpty) {

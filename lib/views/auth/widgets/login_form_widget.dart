@@ -32,22 +32,24 @@ class LoginFormWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomTextField(
-                lableSize: Responsive.textSize(context, 6),
+                labelSize: Responsive.textSize(context, 6),
                 hintSize: Responsive.textSize(context, 10),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: firstnameController,
-                labeltext: 'رقم الهاتف',
+                labelText: 'رقم الهاتف',
                 validatorText: 'ادخل رقم الهاتف',
                 keyboardType: TextInputType.phone,
                 validator: (value) => (value == null || value.isEmpty) ? 'ادخل رقم الهاتف' : null,
               ),
 
               CustomTextField(
-  lableSize: Responsive.textSize(context, 8),
+  labelSize: Responsive.textSize(context, 8),
   hintSize: Responsive.textSize(context, 8),
   validatorSize: Responsive.textSize(context, 6),
+
   controller: passwordController,
-  labeltext: 'كلمة المرور',
+
+  labelText: 'كلمة المرور',
   validatorText: 'ادخل كلمة المرور',
   validator: (value) {
     if (value == null || value.isEmpty) {

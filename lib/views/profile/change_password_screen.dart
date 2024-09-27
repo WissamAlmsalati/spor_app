@@ -134,17 +134,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CustomTextField(
-                                lableSize: Responsive.textSize(context, 8),
+                                labelSize: Responsive.textSize(context, 8),
                                 hintSize: Responsive.textSize(context, 8),
                                 controller: _oldPassword,
-                                labeltext: "كلمة السر القديمة",
+                                labelText: "كلمة السر القديمة",
                                 validatorText: "كلمة السر القديمة مطلوبة",
                               ),
                               CustomTextField(
-                                lableSize: Responsive.textSize(context, 8),
+                                labelSize: Responsive.textSize(context, 8),
                                 hintSize: Responsive.textSize(context, 8),
                                 controller: _newPassword,
-                                labeltext: "كلمة السر الجديدة",
+                                labelText: "كلمة السر الجديدة",
                                 validatorText: "ادخل كلمة السر الجديدة",
                               ),
                               BlocBuilder<ChangePasswordCubit, ChangePasswordState>(

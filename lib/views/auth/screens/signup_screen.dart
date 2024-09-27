@@ -85,33 +85,33 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CustomTextField(
-                        lableSize: Responsive.textSize(context, 6),
+                        labelSize: Responsive.textSize(context, 6),
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: firstnameController,
-                        labeltext: 'الاسم',
+                        labelText: 'الاسم',
                         validatorText: 'الرجاء ادخال الاسم',
                         validator: (value) => value == null || value.isEmpty
                             ? 'الرجاء ادخال الاسم'
                             : null,
                       ),
                       CustomTextField(
-                        lableSize: Responsive.textSize(context, 6),
+                        labelSize: Responsive.textSize(context, 6),
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: lastnameController,
-                        labeltext: 'اللقب',
+                        labelText: 'اللقب',
                         validatorText: 'الرجاء ادخال اللقب',
                         validator: (value) => value == null || value.isEmpty
                             ? 'الرجاء ادخال اللقب'
                             : null,
                       ),
                       CustomTextField(
-                        lableSize: Responsive.textSize(context, 6),
+                        labelSize: Responsive.textSize(context, 6),
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: phoneController,
-                        labeltext: 'رقم الهاتف',
+                        labelText: 'رقم الهاتف',
                         validatorText: 'الرجاء ادخال رقم الهاتف',
                         validator: (value) => value == null || value.isEmpty
                             ? 'الرجاء ادخال رقم الهاتف'
@@ -188,11 +188,11 @@ class _SignUpState extends State<SignUp> {
                             : null,
                       ),
                       CustomTextField(
-                        lableSize: Responsive.textSize(context, 6),
+                        labelSize: Responsive.textSize(context, 6),
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: passwordController,
-                        labeltext: 'كلمة المرور',
+                        labelText: 'كلمة المرور',
                         validatorText: 'الرجاء ادخال كلمة المرور',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -206,11 +206,11 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       CustomTextField(
-                        lableSize: Responsive.textSize(context, 6),
+                        labelSize: Responsive.textSize(context, 6),
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: confirmPasswordController,
-                        labeltext: 'تأكيد كلمة المرور',
+                        labelText: 'تأكيد كلمة المرور',
                         validatorText: 'الرجاء ادخال تأكيد كلمة المرور',
                         validator: (value) {
                           if (value == null || value.isEmpty) {

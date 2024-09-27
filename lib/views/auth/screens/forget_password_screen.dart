@@ -143,10 +143,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CustomTextField(
-                              lableSize: Responsive.textSize(context, 8),
+                              labelSize: Responsive.textSize(context, 8),
                               hintSize: Responsive.textSize(context, 8),
                               controller: _usernameController,
-                              labeltext: "اسم المستخدم",
+                              labelText: "اسم المستخدم",
                               validatorText: "اسم المستخدم مطلوب",
                             ),
                             CustomButton(

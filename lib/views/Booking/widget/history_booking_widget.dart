@@ -309,8 +309,8 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
           children: [
             CustomTextField(
               controller: commentController,
-              labeltext: 'تعليق',
-              lableSize: Responsive.textSize(context, 12),
+              labelText: 'تعليق',
+              labelSize: Responsive.textSize(context, 12),
               hintSize: Responsive.textSize(context, 12),
               validatorText: 'الرجاء ادخال تعليق',
               keyboardType: TextInputType.text,

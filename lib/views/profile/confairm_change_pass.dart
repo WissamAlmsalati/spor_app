@@ -71,7 +71,7 @@ class ConfairmChangePass extends StatelessWidget {
                         children: [
                           CustomTextField(
                             controller: _oldpassword,
-                            labeltext: "كلمة المرور الجديدة",
+                            labelText: "كلمة المرور الجديدة",
                             validatorText: " كلمة المرور الجديدة مطلوبة",
                           ),
                           SizedBox(

@@ -43,37 +43,44 @@ class _CommentsWidgetState extends State<CommentsWidget> {
         if (state is FetchCommentsLoading) {
           return CommentsShimmer();
         } else {
-          return PagedListView<int, Comment>(
-            physics: widget.isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<Comment>(
-              itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
-              firstPageErrorIndicatorBuilder: (context) => const Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
-                ],
-              ),
-              noItemsFoundIndicatorBuilder: (context) => const Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Center(child: Text('لاتوجد تعليقات علي هاذا الملعب')),
-                ],
-              ),
-              newPageErrorIndicatorBuilder: (context) => const Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Center(child: Text('حدث خطأ')),
-                ],
-              ),
-              newPageProgressIndicatorBuilder: (context) => CommentsShimmer(),
-            ),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: state is FetchCommentsLoaded && state.comments.isEmpty
+                      ? Responsive.screenHeight(context) * 0.1
+                      : Responsive.screenHeight(context) * 0.5,
+                ),
+                child: PagedListView<int, Comment>(
+                  physics: widget.isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<Comment>(
+                    itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
+                    firstPageErrorIndicatorBuilder: (context) => const Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
+                      ],
+                    ),
+                    noItemsFoundIndicatorBuilder: (context) => Center(child: Text('لاتوجد تعليقات علي هاذا الملعب')),
+                    newPageErrorIndicatorBuilder: (context) => const Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Center(child: Text('حدث خطأ')),
+                      ],
+                    ),
+                    newPageProgressIndicatorBuilder: (context) => CommentsShimmer(),
+                  ),
+                ),
+              );
+            },
           );
         }
       },
     );
   }
 }
+
 class CommentWidget extends StatelessWidget {
   final Comment comment;
 
@@ -174,6 +181,7 @@ class CommentWidget extends StatelessWidget {
     }
   }
 }
+
 
 class CommentsShimmer extends StatelessWidget {
   @override

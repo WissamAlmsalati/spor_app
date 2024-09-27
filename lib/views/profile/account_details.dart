@@ -69,9 +69,9 @@ class AccountDetailsState extends State<AccountDetails> {
                             children: [
                               CustomTextField(
                                 controller: _name,
-                                labeltext: "الاسم",
+                                labelText: "الاسم",
                                 validatorText: "الاسم مطلوب",
-                                lableSize: Responsive.textSize(context, 8),
+                                labelSize: Responsive.textSize(context, 8),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'الاسم مطلوب';
@@ -85,9 +85,9 @@ class AccountDetailsState extends State<AccountDetails> {
 
                               CustomTextField(
                                 controller: _phone,
-                                labeltext: "رقم الهاتف",
+                                labelText: "رقم الهاتف",
                                 validatorText: "رقم الهاتف مطلوب",
-                                lableSize: Responsive.textSize(context, 8),
+                                labelSize: Responsive.textSize(context, 8),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'الاسم مطلوب';

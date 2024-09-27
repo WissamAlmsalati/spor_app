@@ -9,6 +9,7 @@ import 'package:sport/views/search_screen/widget/staduim_rating.dart';
 import '../../app/app_packges.dart';
 import '../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../controller/add_to_favorit/favorite_mangment_cubit.dart';
+import '../stadium/screens/widget/comments_widget.dart';
 
 class StadiumDetailScreen extends StatelessWidget {
   final int stadiumId;
@@ -81,7 +82,9 @@ class StadiumDetailScreen extends StatelessWidget {
                                 selectedSession: selectedSession,
                                 cubit: cubit,
                               ),
+
                             ),
+
                           ],
                         ),
                       ),
@@ -152,7 +155,13 @@ class StadiumDetailScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                     ),
 
+
                                   ),
+                                  SizedBox(
+                                      height: Responsive.screenHeight(context) * 0.5,
+                                      child: CommentsWidget(
+                                          isScrollable: false,
+                                          stadiumId: stadium.id)),
                                 ],
                               ),
                             ),
