@@ -41,16 +41,28 @@ class _SignUpState extends State<SignUp> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    firstnameController.dispose();
+    lastnameController.dispose();
+    phoneController.dispose();
+    birthdateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: PageView(
-          controller: _pageController,
-          physics: const NeverScrollableScrollPhysics(), // Disable swipe
-          children: [
-            _buildSignUpForm(context),
-            _buildPasswordAndBirthDayForm(context),
-          ],
+        child: FocusScope(
+          child: PageView(
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(), // Disable swipe
+            children: [
+              _buildSignUpForm(context),
+              _buildPasswordAndBirthDayForm(context),
+            ],
+          ),
         ),
       ),
     );

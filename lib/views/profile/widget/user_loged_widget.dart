@@ -69,7 +69,7 @@ class UserLogged extends StatelessWidget {
                 builder: (BuildContext context) {
                   return CustomAlertDialog(
                     title: 'هل انت متأكد من تسجيل الخروج',
-                    content: 'لا تطلب الغيب علينا نحن في انتظارك',
+                    content: 'لا تطل علبنا الغيبة',
                     confirmText: 'خروج',
                     onCancel: () => Navigator.pop(context),
                     onConfirm: () {

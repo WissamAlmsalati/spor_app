@@ -13,7 +13,7 @@ class RouteGenerator {
 
       case '/signup':
         return PageTransition(
-          child: const SignUp(),
+          child:  SignUp(),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 300),
         );
