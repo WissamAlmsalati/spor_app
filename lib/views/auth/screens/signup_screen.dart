@@ -24,13 +24,32 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController lastnameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
-  // Function to navigate between pages
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode confirmPasswordFocusNode = FocusNode();
+
+  final GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    passwordFocusNode.addListener(() {
+      if (!passwordFocusNode.hasFocus) {
+        passwordController.text = passwordController.text.trim();
+      }
+    });
+  }
+
   void nextPage() {
-    _pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeIn,
-    );
+    if (signUpFormKey.currentState!.validate()) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    }
   }
 
   void previousPage() {
@@ -47,6 +66,10 @@ class _SignUpState extends State<SignUp> {
     lastnameController.dispose();
     phoneController.dispose();
     birthdateController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    passwordFocusNode.dispose();
+    confirmPasswordFocusNode.dispose();
     super.dispose();
   }
 
@@ -57,7 +80,7 @@ class _SignUpState extends State<SignUp> {
         child: FocusScope(
           child: PageView(
             controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(), // Disable swipe
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               _buildSignUpForm(context),
               _buildPasswordAndBirthDayForm(context),
@@ -68,8 +91,9 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+//
+
   Widget _buildSignUpForm(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -91,7 +115,7 @@ class _SignUpState extends State<SignUp> {
                   horizontal: Responsive.screenWidth(context) * 0.05,
                 ),
                 child: Form(
-                  key: formKey,
+                  key: signUpFormKey,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -134,11 +158,7 @@ class _SignUpState extends State<SignUp> {
                         width: Responsive.screenWidth(context) * 0.9,
                         text: 'التالي',
                         color: Constants.mainColor,
-                        onPress: () {
-                          if (formKey.currentState!.validate()) {
-                            nextPage();
-                          }
-                        },
+                        onPress: nextPage,
                         textColor: Colors.white,
                       ),
                       CustomButton(
@@ -161,10 +181,9 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget _buildPasswordAndBirthDayForm(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController confirmPasswordController =
-        TextEditingController();
+    TextEditingController();
 
     return SingleChildScrollView(
       child: Padding(
@@ -186,7 +205,7 @@ class _SignUpState extends State<SignUp> {
                   horizontal: Responsive.screenWidth(context) * 0.05,
                 ),
                 child: Form(
-                  key: formKey,
+                  key: passwordFormKey,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -222,6 +241,7 @@ class _SignUpState extends State<SignUp> {
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: confirmPasswordController,
+
                         labelText: 'تأكيد كلمة المرور',
                         validatorText: 'الرجاء ادخال تأكيد كلمة المرور',
                         validator: (value) {
@@ -243,10 +263,10 @@ class _SignUpState extends State<SignUp> {
                                 : 'انشاء حساب',
                             color: Constants.mainColor,
                             onPress: () {
-                              if (formKey.currentState!.validate()) {
+                              if (passwordFormKey.currentState!.validate()) {
                                 SubmitSignUpFormFun.trySubmitForm(
                                   context,
-                                  formKey,
+                                  passwordFormKey,
                                   firstnameController,
                                   lastnameController,
                                   passwordController,

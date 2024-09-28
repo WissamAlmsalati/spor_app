@@ -70,7 +70,7 @@ class FavoriteScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title:  Text('الملاعب المفضلة',style: TextStyle(
-          fontSize: Responsive.textSize(context, 20),
+          fontSize: Responsive.textSize(context, 16),
         ),),
       ),
       body: Expanded(child: FavoriteStadium())

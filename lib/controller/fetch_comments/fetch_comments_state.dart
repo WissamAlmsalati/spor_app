@@ -18,6 +18,8 @@ class FetchCommentsLoading extends FetchCommentsState {
   List<Object?> get props => [comments, isLoadingMore];
 }
 
+class FetchCommentsEmpty extends FetchCommentsState {}
+
 class FetchCommentsLoaded extends FetchCommentsState {
   final List<Comment> comments;
   final bool hasNextPage;

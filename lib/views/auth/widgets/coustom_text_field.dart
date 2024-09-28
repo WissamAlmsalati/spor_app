@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final bool showForgotPassword;
   final VoidCallback? onForgotPassword;
   final bool obscureText;
+  final FocusNode? focusNode; // Added FocusNode
 
   const CustomTextField({
     Key? key,
@@ -29,6 +30,7 @@ class CustomTextField extends StatelessWidget {
     this.showForgotPassword = false,
     this.onForgotPassword,
     this.obscureText = false,
+    this.focusNode, // Added FocusNode
   }) : super(key: key);
 
   @override
@@ -54,6 +56,7 @@ class CustomTextField extends StatelessWidget {
             valueListenable: _obscureTextNotifier,
             builder: (context, _obscureText, child) {
               return TextFormField(
+                focusNode: focusNode, // Assigned FocusNode here
                 keyboardType: keyboardType ?? TextInputType.text,
                 controller: controller,
                 obscureText: _obscureText,
@@ -104,13 +107,13 @@ class CustomTextField extends StatelessWidget {
                   ),
                   suffixIcon: obscureText
                       ? IconButton(
-                          icon: Icon(
-                            _obscureText ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: () {
-                            _obscureTextNotifier.value = !_obscureTextNotifier.value;
-                          },
-                        )
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      _obscureTextNotifier.value = !_obscureTextNotifier.value;
+                    },
+                  )
                       : null,
                 ),
                 style: TextStyle(

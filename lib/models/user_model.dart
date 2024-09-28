@@ -5,6 +5,7 @@ class User {
   String lastName;
   String phone;
   DateTime birthDate;
+  String image;
 
   User(
       {required this.firstName,
@@ -12,7 +13,10 @@ class User {
       required this.phone,
       required this.balance,
       required this.birthDate,
-      required this.id});
+      required this.id,
+        required this.image
+
+      });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -20,9 +24,10 @@ class User {
       lastName: json['last_Name']??'',
       phone: json['phone']??'',
       birthDate: DateTime.parse(json['birth_day'])??DateTime.now(),
-      // Corrected type conversion
       id: json['id']??0,
       balance: json['balance']??'',
+      image: json['image']??'',
+
     );
   }
 
@@ -32,6 +37,9 @@ class User {
       'lastName': lastName,
       'phone': phone,
       'birth_day': birthDate.toIso8601String(),
+       'image' : image,
+      'id': id,
+
     };
   }
 }

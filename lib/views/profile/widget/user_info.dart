@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sport/utilits/constants.dart';
 import 'package:sport/utilits/images.dart';
 import 'package:sport/utilits/loading_animation.dart';
@@ -20,17 +20,25 @@ class UserInfo extends StatelessWidget {
       children: [
         Stack(
           children: [
-            BlocBuilder<ProfilePictureCubit, ProfilePictureState>(
+            BlocBuilder<FetchProfileCubit, FetchProfileState>(
               builder: (context, state) {
-                return GestureDetector(
-                  onTap: () => context.read<ProfilePictureCubit>().pickImage(),
-                  child: CircleAvatar(
-                    radius: Responsive.blockHeight(context) * 5,
-                    backgroundImage: state is ProfilePictureSelected
-                        ? FileImage(File(state.imagePath))
-                        : const AssetImage(AppPhotot.userAvatar) as ImageProvider,
-                  ),
-                );
+                if (state is FetchProfileLoaded) {
+                  return GestureDetector(
+                    onTap: () => context.read<ProfilePictureCubit>().pickImage(),
+                    child: CircleAvatar(
+                      radius: Responsive.blockHeight(context) * 5,
+                      backgroundImage: NetworkImage(state.userInfo.image),
+                    ),
+                  );
+                } else {
+                  return GestureDetector(
+                    onTap: () => context.read<ProfilePictureCubit>().pickImage(),
+                    child: CircleAvatar(
+                      radius: Responsive.blockHeight(context) * 5,
+                      backgroundImage: const AssetImage(AppPhotot.userAvatar) as ImageProvider,
+                    ),
+                  );
+                }
               },
             ),
             ProfilePictureOverlay(
@@ -108,9 +116,9 @@ class UserInfo extends StatelessWidget {
                 height: Responsive.screenWidth(context) * 0.1,
                 color: Constants.mainColor,
                 onPress: () {
-                  context.read<ProfilePictureCubit>().uploadImage(state.imagePath);
+                  context.read<ProfilePictureCubit>().uploadImage(state.imagePath, context);
                 },
-                text: "Upload Picture",
+                text: "تغير الصورة",
                 textColor: Colors.white,
                 textSize: Responsive.textSize(context, 8),
                 width: Responsive.screenWidth(context) * 0.31,
@@ -126,9 +134,6 @@ class UserInfo extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class ProfilePictureOverlay extends StatelessWidget {
   final VoidCallback onTap;
@@ -164,4 +169,3 @@ class ProfilePictureOverlay extends StatelessWidget {
     );
   }
 }
-

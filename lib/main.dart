@@ -72,26 +72,29 @@ class MyApp extends StatelessWidget {
                   ? CustomThemeData.getDarkThemeData(context)
                   : CustomThemeData.getThemeData(context);
 
-              return MaterialApp(
-                supportedLocales: const [
-                  Locale('en', ''), // English
-                  Locale('ar', ''), // Arabic
-                ],
-                locale: const Locale('ar', ''),
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                debugShowCheckedModeBanner: false,
-                theme: customThemeData,
-                initialRoute: '/',
-                routes: {
-                  '/': (context) => const AuthenticationWrapper(),
-                  '/homeNavigation': (context) => HomeNavigation(),
-                  '/onboarding': (context) => const OnboardingScreen(),
-                },
-                onGenerateRoute: RouteGenerator.generateRoute,
+              return ResponsiveInfoProvider(
+                context: context,
+                child: MaterialApp(
+                  supportedLocales: const [
+                    Locale('en', ''), // English
+                    Locale('ar', ''), // Arabic
+                  ],
+                  locale: const Locale('ar', ''),
+                  localizationsDelegates: const [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  debugShowCheckedModeBanner: false,
+                  theme: customThemeData,
+                  initialRoute: '/',
+                  routes: {
+                    '/': (context) => const AuthenticationWrapper(),
+                    '/homeNavigation': (context) => HomeNavigation(),
+                    '/onboarding': (context) => const OnboardingScreen(),
+                  },
+                  onGenerateRoute: RouteGenerator.generateRoute,
+                ),
               );
             },
           );
