@@ -39,6 +39,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
         builder: (context, state) {
           if (state is OldReservationLoading) {
             return const ShimmerLoadingWidget();
+          } else if (state is UnAuthenticated) {
+            return const Center(child: Text('يجب تسجيل الدخول اولا'));
           } else if (state is OldReservationLoaded) {
             final isLastPage = state.isLastPage;
             if (isLastPage) {

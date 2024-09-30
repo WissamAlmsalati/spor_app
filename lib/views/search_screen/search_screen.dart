@@ -13,9 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/status_bar_color.dart';
 import '../../controller/region_search_controler/region_search_cubit.dart';
 import '../../controller/steduim_search_cubit/stidum_search_cubit.dart';
-import 'package:intl/intl.dart';
 
-import '../auth/widgets/coustom_button.dart';
 
 class StadiumSearchScreen extends StatefulWidget {
   StadiumSearchScreen({super.key});
@@ -70,7 +68,9 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
     setStatusBarColor(Colors.white);
 
     return SafeArea(
-      child: Scaffold(
+      child: BlocProvider(
+        create: (context) => StadiumSearchCubit(),
+  child: Scaffold(
         backgroundColor: Constants.backGroundColor,
         body: Column(
           children: [
@@ -283,6 +283,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
           ],
         ),
       ),
+),
     );
   }
 }

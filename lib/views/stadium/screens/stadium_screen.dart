@@ -75,10 +75,7 @@ class StadiumScreen extends StatelessWidget {
                     children: [
                       Text(
                         "افضل الملاعب",
-                        style: TextStyle(
-                          fontSize: Responsive.textSize(context, 16),
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black  ),
                       ),
                       TextButton(
                         onPressed: () {
@@ -89,12 +86,7 @@ class StadiumScreen extends StatelessWidget {
                         },
                         child: Text(
                           "عرض الكل",
-                          style: TextStyle(
-                            fontSize: Responsive.textSize(context, 12),
-                            color: Constants.mainColor,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.cairo().fontFamily,
-                          ),
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Constants.mainColor  ),
                         ),
                       ),
                     ],

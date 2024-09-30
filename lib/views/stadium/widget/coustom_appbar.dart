@@ -55,15 +55,15 @@ class CoustomAppBr extends StatelessWidget {
               )
             : Row(
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 20), color: color),
-                  ),
+    Text(
+    title,
+    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: color),
+
+
+    ),
                   Text(
                     userName ?? '',
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 20), color: Constants.mainColor),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Constants.mainColor),
                   ),
                 ],
               ),

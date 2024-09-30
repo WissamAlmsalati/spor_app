@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sport/app/app_packges.dart';
 import 'package:sport/utilits/responsive.dart';
 
 class SearchFieldWidget extends StatelessWidget {
@@ -26,27 +28,31 @@ class SearchFieldWidget extends StatelessWidget {
       controller!.text = initialValue!;
     }
 
-    return Material(
-      elevation: 0, // Remove shadow
-      child: GestureDetector(
-        onTap: onTap,
-        child: SizedBox(
-          child: TextField(
-            enabled: enabled,
-            controller: controller,
-            onChanged: onChanged,
-            onSubmitted: onSubmitted,
-            decoration: InputDecoration(
-              filled: true,
-              contentPadding: const EdgeInsets.symmetric(vertical: 10), // Adjust padding to reduce height
-              hintText: "حدد البلدية",
-              hintStyle: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontFamily: GoogleFonts.cairo().fontFamily,
-                fontSize: Responsive.textSize(context, 10),
+    return BlocProvider(
+      create: (context) => StadiumSearchCubit(),
+      child: Material(
+        elevation: 0, // Remove shadow
+        child: GestureDetector(
+          onTap: onTap,
+          child: SizedBox(
+            child: TextField(
+
+              enabled: enabled,
+              controller: controller,
+              onChanged: onChanged,
+              onSubmitted: onSubmitted,
+              decoration: InputDecoration(
+                filled: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 10), // Adjust padding to reduce height
+                hintText: "حدد البلدية",
+                hintStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: GoogleFonts.cairo().fontFamily,
+                  fontSize: Responsive.textSize(context, 10),
+                ),
+                prefixIcon: const Icon(Icons.search),
+                alignLabelWithHint: true, // Align the hint text in the center
               ),
-              prefixIcon: const Icon(Icons.search),
-              alignLabelWithHint: true, // Align the hint text in the center
             ),
           ),
         ),

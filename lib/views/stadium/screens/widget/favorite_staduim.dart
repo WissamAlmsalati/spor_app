@@ -52,6 +52,7 @@ class FavoriteStadium extends StatelessWidget {
                 } else if (state is FetchFavoriteLoaded) {
                   if (state.stadiums.isEmpty) {
                     return Column(
+
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
@@ -201,6 +202,7 @@ class StadiumBoxWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.04),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
@@ -242,10 +244,7 @@ class StadiumBoxWidget extends StatelessWidget {
                   name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.cairo(
-                    fontSize: Responsive.textSize(context, 14),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black  ),
                 ),
               ),
               Padding(
@@ -255,11 +254,8 @@ class StadiumBoxWidget extends StatelessWidget {
                 ),
                 child: Text(
                   isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
-                  style: GoogleFonts.cairo(
-                    fontSize: Responsive.textSize(context, 10),
-                    fontWeight: FontWeight.w500,
-                    color: isAvailable ? Colors.green : Colors.red,
-                  ),
+                  style:isAvailable?  Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor  ):
+                  Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red  ),
                 ),
               ),
             ],

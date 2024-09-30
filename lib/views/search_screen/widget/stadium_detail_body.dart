@@ -129,9 +129,13 @@ class StadiumDetailBody extends StatelessWidget {
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
           SizedBox(
             height: Responsive.screenHeight(context) * 0.5,
-            child: CommentsWidget(
-                isScrollable: false,
-                stadiumId: stadium.id)),
+            child: BlocProvider(
+              create: (context) => FetchCommentsCubit(),
+
+              child: CommentsWidget(
+                  isScrollable: false,
+                  stadiumId: stadium.id),
+            )),
         ],
       ),
     );

@@ -133,6 +133,7 @@ class StadiumDetailFooter extends StatelessWidget {
                 text: 'تسجيل الدخول',
                 color: Constants.mainColor,
                 textColor: Colors.white,
+                textSize: Responsive.textSize(context, 14),
                 height: Responsive.screenHeight(context) * 0.06,
                 width: Responsive.screenWidth(context) * 0.4,
               );

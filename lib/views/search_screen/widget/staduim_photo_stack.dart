@@ -90,22 +90,25 @@ class StaduimPhotoStack extends StatelessWidget {
           Positioned(
             top: Responsive.screenHeight(context) * 0.01,
             left: 0,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: SizedBox(
-                height: Responsive.screenHeight(context) * 0.070,
-                width: Responsive.screenHeight(context) * 0.070,
-                child: Card(
-                  elevation: 2,
-                  child: Padding(
-                    padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
-                    child: SvgPicture.asset(AppPhotot.arrowBack, height: Responsive.screenHeight(context) * 0.05),
-                  ),
-                ),
-              ),
-            ),
+          child: IconButton(
+  onPressed: () {
+    Navigator.pop(context);
+  },
+  icon: SizedBox(
+    height: Responsive.screenHeight(context) * 0.070,
+    width: Responsive.screenHeight(context) * 0.070,
+    child: Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Responsive.screenHeight(context) * 0.01),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
+        child: SvgPicture.asset(AppPhotot.arrowBack, height: Responsive.screenHeight(context) * 0.05),
+      ),
+    ),
+  ),
+),
           ),
           Positioned(
             top: Responsive.screenHeight(context) * 0.01,
@@ -118,6 +121,9 @@ class StaduimPhotoStack extends StatelessWidget {
                 height: Responsive.screenHeight(context) * 0.070,
                 width: Responsive.screenHeight(context) * 0.070,
                 child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Responsive.screenHeight(context) * 0.01),
+                  ),
                   elevation: 2,
                   child: Padding(
                     padding:  EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
@@ -148,6 +154,9 @@ class StaduimPhotoStack extends StatelessWidget {
                     height: Responsive.screenHeight(context) * 0.070,
                     width: Responsive.screenHeight(context) * 0.070,
                     child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(Responsive.screenHeight(context) * 0.01),
+                      ),
                       elevation: 2,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

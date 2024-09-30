@@ -45,10 +45,10 @@ class ProfileScreen extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: Text(
                         'اعدادات عامة',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: Responsive.textSize(context, 18),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           color: Constants.mainColor,
+                          fontWeight: FontWeight.w600,
+
                         ),
                       ),
                     ),

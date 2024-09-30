@@ -128,9 +128,10 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                 children: [
                   Text(
                     widget.reservation.stadiumName,
-                    style: TextStyle(
-                      fontSize: Responsive.textSize(context, 20),
-                      fontWeight: FontWeight.w700,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+
                     ),
                   ),
                   if (canDelete)
@@ -166,10 +167,10 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                     SizedBox(width: Responsive.screenWidth(context) * 0.02),
                     Text(
                       widget.reservation.stadiumAddress,
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Constants.txtColor,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: Colors.black.withOpacity(0.5),
+                        fontWeight: FontWeight.w600,
+
                       ),
                     ),
                   ],

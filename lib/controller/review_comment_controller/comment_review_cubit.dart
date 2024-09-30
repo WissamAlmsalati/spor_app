@@ -63,6 +63,7 @@ class CommentReviewCubit extends Cubit<CommentReviewState> {
     );
 
     if (response.statusCode != 201) {
+      print('Response comment status: ${response.statusCode}');
       throw Exception('comment aded: ${response.body}');
     }
   }
@@ -84,9 +85,11 @@ class CommentReviewCubit extends Cubit<CommentReviewState> {
     );
 
     print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    print('Response review body: ${response.body}');
 
     if (response.statusCode == 200) {
+      print('Response status: ${response.statusCode}');
+
       Navigator.of(context).pop(); // Close the current dialog
       _showSuccessDialog(context); // Show the success dialog
     } else {

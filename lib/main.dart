@@ -21,7 +21,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SecureStorageData.getIsSign();
 
-  // Lock the orientation to portrait mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -58,9 +57,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),
         BlocProvider(create: (context) => CanceklReservCubit()),
-        BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
+          BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
         BlocProvider(create: (context) => ForgetPasswordCubit()),
-        BlocProvider(create: (context) => ProfilePictureCubit()),
+           BlocProvider(create: (context) => ProfilePictureCubit()),
       ],
       child: Builder(
         builder: (context) {

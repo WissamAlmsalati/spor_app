@@ -61,9 +61,10 @@ class UserInfo extends StatelessWidget {
               children: [
                 Text(
                   state.userInfo.firstName,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: Responsive.textSize(context, 30),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+
                   ),
                 ),
                 Divider(
@@ -72,10 +73,10 @@ class UserInfo extends StatelessWidget {
                 ),
                 Text(
                   state.userInfo.phone,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: Responsive.textSize(context, 20),
-                    color: Colors.grey.withOpacity(0.9),
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Colors.black.withOpacity(0.5),
+                    fontWeight: FontWeight.w600,
+
                   ),
                 ),
               ],

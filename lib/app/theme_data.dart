@@ -1,19 +1,20 @@
+import 'dart:ui';
+
 import 'package:sport/app/status_bar_color.dart';
 
+import '../utilits/responsive.dart';
 import 'app_packges.dart';
-
 
 class CustomThemeData {
   static ThemeData getThemeData(BuildContext context) {
     // Set the system status bar and navigation bar color
-
     setStatusBarColor(Constants.backGroundColor);
 
-
     return ThemeData(
-      appBarTheme:  AppBarTheme(
+
+      appBarTheme: AppBarTheme(
         scrolledUnderElevation: 0,
-        backgroundColor:Constants.backGroundColor,
+        backgroundColor: Constants.backGroundColor,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(
@@ -52,13 +53,38 @@ class CustomThemeData {
         bodyMedium: GoogleFonts.cairo(
           color: Colors.black,
         ),
-        headlineSmall: GoogleFonts.cairo( // Replacing headline6 with headlineSmall
-          fontSize: 20.0,
+        displayLarge: GoogleFonts.cairo( // Formerly headline1
+          fontSize: 32.0,
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
-        // Define other text styles as needed
+        displayMedium: GoogleFonts.cairo( // Formerly headline2
+          fontSize: 28.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        displaySmall: GoogleFonts.cairo( // Formerly headline3
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        headlineMedium: GoogleFonts.cairo( // Formerly headline4
+          fontSize: 22.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        headlineSmall: GoogleFonts.cairo( // Formerly headline5
+          fontSize: 18.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+        titleLarge: GoogleFonts.cairo( // Formerly headline6
+          fontSize: 16.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
       ),
+
       cardTheme: CardTheme(
         color: Colors.white,
         elevation: 5,
@@ -87,7 +113,6 @@ class CustomThemeData {
           ),
         ),
       ),
-
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Colors.grey[200],
         filled: true,
@@ -113,14 +138,6 @@ class CustomThemeData {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey[700]!),
         ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.red, width: 2.5),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.red, width: 2.5),
-        ),
       ),
       dialogTheme: DialogTheme(
         shape: RoundedRectangleBorder(
@@ -140,8 +157,6 @@ class CustomThemeData {
   }
 
   static ThemeData getDarkThemeData(BuildContext context) {
-    // Set the system status bar and navigation bar color
-
     return ThemeData(
       primaryColor: const Color(0xFF95CA5B),
       hintColor: Colors.grey[600],
@@ -167,20 +182,7 @@ class CustomThemeData {
         type: BottomNavigationBarType.fixed,
         elevation: 5,
       ),
-      textTheme: TextTheme(
-        bodyLarge: GoogleFonts.cairo(
-          color: Colors.white,
-        ),
-        bodyMedium: GoogleFonts.cairo(
-          color: Colors.grey[300],
-        ),
-        headlineSmall: GoogleFonts.cairo( // Replacing headline6 with headlineSmall
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        // Define other text styles as needed
-      ),
+
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           textStyle: WidgetStateProperty.all<TextStyle>(GoogleFonts.cairo()),
@@ -196,11 +198,70 @@ class CustomThemeData {
           padding: WidgetStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(
                 vertical: Responsive.screenHeight(context) * 0.01,
-                horizontal: Responsive.screenWidth(context)*0.032
+                horizontal: Responsive.screenWidth(context) * 0.032
             ),
           ),
         ),
+      ),textTheme: TextTheme(
+    bodyLarge: GoogleFonts.cairo(
+    color: Colors.black,
+    ),
+    bodyMedium: GoogleFonts.cairo(
+    color: Colors.black,
+    ),
+      bodySmall: GoogleFonts.cairo(
+      color: Colors.grey[600],
+      fontWeight: FontWeight.w500,
+      fontSize: 16,
+    ),
+
+      titleSmall: GoogleFonts.cairo(
+      color: Colors.grey[600],
+      fontWeight: FontWeight.w500,
+      fontSize: 16,
+    ),
+
+    displayLarge: GoogleFonts.cairo( // Formerly headline1
+    fontSize: 32.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    ),
+    displayMedium: GoogleFonts.cairo( // Formerly headline2
+    fontSize: 28.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    ),
+    displaySmall: GoogleFonts.cairo( // Formerly headline3
+    fontSize: 24.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    ),
+    headlineMedium: GoogleFonts.cairo( // Formerly headline4
+    fontSize: 22.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    ),
+    headlineSmall: GoogleFonts.cairo( // Formerly headline5
+    fontSize: 18.0,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+    ),
+    titleLarge: GoogleFonts.cairo( // Formerly headline6
+    fontSize: 16.0,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+    ),
+      titleMedium: GoogleFonts.cairo( // Formerly headline6
+      fontSize: 8.0,
+      fontWeight: FontWeight.w600,
+      color: Colors.black,
       ),
+
+
+
+    ),
+
+
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Colors.grey[800],
         filled: true,
@@ -224,12 +285,6 @@ class CustomThemeData {
           borderSide: BorderSide(color: Colors.grey[700]!),
         ),
       ),
-      colorScheme: const ColorScheme.dark(
-        primary: Constants.mainColor,
-        secondary: Constants.secondaryColor,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-      ),
       cardTheme: CardTheme(
         color: const Color(0xFF272829),
         elevation: 5,
@@ -242,24 +297,17 @@ class CustomThemeData {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        backgroundColor: const Color(0xFF272829),
+        backgroundColor: const Color(0xFF1F1F1F),
         titleTextStyle: TextStyle(
           fontSize: Responsive.textSize(context, 4.5),
           fontWeight: FontWeight.bold,
-          color: Colors.white,
         ),
+
         contentTextStyle: TextStyle(
           fontSize: Responsive.textSize(context, 3.5),
-          color: Colors.grey[300],
+          color: Constants.txtColor,
         ),
       ),
-    );
-  }
-
-  static SystemUiOverlayStyle getStatusBarTheme(BuildContext context, bool isDarkMode) {
-    return SystemUiOverlayStyle(
-      statusBarColor: isDarkMode ? const Color(0xFF121212) : Constants.backGroundColor,
-      statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
     );
   }
 }

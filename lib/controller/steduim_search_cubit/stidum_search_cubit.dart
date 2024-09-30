@@ -81,6 +81,7 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
       final decodedResponse = utf8.decode(response.bodyBytes);
 
       if (response.statusCode == 200) {
+        print('Response: '+queryParams.toString()+queryString);
         final data = json.decode(decodedResponse)['results'] as List;
         final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
         emit(StadiumSearchLoaded(stadiums: stadiums));

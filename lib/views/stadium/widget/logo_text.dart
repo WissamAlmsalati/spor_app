@@ -24,11 +24,9 @@ class LogoText extends StatelessWidget {
           ),
           Text(
             text,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: Responsive.textSize(context, 15),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black  ),
             ),
-          )
+
         ],
       ),
     );
