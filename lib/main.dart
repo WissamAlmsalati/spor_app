@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
         builder: (context) {
           Future.microtask(() => RefreshCubit.checkNetworkAndRefreshOnDisconnect(context));
 
-          return BlocBuilder<AppModeSwicherCubit, AppModeSwicherState>(
+          return  BlocBuilder<AppModeSwicherCubit, AppModeSwicherState>(
             builder: (context, state) {
               final ThemeData customThemeData = state is AppModeSwicherDarkMood
                   ? CustomThemeData.getDarkThemeData(context)

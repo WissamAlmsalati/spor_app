@@ -33,17 +33,19 @@ class StadiumInfoSummary extends StatelessWidget {
               children: [
                 Text(
                   totalReservations.toString(),
-                  style: TextStyle(
-                    fontSize: Responsive.textSize(context, 20),
-                    fontWeight: FontWeight.w700,
-                  ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+
+                    )
                 ),
                 Text(
                   "عدد الحجوزات",
-                  style: TextStyle(
-                    fontSize: Responsive.textSize(context, 10),
-                    fontWeight: FontWeight.w500,
-                  ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+
+                    )
                 ),
               ],
             ),
@@ -59,10 +61,11 @@ class StadiumInfoSummary extends StatelessWidget {
               children: [
                 Text(
                   avgReviews,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: Responsive.textSize(context, 20),
-                  ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+
+                    )
                 ),
                 StarRating(
                   rating: double.parse(avgReviews),
@@ -82,16 +85,19 @@ class StadiumInfoSummary extends StatelessWidget {
               children: [
                 Text(
                   totalReviews.toString(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: Responsive.textSize(context, 20),
-                  ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+
+                    )
                 ),
                 Text(
                   "تقييمات الملعب",
-                  style: TextStyle(
-                    fontSize: Responsive.textSize(context, 10),
-                  ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+
+                    )
                 ),
               ],
             ),

@@ -4,7 +4,7 @@ import 'package:sport/utilits/constants.dart';
 import 'package:sport/utilits/responsive.dart';
 
 class HourRow extends StatefulWidget {
-  final Function(String) onHourSelected;
+  final Function(String, String) onHourSelected; // Update the callback to pass both display time and formatted time
   final DateTime? selectedDate;
 
   const HourRow({required this.onHourSelected, required this.selectedDate});
@@ -31,12 +31,13 @@ class _HourRowState extends State<HourRow> {
             final hour = hours[index % hours.length];
             final period = periods[index ~/ hours.length];
             final displayTime = '$hour $period';
+            final formattedTime = period == 'م' ? '${int.parse(hour.split(':')[0]) + 12}:00:00' : '$hour:00';
             return GestureDetector(
               onTap: () {
                 setState(() {
                   selectedIndex = index;
                 });
-                widget.onHourSelected(displayTime);
+                widget.onHourSelected(displayTime, formattedTime);
                 if (kDebugMode) {
                   print('Selected Hour: $displayTime');
                 }

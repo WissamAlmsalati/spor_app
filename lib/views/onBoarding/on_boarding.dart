@@ -85,12 +85,11 @@ class OnboardingScreen extends StatelessWidget {
                                       Text(
                                         pages[index]["text"]!,
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Constants.secondaryColor,
-                                          fontSize:
-                                          Responsive.textSize(context, 25),
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                            color: Constants.secondaryColor,
+                                            fontWeight: FontWeight.w700,
+
+                                          )
                                       ),
                                       Row(
                                         mainAxisAlignment:

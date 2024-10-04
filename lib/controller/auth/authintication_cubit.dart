@@ -5,17 +5,11 @@ import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/app/app_packges.dart';
 import '../../services/apis.dart';
-import '../../app/app_cubits.dart';
-import '../../utilits/secure_data.dart';
+
 import '../../views/auth/screens/otp_screen.dart';
-import '../Reservation_fetch/reservation_fetch_cubit.dart';
 import '../Reservation_fetch/reservation_fetch_state.dart';
-import '../fetch_favorite/fetch_favorite_cubit.dart';
-import '../old_reveresition/old_reservation_fetch_cubit.dart';
-import '../profile/fetch_profile_cubit.dart';
 
 part 'authintication_state.dart';
 
@@ -24,11 +18,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
-  Future<void> logIn({
-    required String username,
-    required String password,
-    required BuildContext context,
-  }) async {
+  Future<void> logIn(
+      {required String username,
+      required String password,
+      required BuildContext context}) async {
     if (username.isEmpty || password.isEmpty) {
       emit(AuthenticationFailure('Username or password cannot be empty'));
       return;
@@ -48,17 +41,23 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
-        await _secureStorage.write(key: 'refreshToken', value: responseBody['refresh']);
-        await _secureStorage.write(key: 'accessToken', value: responseBody['access']);
-        await _secureStorage.write(key: 'userId', value: responseBody['id'].toString());
-        await _secureStorage.write(key: 'phoneVerified', value: responseBody['phone_verified'].toString());
+        await _secureStorage.write(
+            key: 'refreshToken', value: responseBody['refresh']);
+        await _secureStorage.write(
+            key: 'accessToken', value: responseBody['access']);
+        await _secureStorage.write(
+            key: 'userId', value: responseBody['id'].toString());
+        await _secureStorage.write(
+            key: 'phoneVerified',
+            value: responseBody['phone_verified'].toString());
 
         await SecureStorageData.setIsSignedUp(true);
 
         if (responseBody['phone_verified'] == false) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => OtpScreen(userId: responseBody['id'])),
+            MaterialPageRoute(
+                builder: (context) => OtpScreen(userId: responseBody['id'])),
             (route) => false,
           );
           emit(AuthenticationPhoneNotVirefy());
@@ -117,15 +116,20 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
       if (response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
-        await _secureStorage.write(key: 'refreshToken', value: responseBody['refresh']);
-        await _secureStorage.write(key: 'accessToken', value: responseBody['access']);
-        await _secureStorage.write(key: 'userId', value: responseBody['id'].toString());
-        await _secureStorage.write(key: 'phoneVerified', value: responseBody['phone_verified'].toString());
+        await _secureStorage.write(
+            key: 'refreshToken', value: responseBody['refresh']);
+        await _secureStorage.write(
+            key: 'accessToken', value: responseBody['access']);
+        await _secureStorage.write(
+            key: 'userId', value: responseBody['id'].toString());
+        await _secureStorage.write(
+            key: 'phoneVerified',
+            value: responseBody['phone_verified'].toString());
 
         await SecureStorageData.setIsSignedUp(true);
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => OtpScreen(userId: responseBody['id'])),
-           
+          MaterialPageRoute(
+              builder: (context) => OtpScreen(userId: responseBody['id'])),
         );
       } else {
         emit(AuthenticationFailure('Sign up failed'));
@@ -181,7 +185,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         const storage = FlutterSecureStorage();
         await storage.write(key: 'phoneVerified', value: 'true');
         emit(AuthenticationAuthenticated());
-        Navigator.pushNamedAndRemoveUntil(context, '/homeNavigation', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/homeNavigation', (route) => false);
       } else {
         emit(AuthenticationFailure('Invalid OTP'));
       }

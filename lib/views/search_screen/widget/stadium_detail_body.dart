@@ -32,16 +32,22 @@ class StadiumDetailBody extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(stadium.name,
-                        style: TextStyle(
-                            fontSize: Responsive.textSize(context, 18),
-                            fontWeight: FontWeight.bold)),
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+
+                      ),),
                   ))),
           Row(
             children: [
               SvgPicture.asset(AppPhotot.locationIco),
               SizedBox(width: Responsive.screenWidth(context) * 0.02),
               Text(stadium.address,
-                  style: TextStyle(fontSize: Responsive.textSize(context, 14))),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w100,
+
+                ),),
             ],
           ),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
@@ -55,9 +61,11 @@ class StadiumDetailBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("اختيار اليوم",
-                  style: TextStyle(
-                      fontSize: Responsive.textSize(context, 16),
-                      fontWeight: FontWeight.w600)),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+
+                  )),
               Row(
                 children: [
                   Text("حجز شهري",
@@ -95,9 +103,11 @@ class StadiumDetailBody extends StatelessWidget {
               : const Center(child: Text('No available dates')),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
           Text("اختيار التوقيت",
-              style: TextStyle(
-                  fontSize: Responsive.textSize(context, 16),
-                  fontWeight: FontWeight.w600)),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Colors.black,
+              fontWeight: FontWeight.w700,
+
+            ),),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),
           selectedSession != null
               ? SessionList(
@@ -113,17 +123,18 @@ class StadiumDetailBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("التعليقات",
-                  style: TextStyle(
-                      fontSize: Responsive.textSize(context, 16),
-                      fontWeight: FontWeight.w600)),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+
+                  )),
               TextButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => AllCommentsScreen(stadiumId: stadium.id)));
-              }, child: Text("عرض الكل",style: TextStyle(
-                  fontSize: Responsive.textSize(context, 12),
-                  color: Constants.mainColor,
-                  fontWeight: FontWeight.bold,
-                fontFamily: GoogleFonts.cairo().fontFamily
-              ),)),
+              }, child: Text("عرض الكل",style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Constants.mainColor,
+                fontWeight: FontWeight.w700,
+
+              ))),
             ],
           ),
           SizedBox(height: Responsive.screenHeight(context) * 0.02),

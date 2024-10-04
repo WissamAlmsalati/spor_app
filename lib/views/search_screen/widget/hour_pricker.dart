@@ -55,15 +55,14 @@ class SelectableTimeTile extends StatelessWidget {
                   Icon(
                     Icons.lock,
                     color: Colors.black.withOpacity(0.8),
-                    size: Responsive.textSize(context, 20),
                   ),
                 Text(
                   formattedTime,
-                  style: TextStyle(
-                    fontSize: Responsive.textSize(context, 15),
-                    color: isSelected && !isLocked && !isReserved ? Colors.white : Colors.black,
-                    fontWeight: FontWeight.w600,
-                  ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: isSelected && !isLocked && !isReserved ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w700,
+
+                    )
                 ),
               ],
             ),

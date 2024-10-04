@@ -10,8 +10,6 @@ import 'coustom_button.dart';
 import 'coustom_text_field.dart';
 import 'form_decoration.dart';
 
-
-
 class LoginFormWidget extends StatelessWidget {
   const LoginFormWidget({super.key});
 
@@ -41,34 +39,34 @@ class LoginFormWidget extends StatelessWidget {
                 labelText: 'رقم الهاتف',
                 validatorText: 'ادخل رقم الهاتف',
                 keyboardType: TextInputType.phone,
-                validator: (value) => (value == null || value.isEmpty) ? 'ادخل رقم الهاتف' : null,
+                validator: (value) =>
+                    (value == null || value.isEmpty) ? 'ادخل رقم الهاتف' : null,
               ),
-
               CustomTextField(
-  labelSize: Responsive.textSize(context, 8),
-  hintSize: Responsive.textSize(context, 8),
-  validatorSize: Responsive.textSize(context, 6),
-
-  controller: passwordController,
-
-  labelText: 'كلمة المرور',
-  validatorText: 'ادخل كلمة المرور',
-  validator: (value) {
-    if (value == null || value.isEmpty) {
-      return 'الرجاء ادخال كلمة المرور';
-    } else if (value.length < 8) {
-      return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
-    } else if (!RegExp(r'^[A-Z]').hasMatch(value)) {
-      return 'يجب أن تبدأ كلمة المرور بحرف كبير';
-      }
-    return null;
-  },
-  showForgotPassword: true,
-  onForgotPassword: () {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgetPasswordScreen()));
-  },
-),
-
+                labelSize: Responsive.textSize(context, 8),
+                hintSize: Responsive.textSize(context, 8),
+                validatorSize: Responsive.textSize(context, 6),
+                controller: passwordController,
+                labelText: 'كلمة المرور',
+                validatorText: 'ادخل كلمة المرور',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'الرجاء ادخال كلمة المرور';
+                  } else if (value.length < 8) {
+                    return 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+                  } else if (!RegExp(r'^[A-Z]').hasMatch(value)) {
+                    return 'يجب أن تبدأ كلمة المرور بحرف كبير';
+                  }
+                  return null;
+                },
+                showForgotPassword: true,
+                onForgotPassword: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ForgetPasswordScreen()));
+                },
+              ),
               CustomButton(
                 fontWeight: FontWeight.w600,
                 textSize: Responsive.textSize(context, 16),
@@ -90,20 +88,22 @@ class LoginFormWidget extends StatelessWidget {
                     isLoading: state is AuthenticationLoading,
                     loadingSize: Responsive.screenHeight(context) * 0.04,
                     loadingColor: Constants.mainColor,
-                    text: state is AuthenticationLoading ? 'جاري التحميل...' : 'تسجيل الدخول',
+                    text: state is AuthenticationLoading
+                        ? 'جاري التحميل...'
+                        : 'تسجيل الدخول',
                     color: Constants.secondaryColor,
                     borderColor: Constants.secondaryColor,
                     onPress: () {
                       if (kDebugMode) {
                         print('Login button pressed');
                       }
-                      SubmitFormFun.trySubmitForm(context, formKey, firstnameController, passwordController);
+                      SubmitFormFun.trySubmitForm(context, formKey,
+                          firstnameController, passwordController);
                     },
                     textColor: Constants.thirdColor,
                   );
                 },
               ),
-
             ],
           ),
         ),

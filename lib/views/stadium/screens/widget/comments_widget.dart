@@ -63,7 +63,11 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                         Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
                       ],
                     ),
-                    noItemsFoundIndicatorBuilder: (context) => Center(child: Text('لاتوجد تعليقات علي هاذا الملعب')),
+                    noItemsFoundIndicatorBuilder: (context) => Center(child: Text('لاتوجد تعليقات علي هاذا الملعب',style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+
+                    ))),
                     newPageErrorIndicatorBuilder: (context) => const Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

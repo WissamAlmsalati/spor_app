@@ -22,7 +22,6 @@ class CustomButton extends StatelessWidget {
   final Color? loadingColor;
   final double? loadingSize;
   final  bool?  isDisabled;
-  final TextStyle? style;
 
   const CustomButton({
     super.key,
@@ -39,7 +38,7 @@ class CustomButton extends StatelessWidget {
     this.brWidth,
     this.isLoading = false,
     this.loadingColor,
-    this.loadingSize, this.isDisabled, this.style,
+    this.loadingSize, this.isDisabled,
   }) : assert(hasBorder == false || borderColor != null);
 
   @override
@@ -62,9 +61,11 @@ class CustomButton extends StatelessWidget {
             : Center(
                 child: Text(
                   text,
-                  style:Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  style: TextStyle(
+                    fontSize: textSize ?? 20,
+                    fontWeight: fontWeight,
                     color: textColor,
-                  )
+                  ),
                 ),
               ),
       ),

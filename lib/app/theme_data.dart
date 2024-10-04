@@ -1,7 +1,7 @@
 import 'dart:ui';
-
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sport/app/status_bar_color.dart';
-
 import '../utilits/responsive.dart';
 import 'app_packges.dart';
 
@@ -11,7 +11,7 @@ class CustomThemeData {
     setStatusBarColor(Constants.backGroundColor);
 
     return ThemeData(
-
+      fontFamily: GoogleFonts.cairo().fontFamily,
       appBarTheme: AppBarTheme(
         scrolledUnderElevation: 0,
         backgroundColor: Constants.backGroundColor,
@@ -53,38 +53,37 @@ class CustomThemeData {
         bodyMedium: GoogleFonts.cairo(
           color: Colors.black,
         ),
-        displayLarge: GoogleFonts.cairo( // Formerly headline1
+        displayLarge: GoogleFonts.cairo(
           fontSize: 32.0,
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
-        displayMedium: GoogleFonts.cairo( // Formerly headline2
+        displayMedium: GoogleFonts.cairo(
           fontSize: 28.0,
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
-        displaySmall: GoogleFonts.cairo( // Formerly headline3
+        displaySmall: GoogleFonts.cairo(
           fontSize: 24.0,
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
-        headlineMedium: GoogleFonts.cairo( // Formerly headline4
+        headlineMedium: GoogleFonts.cairo(
           fontSize: 22.0,
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
-        headlineSmall: GoogleFonts.cairo( // Formerly headline5
+        headlineSmall: GoogleFonts.cairo(
           fontSize: 18.0,
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
-        titleLarge: GoogleFonts.cairo( // Formerly headline6
+        titleLarge: GoogleFonts.cairo(
           fontSize: 16.0,
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
       ),
-
       cardTheme: CardTheme(
         color: Colors.white,
         elevation: 5,
@@ -107,8 +106,8 @@ class CustomThemeData {
           ),
           padding: WidgetStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(
-                vertical: Responsive.screenHeight(context) * 0.01,
-                horizontal: Responsive.screenWidth(context) * 0.032
+              vertical: Responsive.screenHeight(context) * 0.01,
+              horizontal: Responsive.screenWidth(context) * 0.032,
             ),
           ),
         ),
@@ -158,6 +157,7 @@ class CustomThemeData {
 
   static ThemeData getDarkThemeData(BuildContext context) {
     return ThemeData(
+      fontFamily: GoogleFonts.cairo().fontFamily,
       primaryColor: const Color(0xFF95CA5B),
       hintColor: Colors.grey[600],
       scaffoldBackgroundColor: const Color(0xFF121212),
@@ -182,7 +182,6 @@ class CustomThemeData {
         type: BottomNavigationBarType.fixed,
         elevation: 5,
       ),
-
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           textStyle: WidgetStateProperty.all<TextStyle>(GoogleFonts.cairo()),
@@ -197,71 +196,65 @@ class CustomThemeData {
           ),
           padding: WidgetStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(
-                vertical: Responsive.screenHeight(context) * 0.01,
-                horizontal: Responsive.screenWidth(context) * 0.032
+              vertical: Responsive.screenHeight(context) * 0.01,
+              horizontal: Responsive.screenWidth(context) * 0.032,
             ),
           ),
         ),
-      ),textTheme: TextTheme(
-    bodyLarge: GoogleFonts.cairo(
-    color: Colors.black,
-    ),
-    bodyMedium: GoogleFonts.cairo(
-    color: Colors.black,
-    ),
-      bodySmall: GoogleFonts.cairo(
-      color: Colors.grey[600],
-      fontWeight: FontWeight.w500,
-      fontSize: 16,
-    ),
-
-      titleSmall: GoogleFonts.cairo(
-      color: Colors.grey[600],
-      fontWeight: FontWeight.w500,
-      fontSize: 16,
-    ),
-
-    displayLarge: GoogleFonts.cairo( // Formerly headline1
-    fontSize: 32.0,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-    ),
-    displayMedium: GoogleFonts.cairo( // Formerly headline2
-    fontSize: 28.0,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-    ),
-    displaySmall: GoogleFonts.cairo( // Formerly headline3
-    fontSize: 24.0,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-    ),
-    headlineMedium: GoogleFonts.cairo( // Formerly headline4
-    fontSize: 22.0,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-    ),
-    headlineSmall: GoogleFonts.cairo( // Formerly headline5
-    fontSize: 18.0,
-    fontWeight: FontWeight.w600,
-    color: Colors.black,
-    ),
-    titleLarge: GoogleFonts.cairo( // Formerly headline6
-    fontSize: 16.0,
-    fontWeight: FontWeight.w600,
-    color: Colors.black,
-    ),
-      titleMedium: GoogleFonts.cairo( // Formerly headline6
-      fontSize: 8.0,
-      fontWeight: FontWeight.w600,
-      color: Colors.black,
       ),
-
-
-
-    ),
-
-
+      textTheme: TextTheme(
+        bodyLarge: GoogleFonts.cairo(
+          color: Colors.black,
+        ),
+        bodyMedium: GoogleFonts.cairo(
+          color: Colors.black,
+        ),
+        bodySmall: GoogleFonts.cairo(
+          color: Colors.grey[600],
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+        ),
+        titleSmall: GoogleFonts.cairo(
+          color: Colors.grey[600],
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+        ),
+        displayLarge: GoogleFonts.cairo(
+          fontSize: 32.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        displayMedium: GoogleFonts.cairo(
+          fontSize: 28.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        displaySmall: GoogleFonts.cairo(
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        headlineMedium: GoogleFonts.cairo(
+          fontSize: 22.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        headlineSmall: GoogleFonts.cairo(
+          fontSize: 18.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+        titleLarge: GoogleFonts.cairo(
+          fontSize: 16.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+        titleMedium: GoogleFonts.cairo(
+          fontSize: 8.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Colors.grey[800],
         filled: true,
@@ -302,7 +295,6 @@ class CustomThemeData {
           fontSize: Responsive.textSize(context, 4.5),
           fontWeight: FontWeight.bold,
         ),
-
         contentTextStyle: TextStyle(
           fontSize: Responsive.textSize(context, 3.5),
           color: Constants.txtColor,
