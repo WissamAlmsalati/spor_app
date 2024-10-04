@@ -59,12 +59,13 @@ void showCustomBottomSheet(BuildContext context, String searchText, Function(Dat
               builder: (BuildContext context, state) {
                 final selectedDate = context.read<StadiumSearchCubit>().selectedDate;
                 return HourRow(
-                  onHourSelected: (hour) {
-                    final hourParts = hour.split(' ');
+                  onHourSelected: (displayTime, formattedTime) {
+                    final hourParts = displayTime.split(' ');
                     final hourValue = int.parse(hourParts[0].split(':')[0]);
                     final isPM = hourParts[1] == 'م';
                     final sessionId = isPM ? hourValue + 12 : hourValue;
                     context.read<StadiumSearchCubit>().selectSessionId(sessionId);
+                    context.read<StadiumSearchCubit>().selectTimeFrom(formattedTime); // Store the formatted time
                     onHourSelected(sessionId);
                   },
                   selectedDate: selectedDate,
@@ -78,11 +79,15 @@ void showCustomBottomSheet(BuildContext context, String searchText, Function(Dat
                   onPress: () {
                     final selectedDate = context.read<StadiumSearchCubit>().selectedDate;
                     final selectedSessionId = context.read<StadiumSearchCubit>().selectedSessionId;
-
-                    context.read<StadiumSearchCubit>().searchStadiums(
+                    final selectedTimeFrom = context.read<StadiumSearchCubit>().selectedTimeFrom; // Retrieve the formatted time
+                    // Call the search function with the necessary parameters
+                    context.read<StadiumSearchCubit>().searchStadiumsWithFilter(
                       name: searchText,
-                      date: selectedDate,
-                      sessionId: selectedSessionId,
+                      sessionId: selectedSessionId!,
+                      startDate: DateFormat('yyyy-MM-dd').format(selectedDate!),
+                      endDate: DateFormat('yyyy-MM-dd').format(selectedDate!),
+                      timeFrom: selectedTimeFrom!, // Use the formatted time
+                      timeTo: selectedTimeFrom!, // Use the formatted time
                     );
                     Navigator.pop(context);
                   },

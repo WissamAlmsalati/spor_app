@@ -35,7 +35,7 @@ class FavoriteStadium extends StatelessWidget {
                 if (state is FetchFavoriteLoading) {
                   return GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
@@ -202,7 +202,6 @@ class StadiumBoxWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.04),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
@@ -245,14 +244,14 @@ class StadiumBoxWidget extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: Responsive.screenHeight(context) * 0.008,
+                 ),
+                 ),
+                 Padding(
+                 padding: EdgeInsets.only(
+                  top: Responsive.screenHeight(context) * 0.015,
                   right: Responsive.screenWidth(context) * 0.018,
-                ),
-                child: Text(
+                 ),
+                 child: Text(
                   isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
                   style:isAvailable?  Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor  ):
                   Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red  ),

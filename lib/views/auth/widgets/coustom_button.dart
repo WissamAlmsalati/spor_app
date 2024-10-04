@@ -61,11 +61,11 @@ class CustomButton extends StatelessWidget {
             : Center(
                 child: Text(
                   text,
-                  style: TextStyle(
-                    fontSize: textSize ?? 20,
-                    fontWeight: fontWeight,
-                    color: textColor,
-                  ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: textColor,
+                      fontWeight: FontWeight.w700,
+
+                    )
                 ),
               ),
       ),

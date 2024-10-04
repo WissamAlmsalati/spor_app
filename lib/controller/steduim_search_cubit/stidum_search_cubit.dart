@@ -15,6 +15,7 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
   DateTime? selectedDate;
   String searchText = '';
   int? selectedSessionId;
+  String? selectedTimeFrom;
 
   void selectDate(DateTime date) {
     selectedDate = date;
@@ -31,14 +32,18 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
     emit(StadiumSearchSessionIdSelected(sessionId));
   }
 
-  Future<void> searchStadiums({
+  void selectTimeFrom(String timeFrom) {
+    selectedTimeFrom = timeFrom;
+    emit(StadiumSearchTimeFromSelected(timeFrom));
+  }
+
+  Future<void> searchStadiumsWithFilter({
     required String name,
-    DateTime? date,
-    int? sessionId,
-    String? startDate,
-    String? endDate,
-    String? timeFrom,
-    String? timeTo,
+    required int sessionId,
+    required String startDate,
+    required String endDate,
+    required String timeFrom,
+    required String timeTo,
   }) async {
     emit(StadiumSearchLoading());
     try {
@@ -49,6 +54,74 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
         if (endDate != null) 'end_date': endDate,
         if (timeFrom != null) 'time_from': timeFrom,
         if (timeTo != null) 'time_to': timeTo,
+        if (sessionId != null) 'id': '$sessionId',
+      };
+
+      // Print the query parameters
+      print('Query Params filter: $queryParams');
+
+      // Build the query string
+      final queryString = Uri(queryParameters: queryParams).query;
+
+      // Ensure the base URL does not end with a question mark
+      final baseUrl = Apis.searchStadiumWithQuery.endsWith('?')
+          ? Apis.searchStadiumWithQuery.substring(0, Apis.searchStadiumWithQuery.length - 1)
+          : Apis.searchStadiumWithQuery;
+
+      // Print the full request URL
+      final requestUrl = '$baseUrl?$queryString';
+      print('Request URL: $requestUrl');
+
+      final response = await http.get(
+        Uri.parse(requestUrl),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      );
+
+      if (kDebugMode) {
+        print('Request URL: ${response.request?.url}');
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${utf8.decode(response.bodyBytes)}');
+      }
+
+      final decodedResponse = utf8.decode(response.bodyBytes);
+
+      if (response.statusCode == 200) {
+        print('Response: ' + queryParams.toString() + queryString);
+        final data = json.decode(decodedResponse)['results'] as List;
+        final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
+        emit(StadiumSearchLoaded(stadiums: stadiums));
+      } else {
+        final errorData = json.decode(decodedResponse);
+        final errorMessage = errorData['detail'] ?? 'Failed to load stadiums';
+        if (kDebugMode) {
+          print('Failed to load stadiums: $errorMessage');
+        }
+        emit(StadiumSearchError(message: errorMessage));
+      }
+    } catch (e) {
+      if (e is SocketException) {
+        emit(StadiumSearchErrorSocketException());
+      } else {
+        if (kDebugMode) {
+          print('Error: $e');
+        }
+        emit(StadiumSearchError(message: e.toString()));
+      }
+    }
+  }
+
+  Future<void> searchStadiums({
+    required String name,
+    String? city,
+    DateTime? date,
+    int? sessionId,
+  }) async {
+    emit(StadiumSearchLoading());
+    try {
+      // Construct the query parameters
+      final queryParams = {
+        'name': name,
+        if (city != null) 'city': city,
         if (sessionId != null) 'session_id': sessionId.toString(),
       };
 
@@ -81,7 +154,7 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
       final decodedResponse = utf8.decode(response.bodyBytes);
 
       if (response.statusCode == 200) {
-        print('Response: '+queryParams.toString()+queryString);
+        print('Response: ' + queryParams.toString() + queryString);
         final data = json.decode(decodedResponse)['results'] as List;
         final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
         emit(StadiumSearchLoaded(stadiums: stadiums));
@@ -143,6 +216,7 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
     selectedDate = null;
     searchText = '';
     selectedSessionId = null;
+    selectedTimeFrom = null;
     emit(StadiumSearchInitial());
   }
 }
