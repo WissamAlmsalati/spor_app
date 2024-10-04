@@ -247,7 +247,7 @@ class StadiumBoxWidget extends StatelessWidget {
                  child: Text(
                   isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
                   style:isAvailable?  Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor  ):
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.red  ),
+                  Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red  ),
                 ),
               ),
             ],

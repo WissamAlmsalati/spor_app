@@ -1,12 +1,12 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sport/app/app_packges.dart';
 import 'package:sport/views/profile/widget/coustom_dialog.dart';
+import 'package:image/image.dart' as img; // Import the image package
 
 part 'profile_picture_state.dart';
 
@@ -27,14 +27,40 @@ class ProfilePictureCubit extends Cubit<ProfilePictureState> {
     }
   }
 
+  Future<File> compressImage(File imageFile) async {
+    // Load the image from the file
+    final imageBytes = await imageFile.readAsBytes();
+    img.Image? originalImage = img.decodeImage(imageBytes);
+
+    if (originalImage == null) {
+      throw Exception("Could not decode image");
+    }
+
+    // Resize the image to a smaller size
+    img.Image resizedImage = img.copyResize(originalImage, width: 800); // Adjust the width as needed
+
+    // Convert the resized image back to bytes
+    final compressedBytes = img.encodeJpg(resizedImage, quality: 80); // Adjust quality as needed
+
+    // Create a new file for the compressed image
+    final compressedImageFile = File('${imageFile.path}_compressed.jpg');
+    await compressedImageFile.writeAsBytes(compressedBytes);
+
+    return compressedImageFile;
+  }
+
   Future<void> uploadImage(String imagePath, BuildContext context) async {
-    final token = await SecureStorageData
-        .getToken(); // Ensure token is retrieved asynchronously
+    final token = await SecureStorageData.getToken();
     print('Uploading image');
-    final url =
-        Uri.parse('https://api.sport.com.ly/player/update-player-image');
+
+    File imageFile = File(imagePath);
+
+    // Compress the image
+    File compressedImage = await compressImage(imageFile);
+
+    final url = Uri.parse('https://api.sport.com.ly/player/update-player-image');
     final request = http.MultipartRequest('PATCH', url)
-      ..files.add(await http.MultipartFile.fromPath('image', imagePath))
+      ..files.add(await http.MultipartFile.fromPath('image', compressedImage.path))
       ..headers['Authorization'] = 'Bearer $token';
 
     try {
@@ -54,14 +80,17 @@ class ProfilePictureCubit extends Cubit<ProfilePictureState> {
               title: 'نجاح',
               content: 'تم تحديث الصورة الشخصية بنجاح',
               canceText: 'اغلاق',
-              onCancel: () => Navigator.of(context).pop(),
+              onCancel: () {
+                context.read<FetchProfileCubit>().fetchProfileInfo();
+
+                Navigator.of(context).pop();
+              },
             );
           },
         );
       } else {
         print('Failed to upload image: ${responseBody.body}');
-        emit(ProfilePictureError(
-            "Failed to upload image: ${responseBody.body}"));
+        emit(ProfilePictureError("Failed to upload image: ${responseBody.body}"));
         showDialog(
           context: context,
           builder: (BuildContext context) {

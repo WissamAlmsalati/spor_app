@@ -18,118 +18,82 @@ class UserInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Stack(
-          children: [
-            BlocBuilder<FetchProfileCubit, FetchProfileState>(
-              builder: (context, state) {
-                if (state is FetchProfileLoaded) {
-                  return GestureDetector(
-                    onTap: () => context.read<ProfilePictureCubit>().pickImage(),
-                    child: CircleAvatar(
-                      radius: Responsive.blockHeight(context) * 5,
-                      backgroundImage: NetworkImage(state.userInfo.image),
-                    ),
-                  );
-                } else {
-                  return GestureDetector(
-                    onTap: () => context.read<ProfilePictureCubit>().pickImage(),
-                    child: CircleAvatar(
-                      radius: Responsive.blockHeight(context) * 5,
-                      backgroundImage: const AssetImage(AppPhotot.userAvatar) as ImageProvider,
-                    ),
-                  );
-                }
-              },
-            ),
-            ProfilePictureOverlay(
-              onTap: () => context.read<ProfilePictureCubit>().pickImage(),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: Responsive.blockHeight(context) * 2,
-        ),
         BlocBuilder<FetchProfileCubit, FetchProfileState>(
-            builder: (context, state) {
-          if (state is FetchProfileLoading) {
-            return Center(
-                child: LoadingAnimation(
-              size: Responsive.screenWidth(context) * 0.1,
-            ));
-          } else if (state is FetchProfileLoaded) {
-            return Column(
-              children: [
-                Text(
-                  state.userInfo.firstName,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-
-                  ),
-                ),
-                Divider(
-                  color: Colors.grey.withOpacity(0.3),
-                  thickness: Responsive.screenHeight(context) * 0.002,
-                ),
-                Text(
-                  state.userInfo.phone,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.black.withOpacity(0.5),
-                    fontWeight: FontWeight.w600,
-
-                  ),
-                ),
-              ],
-            );
-          } else if (state is ProfileSocketExceptionError) {
-            return Center(
-                child: Text(
-              'لا يوجد اتصال بالانترنت',
-              style: TextStyle(
-                fontSize: Responsive.textSize(context, 12),
-                fontWeight: FontWeight.w600,
-              ),
-            ));
-          } else if (state is FetchProfileEmpty) {
-            return Center(
-                child: CustomButton(
-              height: Responsive.screenWidth(context) * 0.1,
-              color: Constants.mainColor,
-              onPress: () {
-                Navigator.pushNamed(context, '/signup');
-              },
-              text: "انشئ حساب",
-              textColor: Colors.white,
-              textSize: Responsive.textSize(context, 8),
-              width: Responsive.screenWidth(context) * 0.31,
-            ));
-          } else {
-            return const Center(child: Text('Unknown state'));
-          }
-        }),
-        SizedBox(
-          height: Responsive.blockHeight(context) * 1,
-        ),
-        BlocBuilder<ProfilePictureCubit, ProfilePictureState>(
           builder: (context, state) {
-            if (state is ProfilePictureSelected) {
-              return CustomButton(
-                height: Responsive.screenWidth(context) * 0.1,
-                color: Constants.mainColor,
-                onPress: () {
-                  context.read<ProfilePictureCubit>().uploadImage(state.imagePath, context);
-                },
-                text: "تغير الصورة",
-                textColor: Colors.white,
-                textSize: Responsive.textSize(context, 8),
-                width: Responsive.screenWidth(context) * 0.31,
-              );
+            String imageUrl = '';
+
+            if (state is FetchProfileLoaded) {
+              imageUrl = state.userInfo.image;
+            } else {
+              imageUrl = AppPhotot.userAvatar;
             }
-            return SizedBox.shrink();
+
+            return CircleAvatar(
+              radius: Responsive.blockHeight(context) * 5,
+              backgroundImage: NetworkImage(imageUrl),
+            );
           },
         ),
-        SizedBox(
-          height: Responsive.blockHeight(context) * 1,
+        SizedBox(height: Responsive.blockHeight(context) * 2),
+        BlocBuilder<FetchProfileCubit, FetchProfileState>(
+          builder: (context, state) {
+            if (state is FetchProfileLoading) {
+              return Center(
+                child: LoadingAnimation(
+                  size: Responsive.screenWidth(context) * 0.1,
+                ),
+              );
+            } else if (state is FetchProfileLoaded) {
+              return Column(
+                children: [
+                  Text(
+                    state.userInfo.firstName,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.grey.withOpacity(0.3),
+                    thickness: Responsive.screenHeight(context) * 0.002,
+                  ),
+                  Text(
+                    state.userInfo.phone,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Colors.black.withOpacity(0.5),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              );
+            } else if (state is ProfileSocketExceptionError) {
+              return Center(
+                child: Text(
+                  'لا يوجد اتصال بالانترنت',
+                  style: TextStyle(
+                    fontSize: Responsive.textSize(context, 12),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              );
+            } else if (state is FetchProfileEmpty) {
+              return Center(
+                child: CustomButton(
+                  height: Responsive.screenWidth(context) * 0.1,
+                  color: Constants.mainColor,
+                  onPress: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  text: "انشئ حساب",
+                  textColor: Colors.white,
+                  textSize: Responsive.textSize(context, 8),
+                  width: Responsive.screenWidth(context) * 0.31,
+                ),
+              );
+            } else {
+              return const Center(child: Text('Unknown state'));
+            }
+          },
         ),
       ],
     );

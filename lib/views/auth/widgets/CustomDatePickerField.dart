@@ -40,22 +40,49 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
         context: context,
         builder: (BuildContext context) {
           return Container(
-            height: 250,
-            color: Colors.white,
+            height: Responsive.screenHeight(context) * 0.35,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
             child: Column(
               children: [
                 Container(
-                  height: 200,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: DateTime.now(),
-                    onDateTimeChanged: (DateTime dateTime) {
-                      pickedDate = dateTime;
-                    },
+                  height: Responsive.screenHeight(context) * 0.25,
+                  child: CupertinoTheme(
+                    data: CupertinoThemeData(
+                      textTheme: CupertinoTextThemeData(
+                        pickerTextStyle: TextStyle(
+                          fontFamily: GoogleFonts.cairo().fontFamily,
+                          fontSize: 22,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    child: CupertinoDatePicker(
+                      mode: CupertinoDatePickerMode.date,
+                      initialDateTime: DateTime.now(),
+                      onDateTimeChanged: (DateTime dateTime) {
+                        pickedDate = dateTime;
+                      },
+                    ),
                   ),
                 ),
                 CupertinoButton(
-                  child: const Text('Done'),
+                  child: Text(
+                    'تأكيد',
+                    style: TextStyle(
+                      fontFamily: GoogleFonts.cairo().fontFamily,
+                      color: Constants.mainColor,
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop(pickedDate);
                   },

@@ -53,5 +53,8 @@
     <string>We need your permission to save images to your photo library.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to update your profile picture.</string>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
+
 </dict>
 </plist>
