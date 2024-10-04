@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:sport/utilits/loading_animation.dart';
-import 'package:sport/views/auth/widgets/coustom_button.dart';
-import 'package:sport/views/search_screen/widget/HorizontalCalendar.dart';
-import 'package:sport/views/search_screen/widget/session_list.dart';
-import 'package:sport/views/search_screen/widget/staduim_photo_stack.dart';
-import 'package:sport/views/search_screen/widget/staduim_rating.dart';
-import 'package:sport/views/stadium/screens/widget/comments_widget.dart';
 import '../../../../app/app_packges.dart';
 import '../../../search_screen/staduim_screen.dart';
 
@@ -202,7 +195,6 @@ class StadiumBoxWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.04),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
@@ -255,7 +247,7 @@ class StadiumBoxWidget extends StatelessWidget {
                 child: Text(
                   isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
                   style:isAvailable?  Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor  ):
-                  Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red  ),
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.red  ),
                 ),
               ),
             ],

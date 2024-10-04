@@ -7,7 +7,6 @@ import 'package:sport/app/app_cubits.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/utilits/secure_data.dart';
 import '../../app/app_packges.dart';
-import '../../app/status_bar_color.dart';
 import '../../controller/onboarding_cubit/onboarding_cubit.dart';
 import '../../utilits/constants.dart';
 import '../auth/widgets/coustom_button.dart';
@@ -38,8 +37,13 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    setStatusBarColor(Constants.mainColor);
+    // Ensure this runs after the first frame is rendered
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Constants.txtColor, // Set your desired color
+        statusBarIconBrightness: Brightness.light, // Change based on your color
+      ));
+    });
 
     return BlocProvider(
       create: (BuildContext context) {
@@ -164,7 +168,7 @@ class OnboardingScreen extends StatelessWidget {
                           borderColor: Constants.mainColor,
                           height: Responsive.screenHeight(context) * 0.060,
                           onPress: () {
-                            Navigator.pushNamed(context, '/login' );
+                            Navigator.pushNamed(context, '/login');
                           },
                           textColor: Constants.mainColor,
                           hasBorder: true,
