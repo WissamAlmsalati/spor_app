@@ -1,4 +1,3 @@
-// reservation_fetch_cubit.dart
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +10,13 @@ import 'reservation_fetch_state.dart';
 class ReservationCubit extends Cubit<ReservationState> {
   ReservationCubit() : super(ReservationLoading());
 
+  int _currentPage = 1;
+  bool _isLastPage = false;
+  List<Reservation> _reservations = [];
+
   Future<void> fetchReservations({int pageKey = 1}) async {
+    if (_isLastPage && pageKey != 1) return;
+
     emit(ReservationLoading());
     try {
       final token = await SecureStorageData.getToken();
@@ -27,12 +32,13 @@ class ReservationCubit extends Cubit<ReservationState> {
         final data = json.decode(decodedResponse);
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
-          final isLastPage = data['next'] == null;
-          if (reservations.isEmpty) {
-            emit(ReservationError('لا توجد حجوزات حالية'));
+          _isLastPage = data['next'] == null;
+          if (pageKey == 1) {
+            _reservations = reservations;
           } else {
-            emit(ReservationLoaded(reservations, isLastPage: isLastPage));
+            _reservations.addAll(reservations);
           }
+          emit(ReservationLoaded(_reservations, isLastPage: _isLastPage));
         } else {
           emit(ReservationError('Invalid data format'));
         }
@@ -50,27 +56,10 @@ class ReservationCubit extends Cubit<ReservationState> {
     }
   }
 
-  Future<void> deleteReservation(int reservationId) async {
-    try {
-      final token = await SecureStorageData.getToken();
-      final response = await http.delete(
-        Uri.parse('https://api.sport.com.ly/player/reservations/$reservationId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        emit(ReservationDeleted(reservationId));
-      } else {
-        emit(ReservationError('Failed to delete reservation: ${response.reasonPhrase}'));
-      }
-    } catch (e) {
-      if (e is SocketExceptionError) {
-        emit(OldReservSocketError());
-      } else {
-        emit(ReservationError('An error occurred: $e'));
-      }
+  void loadNextPage() {
+    if (!_isLastPage) {
+      _currentPage++;
+      fetchReservations(pageKey: _currentPage);
     }
   }
 }

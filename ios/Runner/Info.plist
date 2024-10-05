@@ -55,6 +55,21 @@
     <string>We need access to your photo library to update your profile picture.</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
-
+    <!-- Add Deep Linking Configuration -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>https</string>
+            </array>
+        </dict>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>https</string>
+    </array>
 </dict>
 </plist>

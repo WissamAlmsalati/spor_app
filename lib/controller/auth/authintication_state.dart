@@ -13,7 +13,6 @@ class AuthenticationUnauthenticated extends AuthenticationState {}
 
 class AuthenticationFailure extends AuthenticationState {
   final String message;
-
   AuthenticationFailure(this.message);
 }
 

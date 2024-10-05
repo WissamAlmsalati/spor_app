@@ -14,6 +14,10 @@ part 'old_reservation_fetch_state.dart';
 class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
   OldReservationFetchCubit() : super(OldReservationLoading());
 
+  int _currentPage = 1;
+  bool _isLastPage = false;
+  List<Reservation> _reservations = [];
+
   Future<void> fetchOldReservations({int pageKey = 1}) async {
     emit(OldReservationLoading());
     try {
@@ -40,11 +44,12 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
         final data = json.decode(decodedResponse);
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
-          final isLastPage = data['next'] == null;
+          _isLastPage = data['next'] == null;
           if (reservations.isEmpty && pageKey == 1) {
             emit(OldReservationEmpty('ليس لديك حجوزات سابقة'));
           } else {
-            emit(OldReservationLoaded(reservations: reservations, isLastPage: isLastPage));
+            _reservations.addAll(reservations);
+            emit(OldReservationLoaded(reservations: _reservations, isLastPage: _isLastPage));
           }
         } else {
           emit(OldReservationError('Invalid data format'));
@@ -60,6 +65,13 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
       } else {
         emit(OldReservationError('An error occurred: $e'));
       }
+    }
+  }
+
+  void loadNextPage() {
+    if (!_isLastPage) {
+      _currentPage++;
+      fetchOldReservations(pageKey: _currentPage);
     }
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sport/controller/old_reveresition/old_reservation_fetch_cubit.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/views/Booking/widget/history_booking_widget.dart';
 import '../../models/reservation.dart';
-import 'current_book_screen.dart';
 
 class BookingHistoryScreen extends StatefulWidget {
   const BookingHistoryScreen({super.key});
@@ -92,4 +92,57 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class ShimmerLoadingWidget extends StatelessWidget {
+  const ShimmerLoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: Responsive.screenHeight(context) * 0.3,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.6,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.4,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.05,
+                      width: Responsive.screenWidth(context) * 0.3,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

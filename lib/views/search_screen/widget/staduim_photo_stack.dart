@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:uni_links/uni_links.dart';
+import 'dart:async';
 import '../../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
@@ -40,8 +42,8 @@ class StaduimPhotoStack extends StatelessWidget {
 
   Future<void> _shareStadium(BuildContext context) async {
     try {
-      final String secureLink = await generateSecureLink(stdId);
-      await Share.share('Check out this stadium: $secureLink');
+      final String deepLink = 'https://api.sport.com.ly/player/stadium-info?stadium_id=$stdId';
+      await Share.share('Check out this stadium: $deepLink');
     } catch (e) {
       Fluttertoast.showToast(
         msg: 'Error sharing stadium link.',
@@ -90,25 +92,25 @@ class StaduimPhotoStack extends StatelessWidget {
           Positioned(
             top: Responsive.screenHeight(context) * 0.01,
             left: 0,
-          child: IconButton(
-  onPressed: () {
-    Navigator.pop(context);
-  },
-  icon: SizedBox(
-    height: Responsive.screenHeight(context) * 0.070,
-    width: Responsive.screenHeight(context) * 0.070,
-    child: Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Responsive.screenHeight(context) * 0.01),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
-        child: SvgPicture.asset(AppPhotot.arrowBack, height: Responsive.screenHeight(context) * 0.05),
-      ),
-    ),
-  ),
-),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: SizedBox(
+                height: Responsive.screenHeight(context) * 0.070,
+                width: Responsive.screenHeight(context) * 0.070,
+                child: Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Responsive.screenHeight(context) * 0.01),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
+                    child: SvgPicture.asset(AppPhotot.arrowBack, height: Responsive.screenHeight(context) * 0.05),
+                  ),
+                ),
+              ),
+            ),
           ),
           Positioned(
             top: Responsive.screenHeight(context) * 0.01,
@@ -126,7 +128,7 @@ class StaduimPhotoStack extends StatelessWidget {
                   ),
                   elevation: 2,
                   child: Padding(
-                    padding:  EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
+                    padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.01),
                     child: SvgPicture.asset(AppPhotot.shareIco, height: Responsive.screenHeight(context) * 0.05),
                   ),
                 ),
