@@ -31,10 +31,12 @@ class TitleLogoTitle extends StatelessWidget {
             ),
             Text(
               title,
-              style: TextStyle(
-                fontSize: Responsive.textSize(context, 24),
-                color: Constants.mainColor,
-                fontWeight: FontWeight.w700,
+              style:  Theme.of(context).textTheme.headlineMedium?.copyWith(
+
+                  color: Constants.mainColor,
+                  fontWeight: FontWeight.w700,
+
+
               ),
             ),
             SizedBox(
@@ -50,11 +52,12 @@ class TitleLogoTitle extends StatelessWidget {
         ),
         Text(description,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: Responsive.textSize(context, 14),
-              color: Constants.thirdColor.withOpacity(0.6),
-            )),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Constants.txtColor,
+              fontWeight: FontWeight.w700,
+            )
+            ),
+
       ],
     );
   }

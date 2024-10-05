@@ -42,12 +42,9 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           labelText,
-          style: TextStyle(
-            fontFamily: GoogleFonts.cairo().fontFamily,
-            color: Constants.txtColor,
-            fontWeight: FontWeight.w500,
-            fontSize: labelSize ?? 18,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Constants.txtColor
+          )
         ),
         SizedBox(height: Responsive.screenHeight(context) * 0.01),
         Container(
@@ -56,6 +53,7 @@ class CustomTextField extends StatelessWidget {
             valueListenable: _obscureTextNotifier,
             builder: (context, _obscureText, child) {
               return TextFormField(
+                cursorColor: Constants.mainColor,
                 focusNode: focusNode, // Assigned FocusNode here
                 keyboardType: keyboardType ?? TextInputType.text,
                 controller: controller,
@@ -70,7 +68,7 @@ class CustomTextField extends StatelessWidget {
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.02)          ,
                     borderSide: const BorderSide(
                       color: Constants.mainColor,
                       width: 1.2,

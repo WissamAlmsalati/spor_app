@@ -40,7 +40,7 @@ class OnboardingScreen extends StatelessWidget {
     // Ensure this runs after the first frame is rendered
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Constants.txtColor, // Set your desired color
+        statusBarColor: Constants.mainColor, // Set your desired color
         statusBarIconBrightness: Brightness.light, // Change based on your color
       ));
     });

@@ -1,6 +1,5 @@
 part of 'profile_picture_cubit.dart';
 
-
 abstract class ProfilePictureState extends Equatable {
   const ProfilePictureState();
 

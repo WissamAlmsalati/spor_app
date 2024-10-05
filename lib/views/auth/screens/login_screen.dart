@@ -13,7 +13,7 @@ class SignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    setStatusBarColor(Colors.white);
+    setStatusBarColor(Constants.backGroundColor);
 
     return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {

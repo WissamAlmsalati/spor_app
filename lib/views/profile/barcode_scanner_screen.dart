@@ -21,6 +21,7 @@ class BarcodeScannerScreen extends StatefulWidget {
 class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
+  bool isScanning = false;
 
   @override
   void reassemble() {
@@ -127,13 +128,10 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                       width: double.infinity,
                     ),
                     SizedBox(height: Responsive.blockHeight(context) * 2),
-
                     CustomButton(
                       text: 'إدخال الرمز يدوياً',
                       onPress: () {
-                        // Trigger haptic feedback
                         HapticFeedback.mediumImpact();
-                        // Call the provided onPress callback
                         Navigator.pop(context);
                       },
                       color: Constants.mainColor,
@@ -142,7 +140,6 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                       height: Responsive.screenHeight(context) * 0.053,
                       width: double.infinity,
                     ),
-
                   ],
                 ),
               ),
@@ -161,13 +158,21 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   }
 
   void _startScanning() {
-    controller?.resumeCamera();
-    controller?.scannedDataStream.listen((scanData) {
-      if (scanData.code != null) {
-        context.read<RechargeCubit>().rechargeCard(scanData.code!, context);
-        controller?.pauseCamera();
-      }
-    });
+    if (!isScanning) {
+      setState(() {
+        isScanning = true;
+      });
+      controller?.resumeCamera();
+      controller?.scannedDataStream.listen((scanData) {
+        if (scanData.code != null) {
+          context.read<RechargeCubit>().rechargeCard(scanData.code!, context);
+          controller?.pauseCamera();
+          setState(() {
+            isScanning = false;
+          });
+        }
+      });
+    }
   }
 
   @override
