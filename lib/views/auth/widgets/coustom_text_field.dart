@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sport/utilits/responsive.dart';
 import '../../../utilits/constants.dart';
 
+
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
@@ -119,7 +120,7 @@ class CustomTextField extends StatelessWidget {
                   fontSize: hintSize,
                 ),
                 validator: (value) {
-                  return validator?.call(value) ?? (value == null || value.isEmpty ? validatorText : null);
+                  return validator?.call(value?.toArabicNumerals()) ?? (value == null || value.isEmpty ? validatorText : null);
                 },
               );
             },
@@ -147,5 +148,25 @@ class CustomTextField extends StatelessWidget {
           ),
       ],
     );
+  }
+}
+
+
+extension PersianToArabicNumerals on String {
+  String toArabicNumerals() {
+    const persianToArabicMap = {
+      '۰': '0',
+      '۱': '1',
+      '۲': '2',
+      '۳': '3',
+      '۴': '4',
+      '۵': '5',
+      '۶': '6',
+      '۷': '7',
+      '۸': '8',
+      '۹': '9',
+    };
+
+    return this.split('').map((char) => persianToArabicMap[char] ?? char).join('');
   }
 }

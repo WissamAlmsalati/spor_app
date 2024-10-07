@@ -14,7 +14,6 @@ class Session {
   };
 }
 
-// models/reservation_request.dart
 
 class ReservationRequest {
   final Session session;

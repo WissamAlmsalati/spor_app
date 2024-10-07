@@ -14,6 +14,7 @@ import 'controller/profile_picture/profile_picture_cubit.dart';
 import 'controller/region_search_controler/region_search_cubit.dart';
 import 'controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import 'controller/review_comment_controller/comment_review_cubit.dart';
+import 'controller/update_profile/update_profile_cubit.dart';
 import 'repostry/staduim_repostry.dart';
 import 'app/app_packges.dart';
 
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
         BlocProvider(create: (context) => ForgetPasswordCubit()),
            BlocProvider(create: (context) => ProfilePictureCubit()),
+        BlocProvider(create: (context) => UpdateProfileCubit()),
       ],
       child: Builder(
         builder: (context) {

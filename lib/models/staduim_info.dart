@@ -9,7 +9,7 @@ class StadiumInfo {
   final int totalReservations;
   final int totalReviews;
   final String avgReviews;
-  final List<String> images;
+  final List<String>? images;
   final bool isFavourite;
 
   StadiumInfo({
@@ -23,7 +23,7 @@ class StadiumInfo {
     required this.totalReservations,
     required this.totalReviews,
     required this.avgReviews,
-    required this.images,
+    this.images, // Made images nullable
     required this.isFavourite,
   });
 
@@ -39,7 +39,7 @@ class StadiumInfo {
       totalReservations: json['total_reservations'],
       totalReviews: json['total_reviews'],
       avgReviews: json['avg_reviews'],
-      images: List<String>.from(json['images']),
+      images: json['images'] != null ? List<String>.from(json['images']) : null, // Handle null case
       isFavourite: json['is_favorite'],
     );
   }

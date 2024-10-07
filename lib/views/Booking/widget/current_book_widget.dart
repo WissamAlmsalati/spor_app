@@ -10,12 +10,12 @@ import 'package:sport/utilits/images.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sport/views/profile/widget/coustom_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../app/app_cubits.dart';
 import '../../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
 import '../../../controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../auth/widgets/coustom_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
 
 class CurrentBookWidget extends StatefulWidget {
   final Reservation reservation;
@@ -70,7 +70,8 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
           canceText: "الغاء",
           confirmText: "تأكيد",
           onConfirm: () {
-            context.read<CanceklReservCubit>().cancelReservation(widget.reservation.id.toString(), context);
+            context.read<CanceklReservCubit>().cancelReservation(
+                widget.reservation.id.toString(), context);
             Navigator.of(context).pop();
           },
           onCancel: () {
@@ -106,8 +107,10 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
     return BlocListener<CanceklReservCubit, CanceklReservState>(
       listener: (context, state) {
         if (state is CanceklReservSuccess) {
-          context.read<ReservationCubit>().fetchReservations(pageKey: 1);
-          FetchFavoriteCubit.refreshFavoriteStadiums(context);
+          context.read<ReservationCubit>().fetchReservations();
+          CustomToast.show(context, 'تم الغاء الحجز بنجاح');
+        } else if (state is CanceklReservFailure) {
+          CustomToast.show(context, 'حدث خطأ اثناء الغاء الحجز');
         }
       },
       child: Card(
@@ -131,12 +134,15 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
-
                     ),
                   ),
                   if (canDelete)
                     BlocBuilder<CanceklReservCubit, CanceklReservState>(
                       builder: (BuildContext context, CanceklReservState state) {
+                        if (state is CanceklReservLoading) {
+                          return CircularProgressIndicator();
+                        }
+
                         return IconButton(
                           icon: Icon(
                             Icons.delete,
@@ -170,7 +176,6 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.black.withOpacity(0.5),
                         fontWeight: FontWeight.w600,
-
                       ),
                     ),
                   ],
@@ -279,15 +284,15 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                     CustomButton(
                       onPress: isMatchStarted
                           ? () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) {
-                  //           return TimerScreen(
-                  //               selectedTime: startDateTime);
-                  //         },
-                  //       ),
-                  //     );
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) {
+                        //           return TimerScreen(
+                        //               selectedTime: startDateTime);
+                        //         },
+                        //       ),
+                        //     );
                       }
                           : () {
                         CustomToast.show(
@@ -329,78 +334,6 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
     }
   }
 }
-class TimerScreen extends StatelessWidget {
-  final DateTime selectedTime;
-
-  TimerScreen({required this.selectedTime});
-
-  @override
-  Widget build(BuildContext context) {
-    // Get the current time
-    DateTime now = DateTime.now();
-
-    Duration totalDuration = selectedTime.difference(now);
-    Duration timeRemaining = totalDuration;
-
-    double percentRemaining = timeRemaining.inSeconds / totalDuration.inSeconds;
-
-    String formattedTime = _formatDuration(timeRemaining);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Timer Screen'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularPercentIndicator(
-              radius: 120.0,
-              lineWidth: 13.0,
-              animation: true,
-              percent: percentRemaining.clamp(0.0, 1.0), // Ensure percent is between 0 and 1
-              center: Text(
-                formattedTime,
-                style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-              progressColor: Colors.green,
-              backgroundColor: Colors.grey[300]!,
-              circularStrokeCap: CircularStrokeCap.round,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Time to reserve: $formattedTime',
-              style: const TextStyle(fontSize: 24),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _formatDuration(Duration duration) {
-    int days = duration.inDays;
-    int hours = duration.inHours.remainder(24);
-    int minutes = duration.inMinutes.remainder(60);
-    int seconds = duration.inSeconds.remainder(60);
-
-    if (days > 1) {
-      return '$days يوم${days > 1 ? "s" : ""} $hours ساعة${hours > 1 ? "s" : ""}';
-    } else if (days == 1) {
-      return '1 يوم $hours ساعة${hours > 1 ? "s" : ""}';
-    } else if (hours > 0) {
-      return '$hours ساعة $minutes دقيقة${minutes > 1 ? "s" : ""}';
-    } else if (minutes > 0) {
-      return '$minutes دقيقة $seconds ثانية${seconds > 1 ? "s" : ""}';
-    } else {
-      return '$seconds ثانية${seconds > 1 ? "s" : ""}';
-    }
-  }
-}
-
-
-
-
 
 class CustomToast {
   static void show(BuildContext context, String message) {
@@ -459,7 +392,8 @@ class _AnimatedToast extends StatelessWidget {
           decoration: BoxDecoration(
             color: Constants.mainColor,
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.03),
+            borderRadius: BorderRadius.circular(
+                Responsive.screenWidth(context) * 0.03),
           ),
           child: Text(
             message,

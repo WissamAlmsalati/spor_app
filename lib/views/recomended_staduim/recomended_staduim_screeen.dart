@@ -5,14 +5,6 @@ import '../Booking/booking_history_screen.dart';
 import '../search_screen/staduim_screen.dart';
 import '../stadium/screens/widget/favorite_staduim.dart';
 
-
-import '../../../../app/app_packges.dart';
-import '../../../controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
-import '../../models/recomended_staduim.dart';
-import '../Booking/booking_history_screen.dart';
-import '../search_screen/staduim_screen.dart';
-import '../stadium/screens/widget/favorite_staduim.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -138,7 +130,8 @@ class RecomendedStadiumScreen extends StatelessWidget {
 }
 
 class RecommendedStadiums extends StatelessWidget {
-  const RecommendedStadiums({super.key});
+  final bool? isInHomeScreen;
+  const RecommendedStadiums({super.key, this.isInHomeScreen});
 
   @override
   Widget build(BuildContext context) {
@@ -181,31 +174,38 @@ class RecommendedStadiums extends StatelessWidget {
               ],
             );
           }
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 1,
+          return Padding(
+            padding:  EdgeInsets.only(
+              top:  Responsive.screenHeight(context)  * 0.01,
+              bottom: Responsive.screenHeight(context) * 0.02,
             ),
-            itemCount: state.staduims.length,
-            itemBuilder: (context, index) {
-              return StadiumBoxWidget(
-                imageUrl: state.staduims[index].image ?? '',
-                name: state.staduims[index].name,
-                isAvailable: state.staduims[index].isAvailable,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => StadiumDetailScreen(stadiumId: state.staduims[index].stadiumId),
-                    ),
-                  );
-                },
-              );
-            },
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1,
+              ),
+              itemCount: isInHomeScreen! ? 4 : state.staduims.length,
+
+              itemBuilder: (context, index) {
+                return StadiumBoxWidget(
+                  imageUrl: state.staduims[index].image ?? '',
+                  name: state.staduims[index].name,
+                  isAvailable: state.staduims[index].isAvailable,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StadiumDetailScreen(stadiumId: state.staduims[index].stadiumId),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           );
         } else if (state is FetchRecomendedStaduimSocketExceptionError){
           return SizedBox(

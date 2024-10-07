@@ -27,11 +27,6 @@ class CanceklReservCubit extends Cubit<CanceklReservState> {
       );
 
       if (response.statusCode == 200) {
-        const CustomAlertDialog(
-          title: "الحجوزات",
-          content: "تم الغاء الحجز بنجاح",
-          canceText: "اغلاق",
-        );
 
         print('Reservation canceled successfully');
         emit(CanceklReservSuccess());

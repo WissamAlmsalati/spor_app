@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../utilits/secure_data.dart';
 import '../../views/search_screen/widget/stadium_detail_dialog.dart';
 import '../Reservation_fetch/reservation_fetch_cubit.dart';
+import '../profile/fetch_profile_cubit.dart';
 
 part 'reverse_requestt_dart__state.dart';
 
@@ -40,7 +41,8 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         headers: requestHeaders,
         body: requestBody,
       );
-
+      print(response.statusCode);
+print(response.body);
       if (response.statusCode == 201) {
         print('Failed to send request: ${response.reasonPhrase}');
 
@@ -49,7 +51,9 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         emit(ReverseRequestSuccess());
         StadiumDetailDialog.showReservationStatusDialog(
             context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
-        context.read<ReservationCubit>().fetchReservations();      } else if (response.statusCode == 400) {
+        context.read<ReservationCubit>().fetchReservations();
+      context.read<FetchProfileCubit>().fetchProfileInfo();
+      } else if (response.statusCode == 400) {
         emit(NoBalance("لا يوجد رصيد كافي"));
       }else if (response.statusCode == 400){
         print('Failed to send request: ${response.reasonPhrase}');

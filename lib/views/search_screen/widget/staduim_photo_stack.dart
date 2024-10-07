@@ -22,23 +22,6 @@ class StaduimPhotoStack extends StatelessWidget {
 
   StaduimPhotoStack({super.key, required this.stdPhotos, required this.stdId});
 
-  Future<String> generateSecureLink(int stadiumId) async {
-    final response = await http.post(
-      Uri.parse('https://your-backend-api.com/generateLink'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, int>{
-        'stadiumId': stadiumId,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body)['link'];
-    } else {
-      throw Exception('Failed to generate link');
-    }
-  }
 
   Future<void> _shareStadium(BuildContext context) async {
     try {
@@ -81,7 +64,7 @@ class StaduimPhotoStack extends StatelessWidget {
               },
               itemBuilder: (context, index) {
                 return Image.network(
-                  stdPhotos[index],
+                  stdPhotos[index]??"https://interactive.guim.co.uk/atoms/thrashers/2022/03/moving-the-goalposts/assets/v/1718361372272/moving-the-goalposts-5-3.jpg",
                   fit: BoxFit.fill,
                   width: double.infinity,
                   height: Responsive.screenHeight(context) * 0.23,

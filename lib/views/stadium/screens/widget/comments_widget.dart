@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -13,7 +12,11 @@ class CommentsWidget extends StatefulWidget {
   final int stadiumId;
   final bool isScrollable;
 
-  const CommentsWidget({super.key, required this.stadiumId, required this.isScrollable});
+  const CommentsWidget({
+    super.key,
+    required this.stadiumId,
+    required this.isScrollable,
+  });
 
   @override
   _CommentsWidgetState createState() => _CommentsWidgetState();
@@ -44,41 +47,32 @@ class _CommentsWidgetState extends State<CommentsWidget> {
         if (state is FetchCommentsLoading) {
           return CommentsShimmer();
         } else {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              return ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: state is FetchCommentsLoaded && state.comments.isEmpty
-                      ? Responsive.screenHeight(context) * 0.1
-                      : Responsive.screenHeight(context) * 0.5,
-                ),
-                child: PagedListView<int, Comment>(
-                  physics: widget.isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
-                  pagingController: _pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<Comment>(
-                    itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
-                    firstPageErrorIndicatorBuilder: (context) => const Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
-                      ],
-                    ),
-                    noItemsFoundIndicatorBuilder: (context) => Center(child: Text('لاتوجد تعليقات علي هاذا الملعب',style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-
-                    ))),
-                    newPageErrorIndicatorBuilder: (context) => const Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Center(child: Text('حدث خطأ')),
-                      ],
-                    ),
-                    newPageProgressIndicatorBuilder: (context) => CommentsShimmer(),
-                  ),
-                ),
-              );
-            },
+          return PagedListView<int, Comment>(
+            physics: widget.isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<Comment>(
+              itemBuilder: (context, comment, index) => CommentWidget(comment: comment),
+              firstPageErrorIndicatorBuilder: (context) => const Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
+                ],
+              ),
+              noItemsFoundIndicatorBuilder: (context) => Container(
+                margin: EdgeInsets.only(top: Responsive.screenHeight(context) * 0.1),
+                child: Text('لاتوجد تعليقات علي هاذا الملعب', style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                )),
+              ),
+              newPageErrorIndicatorBuilder: (context) => const Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(child: Text('حدث خطأ')),
+                ],
+              ),
+              newPageProgressIndicatorBuilder: (context) => CommentsShimmer(),
+            ),
           );
         }
       },
@@ -186,7 +180,6 @@ class CommentWidget extends StatelessWidget {
     }
   }
 }
-
 
 class CommentsShimmer extends StatelessWidget {
   @override

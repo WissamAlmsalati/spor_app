@@ -146,7 +146,15 @@ class StadiumDetailScreen extends StatelessWidget {
                                     totalReviews: stadium.totalReviews,
                                   ),
                                   SizedBox(height: Responsive.screenHeight(context) * 0.04),
-                                  const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا')),
+                                  Container(
+                                    height: Responsive.screenHeight(context) * 0.23,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+
+                                      child: const Center(child: Text('هاذا الملعب غير متوفر للحجز حاليا'))),
                                   SizedBox(height: Responsive.screenHeight(context) * 0.04),
                                   Text(
                                     "التعليقات",
