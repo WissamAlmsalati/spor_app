@@ -37,78 +37,64 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
     emit(StadiumSearchTimeFromSelected(timeFrom));
   }
 
-  Future<void> searchStadiumsWithFilter({
-    required String name,
-    required int sessionId,
-    required String startDate,
-    required String endDate,
-    required String timeFrom,
-    required String timeTo,
-  }) async {
-    emit(StadiumSearchLoading());
-    try {
-      // Construct the query parameters
-      final queryParams = {
-        'name': name,
-        if (startDate != null) 'start_date': startDate,
-        if (endDate != null) 'end_date': endDate,
-        if (timeFrom != null) 'time_from': timeFrom,
-        if (timeTo != null) 'time_to': timeTo,
-        if (sessionId != null) 'id': '$sessionId',
-      };
+Future<void> searchStadiumsWithFilter({
+  required String name,
+  required int sessionId,
+  required String startDate,
+  required String endDate,
+  required String timeFrom,
+  required String timeTo,
+}) async {
+  emit(StadiumSearchLoading());
+  try {
+    print ('searchStadiumsWithFilter');
 
-      // Print the query parameters
-      print('Query Params filter: $queryParams');
+    // Construct the query parameters
+    final queryParams = {
+      'name': name,
+      'start_date': startDate,
+      'end_date': endDate,
+      'time_from': timeFrom,
+      'time_to': timeTo,
+      'id': '$sessionId',
+    };
 
-      // Build the query string
-      final queryString = Uri(queryParameters: queryParams).query;
+    // Build the query string
+    final queryString = Uri(queryParameters: queryParams).query;
 
-      // Ensure the base URL does not end with a question mark
-      final baseUrl = Apis.searchStadiumWithQuery.endsWith('?')
-          ? Apis.searchStadiumWithQuery.substring(0, Apis.searchStadiumWithQuery.length - 1)
-          : Apis.searchStadiumWithQuery;
+    // Ensure the base URL does not end with a question mark
+    final baseUrl = Apis.searchStadiumWithQuery.endsWith('?')
+        ? Apis.searchStadiumWithQuery.substring(0, Apis.searchStadiumWithQuery.length - 1)
+        : Apis.searchStadiumWithQuery;
 
-      // Print the full request URL
-      final requestUrl = '$baseUrl?$queryString';
-      print('Request URL: $requestUrl');
+    // Print the full request URL
+    final requestUrl = '$baseUrl?$queryString';
+    print('Request URL: $requestUrl');
 
-      final response = await http.get(
-        Uri.parse(requestUrl),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      );
+    final response = await http.get(
+      Uri.parse(requestUrl),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+    );
 
-      if (kDebugMode) {
-        print('Request URL: ${response.request?.url}');
-        print('Response status: ${response.statusCode}');
-        print('Response body: ${utf8.decode(response.bodyBytes)}');
-      }
-
-      final decodedResponse = utf8.decode(response.bodyBytes);
-
-      if (response.statusCode == 200) {
-        print('Response: ' + queryParams.toString() + queryString);
-        final data = json.decode(decodedResponse)['results'] as List;
-        final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
-        emit(StadiumSearchLoaded(stadiums: stadiums));
-      } else {
-        final errorData = json.decode(decodedResponse);
-        final errorMessage = errorData['detail'] ?? 'Failed to load stadiums';
-        if (kDebugMode) {
-          print('Failed to load stadiums: $errorMessage');
-        }
-        emit(StadiumSearchError(message: errorMessage));
-      }
-    } catch (e) {
-      if (e is SocketException) {
-        emit(StadiumSearchErrorSocketException());
-      } else {
-        if (kDebugMode) {
-          print('Error: $e');
-        }
-        emit(StadiumSearchError(message: e.toString()));
-      }
+    if (response.statusCode == 200) {
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${utf8.decode(response.bodyBytes)}');
+      final data = json.decode(utf8.decode(response.bodyBytes))['results'] as List;
+      final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
+      emit(StadiumSearchLoaded(stadiums: stadiums));
+    } else {
+      final errorData = json.decode(utf8.decode(response.bodyBytes));
+      final errorMessage = errorData['detail'] ?? 'Failed to load stadiums';
+      emit(StadiumSearchError(message: errorMessage));
+    }
+  } catch (e) {
+    if (e is SocketException) {
+      emit(StadiumSearchErrorSocketException());
+    } else {
+      emit(StadiumSearchError(message: e.toString()));
     }
   }
+}
 
   Future<void> searchStadiums({
     required String name,
@@ -118,97 +104,38 @@ class StadiumSearchCubit extends Cubit<StadiumSearchState> {
   }) async {
     emit(StadiumSearchLoading());
     try {
-      // Construct the query parameters
       final queryParams = {
         'name': name,
         if (city != null) 'city': city,
         if (sessionId != null) 'session_id': sessionId.toString(),
       };
 
-      // Print the query parameters
-      print('Query Params: $queryParams');
-
-      // Build the query string
       final queryString = Uri(queryParameters: queryParams).query;
-
-      // Ensure the base URL does not end with a question mark
       final baseUrl = Apis.searchStadiumWithQuery.endsWith('?')
           ? Apis.searchStadiumWithQuery.substring(0, Apis.searchStadiumWithQuery.length - 1)
           : Apis.searchStadiumWithQuery;
-
-      // Print the full request URL
       final requestUrl = '$baseUrl?$queryString';
-      print('Request URL: $requestUrl');
 
       final response = await http.get(
         Uri.parse(requestUrl),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       );
 
-      if (kDebugMode) {
-        print('Request URL: ${response.request?.url}');
-        print('Response status: ${response.statusCode}');
-        print('Response body: ${utf8.decode(response.bodyBytes)}');
-      }
-
-      final decodedResponse = utf8.decode(response.bodyBytes);
-
       if (response.statusCode == 200) {
-        print('Response: ' + queryParams.toString() + queryString);
-        final data = json.decode(decodedResponse)['results'] as List;
+        final data = json.decode(utf8.decode(response.bodyBytes))['results'] as List;
         final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
         emit(StadiumSearchLoaded(stadiums: stadiums));
       } else {
-        final errorData = json.decode(decodedResponse);
+        final errorData = json.decode(utf8.decode(response.bodyBytes));
         final errorMessage = errorData['detail'] ?? 'Failed to load stadiums';
-        if (kDebugMode) {
-          print('Failed to load stadiums: $errorMessage');
-        }
         emit(StadiumSearchError(message: errorMessage));
       }
     } catch (e) {
       if (e is SocketException) {
         emit(StadiumSearchErrorSocketException());
       } else {
-        if (kDebugMode) {
-          print('Error: $e');
-        }
         emit(StadiumSearchError(message: e.toString()));
       }
-    }
-  }
-
-  Future<void> fetchStadiumById(String id) async {
-    emit(StadiumSearchLoading());
-    try {
-      final response = await http.get(
-        Uri.parse('${Apis.searchStadium}/$id'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      );
-
-      if (kDebugMode) {
-        print('Request URL: ${response.request?.url}');
-        print('Response status: ${response.statusCode}');
-        print('Response body: ${utf8.decode(response.bodyBytes)}');
-      }
-
-      if (response.statusCode == 200) {
-        final data = json.decode(utf8.decode(response.bodyBytes));
-        final stadium = Stadium.fromJson(data);
-        emit(StadiumSearchLoaded(stadiums: [stadium]));
-      } else {
-        final errorData = json.decode(utf8.decode(response.bodyBytes));
-        final errorMessage = errorData['detail'] ?? 'Failed to load stadium';
-        if (kDebugMode) {
-          print('Failed to load stadium: $errorMessage');
-        }
-        emit(StadiumSearchError(message: errorMessage));
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error: $e');
-      }
-      emit(StadiumSearchError(message: e.toString()));
     }
   }
 

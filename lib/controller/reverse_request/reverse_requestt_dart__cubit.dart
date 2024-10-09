@@ -15,11 +15,16 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
     _loadReservationState();
   }
 
-  Future<void> sendReverseRequest(int stadiumId, String selectedDate, int selectedSessionId, bool isMonthlyReservation, int paymentType, BuildContext context) async {
+  Future<void> sendReverseRequest(
+      int stadiumId,
+      String selectedDate,
+      int selectedSessionId,
+      bool isMonthlyReservation,
+      int paymentType,
+      BuildContext context) async {
     emit(ReverseRequestLoading());
     print('Sending reverse request...');
     try {
-
       final token = await SecureStorageData.getToken();
       final requestBody = jsonEncode({
         "session": {
@@ -42,7 +47,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         body: requestBody,
       );
       print(response.statusCode);
-print(response.body);
+      print(response.body);
       if (response.statusCode == 201) {
         print('Failed to send request: ${response.reasonPhrase}');
 
@@ -52,10 +57,10 @@ print(response.body);
         StadiumDetailDialog.showReservationStatusDialog(
             context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
         context.read<ReservationCubit>().fetchReservations();
-      context.read<FetchProfileCubit>().fetchProfileInfo();
+        context.read<FetchProfileCubit>().fetchProfileInfo();
       } else if (response.statusCode == 400) {
         emit(NoBalance("لا يوجد رصيد كافي"));
-      }else if (response.statusCode == 400){
+      } else if (response.statusCode == 400) {
         print('Failed to send request: ${response.reasonPhrase}');
         emit(ReverseRequestError('حدث خطأ ما'));
       } else if (response.statusCode == 404) {
@@ -67,13 +72,14 @@ print(response.body);
         print('Failed to send request: ${response.reasonPhrase}');
 
         print('Request failed: Internal Server Error (500)');
-        emit(ReverseRequestError('Request failed: Internal Server Error (500)'));
+        emit(
+            ReverseRequestError('Request failed: Internal Server Error (500)'));
       } else {
         print('Failed to send request: ${response.reasonPhrase}');
-        emit(ReverseRequestError('Failed to send request: ${response.reasonPhrase}'));
+        emit(ReverseRequestError(
+            'Failed to send request: ${response.reasonPhrase}'));
       }
     } catch (e) {
-
       print('An error occurred: $e');
       emit(ReverseRequestError('An error occurred: $e'));
     }

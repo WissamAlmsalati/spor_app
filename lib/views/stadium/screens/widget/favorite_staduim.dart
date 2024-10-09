@@ -45,7 +45,6 @@ class FavoriteStadium extends StatelessWidget {
                 } else if (state is FetchFavoriteLoaded) {
                   if (state.stadiums.isEmpty) {
                     return Column(
-
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
@@ -61,7 +60,7 @@ class FavoriteStadium extends StatelessWidget {
                   }
                   return GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
@@ -172,14 +171,15 @@ class StadiumBoxWidget extends StatelessWidget {
   final String name;
   final bool isAvailable;
   final VoidCallback onTap;
-  final isFavoriteWidget;
+  final bool isFavoriteWidget;
 
   const StadiumBoxWidget({
     required this.imageUrl,
     required this.name,
     required this.isAvailable,
     required this.onTap,
-    Key? key, this.isFavoriteWidget,
+    Key? key,
+    this.isFavoriteWidget = false,
   }) : super(key: key);
 
   @override
@@ -213,18 +213,17 @@ class StadiumBoxWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  isFavoriteWidget != null
-                  ? Positioned(
-                    right: Responsive.screenWidth(context) * 0.04,
-                    top: Responsive.screenHeight(context) * 0.02,
-                    child: SvgPicture.asset(
-                      AppPhotot.fillFav,
-                      color: Colors.red,
-                      width: Responsive.screenWidth(context) * 0.025,
-                      height: Responsive.screenHeight(context) * 0.020,
+                  if (isFavoriteWidget)
+                    Positioned(
+                      right: Responsive.screenWidth(context) * 0.04,
+                      top: Responsive.screenHeight(context) * 0.02,
+                      child: SvgPicture.asset(
+                        AppPhotot.fillFav,
+                        color: Colors.red,
+                        width: Responsive.screenWidth(context) * 0.025,
+                        height: Responsive.screenHeight(context) * 0.020,
+                      ),
                     ),
-                  )
-                  : Container(),
                 ],
               ),
               Padding(
@@ -236,18 +235,19 @@ class StadiumBoxWidget extends StatelessWidget {
                   name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black  ),
-                 ),
-                 ),
-                 Padding(
-                 padding: EdgeInsets.only(
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
                   top: Responsive.screenHeight(context) * 0.015,
                   right: Responsive.screenWidth(context) * 0.018,
-                 ),
-                 child: Text(
+                ),
+                child: Text(
                   isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
-                  style:isAvailable?  Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor  ):
-                  Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red  ),
+                  style: isAvailable
+                      ? Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor)
+                      : Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red),
                 ),
               ),
             ],
