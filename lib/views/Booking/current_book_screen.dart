@@ -21,9 +21,17 @@ class _CurrentBookingState extends State<CurrentBooking> with AutomaticKeepAlive
   @override
   void initState() {
     super.initState();
+    // Trigger the first fetch when the screen is opened
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<ReservationCubit>().fetchReservations(pageKey: pageKey);
+      _fetchPage(pageKey);
     });
+
+    // Initial fetch for the first page
+    _fetchPage(1);
+  }
+
+  void _fetchPage(int pageKey) {
+    context.read<ReservationCubit>().fetchReservations(pageKey: pageKey);
   }
 
   @override
@@ -53,7 +61,7 @@ class _CurrentBookingState extends State<CurrentBooking> with AutomaticKeepAlive
         child: RefreshIndicator(
           onRefresh: () async {
             _pagingController.refresh();
-            context.read<ReservationCubit>().fetchReservations(pageKey: 1);
+            _fetchPage(1); // Refreshes the first page
           },
           child: PagedListView<int, Reservation>(
             pagingController: _pagingController,
