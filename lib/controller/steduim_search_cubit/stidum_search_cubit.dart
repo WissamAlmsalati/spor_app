@@ -47,17 +47,36 @@ Future<void> searchStadiumsWithFilter({
 }) async {
   emit(StadiumSearchLoading());
   try {
-    print ('searchStadiumsWithFilter');
+    print('searchStadiumsWithFilter');
+
+    // Parse the selected date and time
+    final selectedDate = DateTime.parse(startDate);
+    final timeFromParts = timeFrom.split(':');
+    final timeFromDateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      int.parse(timeFromParts[0]),
+      int.parse(timeFromParts[1]),
+    );
+
+    // Add one hour to get timeTo
+    final timeToDateTime = timeFromDateTime.add(Duration(hours: 1));
+    final formattedTimeFrom = timeFromDateTime.toIso8601String().substring(11, 19);
+    final formattedTimeTo = timeToDateTime.toIso8601String().substring(11, 19);
 
     // Construct the query parameters
     final queryParams = {
       'name': name,
       'start_date': startDate,
       'end_date': endDate,
-      'time_from': timeFrom,
-      'time_to': timeTo,
+      'time_from': formattedTimeFrom,
+      'time_to': formattedTimeTo,
       'id': '$sessionId',
     };
+
+    // Print the query parameters
+    print('Query Parameters: $queryParams');
 
     // Build the query string
     final queryString = Uri(queryParameters: queryParams).query;
@@ -95,7 +114,6 @@ Future<void> searchStadiumsWithFilter({
     }
   }
 }
-
   Future<void> searchStadiums({
     required String name,
     String? city,

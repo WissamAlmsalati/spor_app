@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:sport/controller/Reservation_fetch/reservation_fetch_state.dart';
-import 'package:sport/views/Booking/widget/current_book_widget.dart';
 import '../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
+import '../../controller/Reservation_fetch/reservation_fetch_state.dart';
+import '../../models/reservation.dart';
 import '../../utilits/responsive.dart';
-import '../../models/reservation.dart'; // Import the Reservation class
+import 'widget/current_book_widget.dart';
 
 class CurrentBooking extends StatefulWidget {
   const CurrentBooking({super.key});
@@ -15,7 +15,7 @@ class CurrentBooking extends StatefulWidget {
   _CurrentBookingState createState() => _CurrentBookingState();
 }
 
-class _CurrentBookingState extends State<CurrentBooking> {
+class _CurrentBookingState extends State<CurrentBooking> with AutomaticKeepAliveClientMixin {
   final PagingController<int, Reservation> _pagingController = PagingController(firstPageKey: 1);
 
   @override
@@ -27,7 +27,14 @@ class _CurrentBookingState extends State<CurrentBooking> {
   }
 
   @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: BlocListener<ReservationCubit, ReservationState>(
         listener: (context, state) {
@@ -43,31 +50,44 @@ class _CurrentBookingState extends State<CurrentBooking> {
             _pagingController.error = state.message;
           }
         },
-        child: BlocBuilder<ReservationCubit, ReservationState>(
-          builder: (context, state) {
-            if (state is ReservationLoading) {
-              return const ShimmerLoadingWidget();
-            } else {
-              return PagedListView<int, Reservation>(
-                pagingController: _pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Reservation>(
-                  itemBuilder: (context, reservation, index) => CurrentBookWidget(reservation: reservation),
-                  firstPageErrorIndicatorBuilder: (context) => Center(child: Text(_pagingController.error.toString())),
-                  noItemsFoundIndicatorBuilder: (context) => Center(child: Text('لا توجد حجوزات حالية')),
-                ),
-              );
-            }
+        child: RefreshIndicator(
+          onRefresh: () async {
+            _pagingController.refresh();
+            context.read<ReservationCubit>().fetchReservations(pageKey: 1);
           },
+          child: PagedListView<int, Reservation>(
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<Reservation>(
+              itemBuilder: (context, item, index) => CurrentBookWidget(reservation: item),
+              firstPageProgressIndicatorBuilder: (context) => const ShimmerLoadingWidget(),
+              newPageProgressIndicatorBuilder: (context) => const Center(child: CircularProgressIndicator()),
+              noMoreItemsIndicatorBuilder: (context) => Center(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: Responsive.screenHeight(context) * 0.01,
+                    bottom: Responsive.screenHeight(context) * 0.02,
+                  ),
+                  child: Text(
+                    'لا توجد حجوزات اخرى',
+                    style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+                  ),
+                ),
+              ),
+              noItemsFoundIndicatorBuilder: (context) => Center(
+                child: Text(
+                  'لا توجد حجوزات حالية',
+                  style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
   @override
-  void dispose() {
-    _pagingController.dispose();
-    super.dispose();
-  }
+  bool get wantKeepAlive => true;
 }
 
 class ShimmerLoadingWidget extends StatelessWidget {

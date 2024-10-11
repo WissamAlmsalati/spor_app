@@ -5,18 +5,16 @@ import 'package:sport/app/app_packges.dart';
 import 'dart:convert';
 import 'package:sport/models/reservation.dart';
 import '../../utilits/secure_data.dart';
-import 'reservation_fetch_state.dart';
+import 'reservation_fetch_state.dart'; // Ensure this import is correct
 
 class ReservationCubit extends Cubit<ReservationState> {
   ReservationCubit() : super(ReservationLoading());
 
-  int _currentPage = 1;
+  int _currentPage = 0;
   bool _isLastPage = false;
   List<Reservation> _reservations = [];
 
-  Future<void> fetchReservations({int pageKey = 1}) async {
-    if (_isLastPage && pageKey != 1) return;
-
+  Future<void> fetchReservations({int pageKey = 0}) async {
     emit(ReservationLoading());
     try {
       final token = await SecureStorageData.getToken();
@@ -33,7 +31,7 @@ class ReservationCubit extends Cubit<ReservationState> {
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
           _isLastPage = data['next'] == null;
-          if (pageKey == 1) {
+          if (pageKey == 0) {
             _reservations = reservations;
           } else {
             _reservations.addAll(reservations);
@@ -43,7 +41,7 @@ class ReservationCubit extends Cubit<ReservationState> {
           emit(ReservationError('Invalid data format'));
         }
       } else if (response.statusCode == 401) {
-        emit(ReservationError('انشئ حساب و احجز ملاعبك المفضلة'));
+        emit(UnAuthenticatedUser());
       } else {
         emit(ReservationError('An error occurred: ${response.reasonPhrase}'));
       }

@@ -40,6 +40,7 @@ class WalletScreen extends StatelessWidget {
                         height: Responsive.screenHeight(context) * 0.045,
                         width: Responsive.screenHeight(context) * 0.045, isHomeScreen: false,
                       ),
+
                       Padding(
                         padding: EdgeInsets.only(
                           top: Responsive.screenHeight(context) * 0.04,
@@ -239,10 +240,11 @@ class CustomDialog extends StatelessWidget {
                               fontSize: Responsive.textSize(context, 12),
                               fontFamily: GoogleFonts.cairo().fontFamily,
                             ),
+
                           );
                         } else if (state is RechargeFailure) {
                           return Text(
-                            'خطا في الرقم السري',
+                            state.error,
                             style: TextStyle(
                               color: Colors.red,
                               fontSize: Responsive.textSize(context, 12),

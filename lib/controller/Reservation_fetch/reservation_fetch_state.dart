@@ -29,4 +29,12 @@ class ReservationError extends ReservationState {
   ReservationError(this.message);
 }
 
+class ReservationEmpty extends ReservationState {
+  final String message;
+
+  ReservationEmpty(this.message);
+}
+
+class UnAuthenticatedUser extends ReservationState {}
+
 class OldReservSocketError extends ReservationState{}

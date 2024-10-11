@@ -107,6 +107,7 @@ void showCustomBottomSheet(
                         timeTo: selectedTimeFrom, // Use the formatted time
                       );
                     }
+                    Navigator.pop(context);
                   },
                   text: 'تأكيد',
                   textSize: Responsive.textSize(context, 18),

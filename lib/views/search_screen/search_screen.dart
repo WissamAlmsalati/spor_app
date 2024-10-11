@@ -126,7 +126,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
     return BlocBuilder<RegionSearchCubit, RegionSearchState>(
       builder: (context, state) {
         if (state is RegionSearchLoading) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: LoadingAnimation(size: MediaQuery.sizeOf(context).height*0.04));
         } else if (state is RegionSearchLoaded) {
           return ListView.builder(
             shrinkWrap: true,
@@ -181,7 +181,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                   children: [
                     SvgPicture.asset('assets/icons/no_result.svg'),
                     const Text(
-                      'لاتوجد ملاعب متاحة في هاذه المنطقة حالياً',
+                      'لاتوجد ملاعب متاحةً',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
