@@ -26,6 +26,7 @@ class FavoriteStadium extends StatelessWidget {
             child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
               builder: (BuildContext context, state) {
                 if (state is FetchFavoriteLoading) {
+                  // Placeholder shimmer effect
                   return GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -58,32 +59,35 @@ class FavoriteStadium extends StatelessWidget {
                       ],
                     );
                   }
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 1,
+                  // Display loaded stadiums
+                  return Expanded(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: state.stadiums.length,
+                      itemBuilder: (context, index) {
+                        return StadiumBoxWidget(
+                          isFavoriteWidget: true,
+                          imageUrl: state.stadiums[index].image,
+                          name: state.stadiums[index].name,
+                          isAvailable: state.stadiums[index].isAvailable,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StadiumDetailScreen(stadiumId: state.stadiums[index].id),
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
-                    itemCount: state.stadiums.length,
-                    itemBuilder: (context, index) {
-                      return StadiumBoxWidget(
-                        isFavoriteWidget: true,
-                        imageUrl: state.stadiums[index].image,
-                        name: state.stadiums[index].name,
-                        isAvailable: state.stadiums[index].isAvailable,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StadiumDetailScreen(stadiumId: state.stadiums[index].id),
-                            ),
-                          );
-                        },
-                      );
-                    },
                   );
                 } else if (state is UnAuthorizedError) {
                   return Center(
