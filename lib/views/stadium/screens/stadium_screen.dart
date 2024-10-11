@@ -10,7 +10,6 @@ import 'package:sport/utilits/constants.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/views/stadium/screens/widget/profile_appbar.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
-
 import '../../recomended_staduim/recomended_staduim_screeen.dart';
 import '../../search_screen/widget/ads_photo_cursol.dart';
 import '../widget/coustom_appbar.dart';
@@ -23,72 +22,69 @@ class StadiumScreen extends StatelessWidget {
     context.read<FetchProfileCubit>().fetchProfileInfo();
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
     context.read<FetchAdsImagesCubit>().fetchAdsImages();
-    context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
-    context.read<FetchRecomendedStaduimCubit>()..fetchRecomendedStaduims();
+    context.read<FetchRecomendedStaduimCubit>().fetchRecomendedStaduims();
+  }
+
+  Widget _buildAppBar(BuildContext context, FetchProfileState state) {
+    double appBarHeight = Responsive.screenHeight(context) * 0.045;
+    double appBarWidth = Responsive.screenHeight(context) * 0.045;
+
+    if (state is FetchProfileLoading) {
+      return CoustomAppBr(
+        title: "انشئ حساب و استمتع",
+        isLoading: true,
+        height: appBarHeight,
+        width: appBarWidth,
+        onPressedFav: () => _navigateToFavoriteScreen(context),
+        isHomeScreen: true,
+      );
+    } else if (state is FetchProfileError || state is FetchProfileEmpty) {
+      return CoustomAppBr(
+        height: appBarHeight,
+        width: appBarWidth,
+        title: "انشئ حساب و استمتع",
+        isHomeScreen: true,
+      );
+    } else if (state is ProfileSocketExceptionError) {
+      return CoustomAppBr(
+        height: appBarHeight,
+        width: appBarWidth,
+        title: "لا يوجد اتصال بالانترنت",
+        isHomeScreen: true,
+      );
+    } else if (state is FetchProfileLoaded) {
+      return CoustomAppBr(
+        title: "اهلا وسهلا ,",
+        userName: state.userInfo.firstName,
+        onPressedFav: () => _navigateToFavoriteScreen(context),
+        height: appBarHeight,
+        width: appBarWidth,
+        isHomeScreen: true,
+      );
+    } else {
+      return const Center(child: Text('Unknown state'));
+    }
+  }
+
+  void _navigateToFavoriteScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      automaticallyImplyLeading: false,
-      title: BlocBuilder<FetchProfileCubit, FetchProfileState>(
-        builder: (context, state) {
-          if (state is FetchProfileLoading) {
-            return CoustomAppBr(
-              title: "انشئ حساب و استمتع",
-              isLoading: true,
-              height: Responsive.screenHeight(context) * 0.045,
-              width: Responsive.screenHeight(context) * 0.045,
-              onPressedFav: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoriteScreen()));
-              },
-              isHomeScreen: true,
-            );
-          } else if (state is FetchProfileError) {
-            return CoustomAppBr(
-              height: Responsive.screenHeight(context) * 0.045,
-              width: Responsive.screenHeight(context) * 0.045,
-              title: "انشئ حساب و استمتع",
-              isHomeScreen: true,
-            );
-          } else if (state is ProfileSocketExceptionError) {
-            return CoustomAppBr(
-              height: Responsive.screenHeight(context) * 0.045,
-              width: Responsive.screenHeight(context) * 0.045,
-              title: "لا يوجد اتصال بالانترنت",
-              isHomeScreen: true,
-            );
-          } else if (state is FetchProfileLoaded) {
-            return CoustomAppBr(
-              title: "اهلا وسهلا ,",
-              userName: state.userInfo.firstName,
-              onPressedFav: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoriteScreen()));
-              },
-              height: Responsive.screenHeight(context) * 0.045,
-              width: Responsive.screenHeight(context) * 0.045,
-              isHomeScreen: true,
-            );
-          } else if (state is FetchProfileEmpty) {
-            return CoustomAppBr(
-              height: Responsive.screenHeight(context) * 0.045,
-              width: Responsive.screenHeight(context) * 0.045,
-              title: "انشئ حساب و استمتع",
-              isHomeScreen: true,
-            );
-          } else {
-            return const Center(child: Text('Unknown state'));
-          }
-        },
+        automaticallyImplyLeading: false,
+        title: BlocBuilder<FetchProfileCubit, FetchProfileState>(
+          builder: (context, state) => _buildAppBar(context, state),
+        ),
       ),
-    ),
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () {
-            _refreshData(context);
-            return Future<void>.value();
-          },
+          onRefresh: () => _refreshData(context),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
@@ -131,7 +127,7 @@ class StadiumScreen extends StatelessWidget {
                     children: [
                       Text(
                         "افضل الملاعب",
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black  ),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black),
                       ),
                       TextButton(
                         onPressed: () {
@@ -142,14 +138,12 @@ class StadiumScreen extends StatelessWidget {
                         },
                         child: Text(
                           "عرض الكل",
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Constants.mainColor  ),
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Constants.mainColor),
                         ),
                       ),
                     ],
                   ),
-                  const RecommendedStadiums(
-                    isInHomeScreen: true,
-                  ),
+                  const RecommendedStadiums(isInHomeScreen: true),
                 ],
               ),
             ),
@@ -159,5 +153,3 @@ class StadiumScreen extends StatelessWidget {
     );
   }
 }
-
-

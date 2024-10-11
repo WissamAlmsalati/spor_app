@@ -3,61 +3,61 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
+import 'package:sport/controller/old_reveresition/old_reservation_fetch_state.dart';
 import 'package:sport/models/reservation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../utilits/secure_data.dart';
 import '../../services/apis.dart';
 
-part 'old_reservation_fetch_state.dart';
+
 
 class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
   OldReservationFetchCubit() : super(OldReservationLoading());
 
-  int _currentPage = 1;
-  bool _isLastPage = false;
-  List<Reservation> _reservations = [];
+  int _currentPage = 1; // Track the current page number
+  List<Reservation> _reservations = []; // Store fetched old reservations
+  bool _isLastPage = false; // Track if the last page is reached
 
-  Future<void> fetchOldReservations({int pageKey = 1}) async {
-    emit(OldReservationLoading());
+  Future<List<Reservation>> fetchOldReservations({int pageKey = 1}) async {
+    if (pageKey == 1) {
+      emit(OldReservationLoading()); // Emit loading state for the first page
+    }
+
+    if (_isLastPage && pageKey != 1) return []; // Return if it's the last page
+
     try {
       final token = await SecureStorageData.getToken();
-      if (kDebugMode) {
-        print('Token: $token');
-      }
-
       final response = await http.get(
         Uri.parse('${Apis.oldReservations}?page=$pageKey'),
         headers: {
           'Authorization': 'Bearer $token',
         },
       );
-      if (kDebugMode) {
-        print(response.statusCode);
-      }
-      final decodedResponse = utf8.decode(response.bodyBytes);
-      if (kDebugMode) {
-        print(decodedResponse);
-      }
 
+      final decodedResponse = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         final data = json.decode(decodedResponse);
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
-          _isLastPage = data['next'] == null;
-          if (reservations.isEmpty && pageKey == 1) {
-            emit(OldReservationEmpty('ليس لديك حجوزات سابقة'));
+          _currentPage = pageKey;
+
+          if (pageKey == 1) {
+            _reservations = reservations; // Reset list for the first page
           } else {
-            _reservations.addAll(reservations);
-            emit(OldReservationLoaded(reservations: _reservations, isLastPage: _isLastPage));
+            _reservations.addAll(reservations); // Add to existing list for subsequent pages
           }
+
+          _isLastPage = data['next'] == null; // Check if there are more pages
+          emit(OldReservationLoaded(_reservations, _isLastPage));
+          return reservations;
         } else {
           emit(OldReservationError('Invalid data format'));
         }
       } else if (response.statusCode == 401) {
-        emit(UnAuthenticated());
+        emit(UnAuthenticatedUser());
       } else {
-        emit(OldReservationError('Failed to fetch reservations'));
+        emit(OldReservationError('Error: ${response.reasonPhrase}'));
       }
     } catch (e) {
       if (e is SocketException) {
@@ -66,6 +66,8 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
         emit(OldReservationError('An error occurred: $e'));
       }
     }
+
+    return [];
   }
 
   void loadNextPage() {

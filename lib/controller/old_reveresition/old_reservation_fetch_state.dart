@@ -1,42 +1,44 @@
-part of 'old_reservation_fetch_cubit.dart';
-
+import 'package:equatable/equatable.dart';
+import '../../models/reservation.dart';
 
 // States
 abstract class OldReservationFetchState extends Equatable {
+  const OldReservationFetchState();
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
+// Initial state
+class OldReservationInitial extends OldReservationFetchState {}
+
+// Loading state
 class OldReservationLoading extends OldReservationFetchState {}
 
+// Loaded state with reservations and isLastPage flag
 class OldReservationLoaded extends OldReservationFetchState {
   final List<Reservation> reservations;
   final bool isLastPage;
 
-  OldReservationLoaded({required this.reservations, required this.isLastPage});
+  const OldReservationLoaded(this.reservations, this.isLastPage);
 
   @override
-  List<Object> get props => [reservations, isLastPage];
+  List<Object?> get props => [reservations, isLastPage];
 }
 
-class OldReservationEmpty extends OldReservationFetchState {
-  final String message;
-
-  OldReservationEmpty(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-
+// Error state with error message
 class OldReservationError extends OldReservationFetchState {
   final String message;
 
-  OldReservationError(this.message);
+  const OldReservationError(this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }
 
-class UnAuthenticated extends OldReservationFetchState {}
+// Empty state for when there are no reservations
+class OldReservationEmpty extends OldReservationFetchState {}
 
 class OldReservationSocketExceptionError extends OldReservationFetchState {}
+
+class UnAuthenticatedUser extends OldReservationFetchState {}

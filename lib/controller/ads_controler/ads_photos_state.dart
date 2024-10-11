@@ -3,6 +3,7 @@ part of 'ads_photos_cubit.dart';
 @immutable
 abstract class AdsImagesState {}
 
+
 class AdsImagesInitial extends AdsImagesState {}
 
 class AdsImagesLoading extends AdsImagesState {}

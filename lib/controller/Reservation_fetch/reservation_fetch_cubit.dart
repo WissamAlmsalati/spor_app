@@ -1,21 +1,21 @@
-import 'dart:io';
+import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:sport/app/app_packges.dart';
-import 'dart:convert';
 import 'package:sport/models/reservation.dart';
 import '../../utilits/secure_data.dart';
-import 'reservation_fetch_state.dart'; // Ensure this import is correct
+import 'reservation_fetch_state.dart';
 
 class ReservationCubit extends Cubit<ReservationState> {
   ReservationCubit() : super(ReservationLoading());
 
-  int _currentPage = 0;
-  bool _isLastPage = false;
-  List<Reservation> _reservations = [];
+  int _currentPage = 1; // Track the current page number
+  List<Reservation> _reservations = []; // Store fetched reservations
 
-  Future<void> fetchReservations({int pageKey = 0}) async {
-    emit(ReservationLoading());
+  Future<List<Reservation>> fetchReservations({int pageKey = 1}) async {
+    if (pageKey == 1) {
+      emit(ReservationLoading());
+    }
+
     try {
       final token = await SecureStorageData.getToken();
       final response = await http.get(
@@ -30,34 +30,28 @@ class ReservationCubit extends Cubit<ReservationState> {
         final data = json.decode(decodedResponse);
         if (data is Map<String, dynamic> && data['results'] is List) {
           final reservations = Reservation.fromJsonList(data['results']);
-          _isLastPage = data['next'] == null;
-          if (pageKey == 0) {
-            _reservations = reservations;
+          _currentPage = pageKey; // Update current page
+
+          if (pageKey == 1) {
+            _reservations = reservations; // Reset list if fetching the first page
           } else {
-            _reservations.addAll(reservations);
+            _reservations.addAll(reservations); // Append new reservations to the list
           }
-          emit(ReservationLoaded(_reservations, isLastPage: _isLastPage));
+
+          emit(ReservationLoaded(_reservations)); // Emit loaded state
+          return reservations; // Return reservations for further processing
         } else {
           emit(ReservationError('Invalid data format'));
         }
       } else if (response.statusCode == 401) {
-        emit(UnAuthenticatedUser());
+        emit(ReservationError('Unauthorized'));
       } else {
         emit(ReservationError('An error occurred: ${response.reasonPhrase}'));
       }
     } catch (e) {
-      if (e is SocketException) {
-        emit(ReservationError('لا يوجد اتصال بالانترنت'));
-      } else {
-        emit(ReservationError('An error occurred: $e'));
-      }
+      emit(ReservationError('An error occurred: $e'));
     }
-  }
 
-  void loadNextPage() {
-    if (!_isLastPage) {
-      _currentPage++;
-      fetchReservations(pageKey: _currentPage);
-    }
+    return []; // Return an empty list on failure
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/models/reservation.dart';
 import 'package:sport/utilits/constants.dart';
@@ -403,6 +404,127 @@ class _AnimatedToast extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class ShimmerCurrentBookWidget extends StatelessWidget {
+  const ShimmerCurrentBookWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Card(
+        margin: EdgeInsets.all(Responsive.screenWidth(context) * 0.03),
+        elevation: 1,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: Responsive.screenHeight(context) * 0.02,
+            left: Responsive.screenWidth(context) * 0.05,
+            right: Responsive.screenWidth(context) * 0.05,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: Responsive.screenHeight(context) * 0.02,
+                    width: Responsive.screenWidth(context) * 0.4,
+                    color: Colors.white,
+                  ),
+                  Container(
+                    height: Responsive.screenHeight(context) * 0.02,
+                    width: Responsive.screenWidth(context) * 0.1,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: Responsive.screenHeight(context) * 0.013),
+                child: Row(
+                  children: [
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.1,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: Responsive.screenWidth(context) * 0.02),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.5,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: Responsive.screenHeight(context) * 0.05,
+                width: Responsive.screenWidth(context) * 0.5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.2,
+                      color: Colors.white,
+                    ),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.2,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: Responsive.screenHeight(context) * 0.05,
+                width: Responsive.screenWidth(context) * 0.6,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.2,
+                      color: Colors.white,
+                    ),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.02,
+                      width: Responsive.screenWidth(context) * 0.2,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: Responsive.screenHeight(context) * 0.09,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.05,
+                      width: Responsive.screenWidth(context) * 0.4,
+                      color: Colors.white,
+                    ),
+                    Container(
+                      height: Responsive.screenHeight(context) * 0.05,
+                      width: Responsive.screenWidth(context) * 0.4,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

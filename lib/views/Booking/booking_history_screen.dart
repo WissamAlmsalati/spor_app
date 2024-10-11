@@ -4,7 +4,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sport/controller/old_reveresition/old_reservation_fetch_cubit.dart';
 import 'package:sport/utilits/responsive.dart';
+import 'package:sport/views/Booking/widget/current_book_widget.dart';
 import 'package:sport/views/Booking/widget/history_booking_widget.dart';
+import '../../controller/old_reveresition/old_reservation_fetch_state.dart';
 import '../../models/reservation.dart';
 
 class BookingHistoryScreen extends StatefulWidget {
@@ -21,7 +23,13 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<OldReservationFetchCubit>().fetchOldReservations(pageKey: pageKey);
+      context.read<OldReservationFetchCubit>().fetchOldReservations(pageKey: pageKey).then((reservations) {
+        if (reservations.isNotEmpty) {
+          _pagingController.appendPage(reservations, pageKey + 1);
+        } else {
+          _pagingController.appendLastPage(reservations);
+        }
+      });
     });
   }
 
@@ -38,18 +46,29 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
       body: BlocBuilder<OldReservationFetchCubit, OldReservationFetchState>(
         builder: (context, state) {
           if (state is OldReservationLoading) {
-            return const ShimmerLoadingWidget();
-          } else if (state is UnAuthenticated) {
+            // Show shimmer effect when loading reservations
+            return const ShimmerCurrentBookWidget();
+          } else if (state is UnAuthenticatedUser) {
+            // Show message for unauthenticated users
             return const Center(child: Text('يجب تسجيل الدخول اولا'));
           } else if (state is OldReservationLoaded) {
+            // Handle loaded reservations
             final isLastPage = state.isLastPage;
             if (isLastPage) {
               _pagingController.appendLastPage(state.reservations);
             } else {
-              final nextPageKey = _pagingController.nextPageKey! + 1;
-              _pagingController.appendPage(state.reservations, nextPageKey);
+              _pagingController.appendPage(state.reservations, _pagingController.nextPageKey! + 1);
             }
+          } else if (state is OldReservationEmpty) {
+            // Show message when no reservations are found
+            return Center(
+              child: Text(
+                'لا توجد حجوزات حالية',
+                style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+              ),
+            );
           } else if (state is OldReservationError) {
+            // Handle error state
             _pagingController.error = state.message;
           }
 
@@ -62,7 +81,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
               pagingController: _pagingController,
               builderDelegate: PagedChildBuilderDelegate<Reservation>(
                 itemBuilder: (context, item, index) => HistoryBookingWidget(reservation: item),
-                firstPageProgressIndicatorBuilder: (context) => const ShimmerLoadingWidget(),
+                firstPageProgressIndicatorBuilder: (context) => const ShimmerCurrentBookWidget(),
                 newPageProgressIndicatorBuilder: (context) => const Center(child: CircularProgressIndicator()),
                 noMoreItemsIndicatorBuilder: (context) => Center(
                   child: Container(
@@ -92,57 +111,4 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class ShimmerLoadingWidget extends StatelessWidget {
-  const ShimmerLoadingWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: Responsive.screenHeight(context) * 0.3,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: Responsive.screenHeight(context) * 0.02,
-                      width: Responsive.screenWidth(context) * 0.6,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      height: Responsive.screenHeight(context) * 0.02,
-                      width: Responsive.screenWidth(context) * 0.4,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      height: Responsive.screenHeight(context) * 0.05,
-                      width: Responsive.screenWidth(context) * 0.3,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

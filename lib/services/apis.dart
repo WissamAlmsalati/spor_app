@@ -20,6 +20,7 @@ class Apis {
   static const String staduimDetail = "${BaseUrl.baseUrl}/player/stadium-info";
   static const String AdsPhotos = "${BaseUrl.baseUrl}/management/ads-images";
   static const String phoneVerify = "${BaseUrl.baseUrl}/auth/phone-verify";
+  static const String activeReservations = "${BaseUrl.baseUrl}/player/active-reservations";
 
   // Add the new endpoint for fetching stadium info
   static String stadiumInfo(int stadiumId) {

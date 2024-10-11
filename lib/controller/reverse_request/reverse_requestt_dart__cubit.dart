@@ -56,7 +56,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         emit(ReverseRequestSuccess());
         StadiumDetailDialog.showReservationStatusDialog(
             context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
-        context.read<ReservationCubit>().fetchReservations(pageKey: 0);
+        context.read<ReservationCubit>().fetchReservations();
         context.read<FetchProfileCubit>().fetchProfileInfo();
       } else if (response.statusCode == 400) {
         emit(NoBalance("لا يوجد رصيد كافي"));
