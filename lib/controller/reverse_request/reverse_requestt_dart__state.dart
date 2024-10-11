@@ -16,6 +16,12 @@ class NoBalance extends ReverseRequestState {
   NoBalance(this.message);
 }
 
+
+class ReservationConflict extends ReverseRequestState {
+  final String message;
+
+  ReservationConflict(this.message);
+}
 class ReverseRequestError extends ReverseRequestState {
   final String message;
 

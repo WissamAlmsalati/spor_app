@@ -264,10 +264,10 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: Responsive.screenHeight(context) * 0.08, // Adjust height as needed
+                height: MediaQuery.of(context).size.height * 0.08, // Adjust height as needed
                 child: Lottie.asset('assets/lottifies/Animation - 1725636111104.json'),
               ),
-               SizedBox(height: Responsive.screenHeight(context) * 0.02),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text(message), // Display the message
             ],
           ),
@@ -276,8 +276,8 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
           onConfirm: () {
             Navigator.of(context).pop(); // Close the dialog on confirmation
           },
-          height: Responsive.screenHeight(context) * 0.25, // Adjust height as needed
-          width: Responsive.screenWidth(context) * 0.7, // Adjust width as needed
+          height: MediaQuery.of(context).size.height * 0.25, // Adjust height as needed
+          width: MediaQuery.of(context).size.width * 0.7, // Adjust width as needed
         );
       },
     );
@@ -294,36 +294,37 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
         }
       },
       child: AlertDialog(
-        title:  Center(
-          child: Text('اضف مراجعتك',style: TextStyle(
-            fontSize: 20,
-
-            fontFamily: GoogleFonts.cairo().fontFamily,
-            fontWeight: FontWeight.bold,
-            color: Constants.mainColor,
-          ),),
+        title: Center(
+          child: Text(
+            'اضف مراجعتك',
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: GoogleFonts.cairo().fontFamily,
+              fontWeight: FontWeight.bold,
+              color: Constants.mainColor,
+            ),
+          ),
         ),
-
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomTextField(
               controller: commentController,
               labelText: 'تعليق',
-              labelSize: Responsive.textSize(context, 12),
-              hintSize: Responsive.textSize(context, 12),
+              labelSize: MediaQuery.of(context).size.width * 0.03,
+              hintSize: MediaQuery.of(context).size.width * 0.03,
               validatorText: 'الرجاء ادخال تعليق',
               keyboardType: TextInputType.text,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             RatingBar.builder(
               initialRating: rating,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,
               itemCount: 5,
-              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-              itemBuilder: (context, _) =>  Icon(
+              itemPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
+              itemBuilder: (context, _) => Icon(
                 Icons.star,
                 color: Constants.mainColor,
               ),
@@ -346,10 +347,9 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
             borderColor: Constants.mainColor,
             color: Colors.white,
             textColor: Constants.mainColor,
-            textSize: Responsive.textSize(context, 12.5),
-            height: Responsive.screenHeight(context) * 0.05,
-            width: Responsive.screenWidth(context) * 0.33,
-
+            textSize: MediaQuery.of(context).size.width * 0.03,
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.width * 0.33,
           ),
           CustomButton(
             onPress: () {
@@ -365,21 +365,18 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
                 );
               }
             },
-            text:  'تعليق',
+            text: 'تعليق',
             color: Constants.mainColor,
             textColor: Colors.white,
-            textSize: Responsive.textSize(context, 12.5),
-            height: Responsive.screenHeight(context) * 0.05,
-            width: Responsive.screenWidth(context) * 0.33,
-
-
+            textSize: MediaQuery.of(context).size.width * 0.03,
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.width * 0.33,
           ),
         ],
       ),
     );
   }
 }
-
 class HandleCommentDialog extends StatelessWidget {
   final String title;
   final Widget content; // Content can now be a widget

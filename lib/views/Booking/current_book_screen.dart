@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
+import '../../controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import '../../models/reservation.dart';
 import 'widget/current_book_widget.dart';
 
@@ -22,6 +23,13 @@ class _CurrentBookingState extends State<CurrentBooking> with AutomaticKeepAlive
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey); // Fetch a new page when requested
+    });
+
+    // Listen for cancellation success to refresh the list
+    context.read<CanceklReservCubit>().stream.listen((state) {
+      if (state is CanceklReservSuccess) {
+        _refresh();
+      }
     });
   }
 
@@ -73,8 +81,7 @@ class _CurrentBookingState extends State<CurrentBooking> with AutomaticKeepAlive
           newPageErrorIndicatorBuilder: (context) =>
               Center(child: Text('حدث خطأ')),
           newPageProgressIndicatorBuilder: (context) => const Center(
-              child:
-                  ShimmerCurrentBookWidget()), // Replace default loading indicator here
+              child: ShimmerCurrentBookWidget()), // Replace default loading indicator here
         ),
       ),
     );

@@ -20,6 +20,7 @@ class CustomThemeData {
         titleTextStyle: TextStyle(
           color: Colors.black,
           fontFamily: GoogleFonts.cairo().fontFamily,
+          fontSize: 20 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
       ),
       primaryColor: const Color(0xFF95CA5B),
@@ -36,8 +37,14 @@ class CustomThemeData {
           ),
         ),
         unselectedLabelColor: Constants.thirdColor,
-        labelStyle: GoogleFonts.cairo(color: Constants.mainColor),
-        unselectedLabelStyle: GoogleFonts.cairo(color: Constants.thirdColor),
+        labelStyle: GoogleFonts.cairo(
+          color: Constants.mainColor,
+          fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
+        ),
+        unselectedLabelStyle: GoogleFonts.cairo(
+          color: Constants.thirdColor,
+          fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
+        ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
@@ -49,37 +56,39 @@ class CustomThemeData {
       textTheme: TextTheme(
         bodyLarge: GoogleFonts.cairo(
           color: Colors.black,
+          fontSize: 16 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         bodyMedium: GoogleFonts.cairo(
           color: Colors.black,
+          fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         displayLarge: GoogleFonts.cairo(
-          fontSize: 32.0,
+          fontSize: 32.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         displayMedium: GoogleFonts.cairo(
-          fontSize: 28.0,
+          fontSize: 28.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         displaySmall: GoogleFonts.cairo(
-          fontSize: 24.0,
+          fontSize: 24.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         headlineMedium: GoogleFonts.cairo(
-          fontSize: 22.0,
+          fontSize: 22.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         headlineSmall: GoogleFonts.cairo(
-          fontSize: 18.0,
+          fontSize: 18.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
         titleLarge: GoogleFonts.cairo(
-          fontSize: 16.0,
+          fontSize: 16.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
@@ -94,7 +103,11 @@ class CustomThemeData {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          textStyle: WidgetStateProperty.all<TextStyle>(GoogleFonts.cairo()),
+          textStyle: WidgetStateProperty.all<TextStyle>(
+            GoogleFonts.cairo(
+              fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
+            ),
+          ),
           backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
           foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
           shadowColor: WidgetStateProperty.all<Color>(Colors.black.withOpacity(0.5)),
@@ -118,12 +131,12 @@ class CustomThemeData {
         hintStyle: GoogleFonts.cairo(
           color: Colors.grey[400],
           fontWeight: FontWeight.w500,
-          fontSize: 16,
+          fontSize: 16 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         labelStyle: GoogleFonts.cairo(
           color: Colors.grey[600],
           fontWeight: FontWeight.w500,
-          fontSize: 16,
+          fontSize: 16 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         prefixIconColor: Colors.grey[400],
         border: OutlineInputBorder(
@@ -144,11 +157,11 @@ class CustomThemeData {
         ),
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(
-          fontSize: Responsive.textSize(context, 4.5),
+          fontSize: Responsive.textSize(context, 4.5) * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
         ),
         contentTextStyle: TextStyle(
-          fontSize: Responsive.textSize(context, 3.5),
+          fontSize: Responsive.textSize(context, 3.5) * MediaQuery.textScaleFactorOf(context), // Adjust font size
           color: Constants.txtColor,
         ),
       ),
@@ -172,8 +185,14 @@ class CustomThemeData {
           ),
         ),
         unselectedLabelColor: Colors.grey[400],
-        labelStyle: GoogleFonts.cairo(color: Constants.mainColor),
-        unselectedLabelStyle: GoogleFonts.cairo(color: Colors.grey[400]),
+        labelStyle: GoogleFonts.cairo(
+          color: Constants.mainColor,
+          fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
+        ),
+        unselectedLabelStyle: GoogleFonts.cairo(
+          color: Colors.grey[400],
+          fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
+        ),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: const Color(0xFF1F1F1F),
@@ -184,7 +203,11 @@ class CustomThemeData {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          textStyle: WidgetStateProperty.all<TextStyle>(GoogleFonts.cairo()),
+          textStyle: WidgetStateProperty.all<TextStyle>(
+            GoogleFonts.cairo(
+              fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
+            ),
+          ),
           backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF272829)),
           foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
           shadowColor: WidgetStateProperty.all<Color>(Colors.black.withOpacity(0.5)),
@@ -205,52 +228,54 @@ class CustomThemeData {
       textTheme: TextTheme(
         bodyLarge: GoogleFonts.cairo(
           color: Colors.black,
+          fontSize: 16 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         bodyMedium: GoogleFonts.cairo(
           color: Colors.black,
+          fontSize: 14 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         bodySmall: GoogleFonts.cairo(
           color: Colors.grey[600],
           fontWeight: FontWeight.w500,
-          fontSize: 16,
+          fontSize: 16 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         titleSmall: GoogleFonts.cairo(
           color: Colors.grey[600],
           fontWeight: FontWeight.w500,
-          fontSize: 16,
+          fontSize: 16 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         displayLarge: GoogleFonts.cairo(
-          fontSize: 32.0,
+          fontSize: 32.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         displayMedium: GoogleFonts.cairo(
-          fontSize: 28.0,
+          fontSize: 28.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         displaySmall: GoogleFonts.cairo(
-          fontSize: 24.0,
+          fontSize: 24.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         headlineMedium: GoogleFonts.cairo(
-          fontSize: 22.0,
+          fontSize: 22.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
         headlineSmall: GoogleFonts.cairo(
-          fontSize: 18.0,
+          fontSize: 18.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
         titleLarge: GoogleFonts.cairo(
-          fontSize: 16.0,
+          fontSize: 16.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
         titleMedium: GoogleFonts.cairo(
-          fontSize: 8.0,
+          fontSize: 8.0 * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
@@ -262,7 +287,7 @@ class CustomThemeData {
           color: Colors.grey[400],
           fontWeight: FontWeight.w500,
           fontFamily: GoogleFonts.cairo().fontFamily,
-          fontSize: 16,
+          fontSize: 16 * MediaQuery.textScaleFactorOf(context), // Adjust font size
         ),
         prefixIconColor: Colors.grey[400],
         border: OutlineInputBorder(
@@ -292,11 +317,11 @@ class CustomThemeData {
         ),
         backgroundColor: const Color(0xFF1F1F1F),
         titleTextStyle: TextStyle(
-          fontSize: Responsive.textSize(context, 4.5),
+          fontSize: Responsive.textSize(context, 4.5) * MediaQuery.textScaleFactorOf(context), // Adjust font size
           fontWeight: FontWeight.bold,
         ),
         contentTextStyle: TextStyle(
-          fontSize: Responsive.textSize(context, 3.5),
+          fontSize: Responsive.textSize(context, 3.5) * MediaQuery.textScaleFactorOf(context), // Adjust font size
           color: Constants.txtColor,
         ),
       ),

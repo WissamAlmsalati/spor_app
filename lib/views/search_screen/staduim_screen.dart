@@ -11,15 +11,43 @@ import '../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../stadium/screens/widget/comments_widget.dart';
 
-class StadiumDetailScreen extends StatelessWidget {
+class StadiumDetailScreen extends StatefulWidget {
   final int stadiumId;
 
   const StadiumDetailScreen({super.key, required this.stadiumId});
 
   @override
+  State<StadiumDetailScreen> createState() => _StadiumDetailScreenState();
+}
+
+class _StadiumDetailScreenState extends State<StadiumDetailScreen> {
+  @override
   Widget build(BuildContext context) {
-    final cubit = context.read<StadiumDetailCubit>();
-    cubit.fetchStadiumById(stadiumId);
+    var cubit = context.read<StadiumDetailCubit>();
+    cubit.fetchStadiumById(widget.stadiumId);
+
+
+    @override
+    void initState() {
+      super.initState();
+      WidgetsBinding.instance.addObserver( this as WidgetsBindingObserver);
+      cubit = context.read<StadiumDetailCubit>();
+      cubit.fetchStadiumById(widget.stadiumId);
+    }
+
+    @override
+    void dispose() {
+      WidgetsBinding.instance.removeObserver(this as WidgetsBindingObserver);
+      super.dispose();
+    }
+
+    @override
+    void didChangeAppLifecycleState(AppLifecycleState state) {
+      if (state == AppLifecycleState.resumed) {
+        // Refetch stadium details when the app is resumed
+        cubit.fetchStadiumById(widget.stadiumId);
+      }
+    }
 
     return Scaffold(
       backgroundColor: Constants.backGroundColor,
@@ -69,7 +97,7 @@ class StadiumDetailScreen extends StatelessWidget {
                           children: [
                             StadiumDetailHeader(
                               stadium: stadium,
-                              stadiumId: stadiumId,
+                              stadiumId: widget.stadiumId,
                             ),
                             Padding(
                               padding: EdgeInsets.only(
@@ -108,7 +136,7 @@ class StadiumDetailScreen extends StatelessWidget {
                           children: [
                             StadiumDetailHeader(
                               stadium: stadium,
-                              stadiumId: stadiumId,
+                              stadiumId: widget.stadiumId,
                             ),
                             Padding(
                               padding: EdgeInsets.only(

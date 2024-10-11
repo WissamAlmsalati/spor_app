@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/models/reservation.dart';
 import 'package:sport/utilits/constants.dart';
@@ -73,6 +74,7 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
           onConfirm: () {
             context.read<CanceklReservCubit>().cancelReservation(
                 widget.reservation.id.toString(), context);
+            context.read<ReservationCubit>().fetchReservations();
             Navigator.of(context).pop();
           },
           onCancel: () {
@@ -141,7 +143,7 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                     BlocBuilder<CanceklReservCubit, CanceklReservState>(
                       builder: (BuildContext context, CanceklReservState state) {
                         if (state is CanceklReservLoading) {
-                          return CircularProgressIndicator();
+                          return LoadingAnimation(size: MediaQuery.sizeOf(context).height * 0.02);
                         }
 
                         return IconButton(

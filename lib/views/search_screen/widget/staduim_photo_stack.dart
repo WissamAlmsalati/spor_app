@@ -14,6 +14,7 @@ import '../../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../../utilits/images.dart';
+import '../../../utilits/secure_data.dart';
 
 class StaduimPhotoStack extends StatelessWidget {
   final List<String> stdPhotos;
@@ -21,7 +22,6 @@ class StaduimPhotoStack extends StatelessWidget {
   final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0);
 
   StaduimPhotoStack({super.key, required this.stdPhotos, required this.stdId});
-
 
   Future<void> _shareStadium(BuildContext context) async {
     try {
@@ -64,7 +64,7 @@ class StaduimPhotoStack extends StatelessWidget {
               },
               itemBuilder: (context, index) {
                 return Image.network(
-                  stdPhotos[index]??"https://interactive.guim.co.uk/atoms/thrashers/2022/03/moving-the-goalposts/assets/v/1718361372272/moving-the-goalposts-5-3.jpg",
+                  stdPhotos[index] ?? "https://interactive.guim.co.uk/atoms/thrashers/2022/03/moving-the-goalposts/assets/v/1718361372272/moving-the-goalposts-5-3.jpg",
                   fit: BoxFit.fill,
                   width: double.infinity,
                   height: Responsive.screenHeight(context) * 0.23,
@@ -125,7 +125,17 @@ class StaduimPhotoStack extends StatelessWidget {
               builder: (BuildContext context, StaduimDetailState state) {
                 final bool isFavorite = (state is StaduimDetailLoaded && state.isFavorite) || (state is StaduimDetailLoadedEmptySession && state.isFavorite);
                 return IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final token = await SecureStorageData.getToken();
+                    if (token == null) {
+                      Fluttertoast.showToast(
+                        msg: 'يرجى إنشاء حساب لإضافة إلى المفضلة.',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 2,
+                      );
+                      return;
+                    }
                     if (state is StaduimDetailLoaded || state is StaduimDetailLoadedEmptySession) {
                       context.read<StadiumDetailCubit>().toggleFavoriteStatus();
                       if (isFavorite) {

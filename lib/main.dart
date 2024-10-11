@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport/views/search_screen/staduim_screen.dart';
+import 'package:uni_links/uni_links.dart';
+import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
@@ -30,8 +34,67 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  StreamSubscription? _sub;
+
+  @override
+  void initState() {
+    super.initState();
+    _initUniLinks();
+  }
+
+  Future<void> _initUniLinks() async {
+    // Handle incoming links
+    _sub = linkStream.listen((String? link) {
+      if (link != null) {
+        _handleDeepLink(link);
+      }
+    }, onError: (err) {
+      // Handle error
+    });
+
+    // Handle initial link
+    final initialLink = await getInitialLink();
+    if (initialLink != null) {
+      _handleDeepLink(initialLink);
+    }
+  }
+
+  void _handleDeepLink(String link) async {
+    // Parse the link and navigate to the appropriate screen
+    if (link.contains('stadium-info')) {
+      final uri = Uri.parse(link);
+      final stadiumId = uri.queryParameters['stadium_id'];
+      if (stadiumId != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StadiumDetailScreen(stadiumId: int.parse(stadiumId)),
+          ),
+        );
+      }
+    } else {
+      // Launch the URL in the default browser
+      if (await canLaunch(link)) {
+        await launchUrl(Uri.parse(link), mode: LaunchMode.platformDefault);
+      } else {
+        throw 'Could not launch $link';
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +121,16 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),
         BlocProvider(create: (context) => CanceklReservCubit()),
-          BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
+        BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
         BlocProvider(create: (context) => ForgetPasswordCubit()),
-           BlocProvider(create: (context) => ProfilePictureCubit()),
+        BlocProvider(create: (context) => ProfilePictureCubit()),
         BlocProvider(create: (context) => UpdateProfileCubit()),
       ],
       child: Builder(
         builder: (context) {
           Future.microtask(() => RefreshCubit.checkNetworkAndRefreshOnDisconnect(context));
 
-          return  BlocBuilder<AppModeSwicherCubit, AppModeSwicherState>(
+          return BlocBuilder<AppModeSwicherCubit, AppModeSwicherState>(
             builder: (context, state) {
               final ThemeData customThemeData = state is AppModeSwicherDarkMood
                   ? CustomThemeData.getDarkThemeData(context)
@@ -130,3 +193,4 @@ class AuthenticationWrapper extends StatelessWidget {
     );
   }
 }
+

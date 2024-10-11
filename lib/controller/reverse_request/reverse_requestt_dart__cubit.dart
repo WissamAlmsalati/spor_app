@@ -58,8 +58,11 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
             context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
         context.read<ReservationCubit>().fetchReservations();
         context.read<FetchProfileCubit>().fetchProfileInfo();
-      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 402) {
         emit(NoBalance("لا يوجد رصيد كافي"));
+
+      } else if (response.statusCode == 409) {
+        emit(ReservationConflict("هناك حجز متعارض"));
       } else if (response.statusCode == 400) {
         print('Failed to send request: ${response.reasonPhrase}');
         emit(ReverseRequestError('حدث خطأ ما'));
