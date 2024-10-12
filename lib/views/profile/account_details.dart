@@ -24,7 +24,6 @@ class AccountDetails extends StatefulWidget {
 class AccountDetailsState extends State<AccountDetails> {
   final TextEditingController _firstName = TextEditingController();
   final TextEditingController _lastName = TextEditingController();
-  final TextEditingController _phone = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isPhotoSelected = false;
   bool _isButtonEnabled = false;
@@ -33,15 +32,12 @@ class AccountDetailsState extends State<AccountDetails> {
   void dispose() {
     _firstName.dispose();
     _lastName.dispose();
-    _phone.dispose();
     super.dispose();
   }
 
   void _validateFields() {
     setState(() {
-      _isButtonEnabled =
-          _firstName.text.isNotEmpty || _lastName.text.isNotEmpty ||
-              _isPhotoSelected;
+      _isButtonEnabled = _firstName.text.isNotEmpty || _lastName.text.isNotEmpty || _isPhotoSelected;
     });
   }
 
@@ -64,9 +60,10 @@ class AccountDetailsState extends State<AccountDetails> {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return CustomAlertDialog(title: "نجاح",
-                        content: "تم تحديث الاسم بنجاح",
-                        canceText: "حسنا",
+                    return CustomAlertDialog(
+                      title: "نجاح",
+                      content: "تم تحديث الحساب بنجاح",
+                      canceText: "حسنا",
                       borderColor: Constants.mainColor,
                       textColor: Constants.mainColor,
                       onCancel: () {
@@ -132,69 +129,46 @@ class AccountDetailsState extends State<AccountDetails> {
                                 CustomTextField(
                                   controller: _firstName,
                                   labelText: "الاسم الأول",
-                                  validatorText: "الاسم الأول مطلوب",
                                   labelSize: Responsive.textSize(context, 8),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'الاسم الأول مطلوب';
-                                    }
-                                    return null;
-                                  },
                                   hintSize: Responsive.textSize(context, 8),
-                                  validatorSize: Responsive.textSize(
-                                      context, 6),
+                                  validatorSize: Responsive.textSize(context, 6), validatorText: "الرجاء ادخال الاسم الأول",
                                 ),
                                 CustomTextField(
                                   controller: _lastName,
                                   labelText: "الاسم الأخير",
-                                  validatorText: "الاسم الأخير مطلوب",
                                   labelSize: Responsive.textSize(context, 8),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'الاسم الأخير مطلوب';
-                                    }
-                                    return null;
-                                  },
                                   hintSize: Responsive.textSize(context, 8),
-                                  validatorSize: Responsive.textSize(
-                                      context, 6),
+                                  validatorSize: Responsive.textSize(context, 6), validatorText: "الرجاء ادخال الاسم الأخير",
                                 ),
                                 CustomButton(
                                   text: 'تاكيد التغييرات',
                                   onPress: _isButtonEnabled
                                       ? () {
-                                    if (_formKey.currentState!.validate()) {
-                                      final profilePictureState = context
-                                          .read<ProfilePictureCubit>()
-                                          .state;
-                                      if (profilePictureState is ProfilePictureSelected) {
-                                        context.read<ProfilePictureCubit>()
-                                            .uploadImage(
-                                          profilePictureState.imagePath,
-                                          context,
-                                        );
-                                      }
-                                      context.read<UpdateProfileCubit>()
-                                          .updateProfile(
-                                          _firstName.text,
-                                          _lastName.text,
-                                          context
-                                      );
-                                    }
-                                  }
+                                          if (_formKey.currentState!.validate()) {
+                                            final profilePictureState = context.read<ProfilePictureCubit>().state;
+                                            if (profilePictureState is ProfilePictureSelected) {
+                                              context.read<ProfilePictureCubit>().uploadImage(
+                                                    profilePictureState.imagePath,
+                                                    context,
+                                                  );
+                                            }
+                                            if (_firstName.text.isNotEmpty || _lastName.text.isNotEmpty) {
+                                              context.read<UpdateProfileCubit>().updateProfile(
+                                                    _firstName.text,
+                                                    _lastName.text,
+                                                    context,
+                                                  );
+                                            }
+                                          }
+                                        }
                                       : null,
                                   textSize: Responsive.textSize(context, 14),
                                   fontWeight: FontWeight.w400,
-                                  color: _isButtonEnabled
-                                      ? Constants.mainColor
-                                      : Colors.grey,
+                                  color: _isButtonEnabled ? Constants.mainColor : Colors.grey,
                                   hasBorder: true,
                                   borderColor: Constants.mainColor,
-                                  textColor: _isButtonEnabled
-                                      ? Colors.white
-                                      : Colors.black,
-                                  height: Responsive.screenHeight(context) *
-                                      0.053,
+                                  textColor: _isButtonEnabled ? Colors.white : Colors.black,
+                                  height: Responsive.screenHeight(context) * 0.053,
                                   width: double.infinity,
                                 ),
                               ],
@@ -221,35 +195,26 @@ class AccountDetailsState extends State<AccountDetails> {
                             top: Responsive.screenHeight(context) * 0.04,
                             right: Responsive.screenWidth(context) * 0.05,
                             child: GestureDetector(
-                              onTap: () => context.read<ProfilePictureCubit>()
-                                  .pickImage(),
+                              onTap: () => context.read<ProfilePictureCubit>().pickImage(),
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   CircleAvatar(
-                                    radius: Responsive.screenHeight(context) *
-                                        0.04,
+                                    radius: Responsive.screenHeight(context) * 0.04,
                                     backgroundColor: Constants.mainColor,
-                                    child: BlocBuilder<
-                                        ProfilePictureCubit,
-                                        ProfilePictureState>(
+                                    child: BlocBuilder<ProfilePictureCubit, ProfilePictureState>(
                                       builder: (context, profileState) {
                                         if (profileState is ProfilePictureSelected) {
                                           return CircleAvatar(
-                                            radius: Responsive.screenHeight(
-                                                context) * 0.037,
-                                            backgroundImage: FileImage(
-                                                File(profileState.imagePath)),
+                                            radius: Responsive.screenHeight(context) * 0.037,
+                                            backgroundImage: FileImage(File(profileState.imagePath)),
                                           );
                                         } else {
                                           return CircleAvatar(
-                                            radius: Responsive.screenHeight(
-                                                context) * 0.037,
+                                            radius: Responsive.screenHeight(context) * 0.037,
                                             backgroundImage: state is FetchProfileLoaded
-                                                ? NetworkImage(
-                                                state.userInfo.image)
-                                                : const AssetImage(AppPhotot
-                                                .userAvatar) as ImageProvider,
+                                                ? NetworkImage(state.userInfo.image)
+                                                : const AssetImage(AppPhotot.userAvatar) as ImageProvider,
                                           );
                                         }
                                       },
@@ -261,8 +226,7 @@ class AccountDetailsState extends State<AccountDetails> {
                                     child: Icon(
                                       Icons.camera_alt,
                                       color: Colors.white,
-                                      size: Responsive.screenHeight(context) *
-                                          0.03,
+                                      size: Responsive.screenHeight(context) * 0.03,
                                     ),
                                   ),
                                 ],
@@ -291,8 +255,7 @@ class AccountDetailsState extends State<AccountDetails> {
                           ),
                           child: SvgPicture.asset(AppPhotot.profileLogo),
                         ),
-                        SizedBox(height: Responsive.screenHeight(context) *
-                            0.02),
+                        SizedBox(height: Responsive.screenHeight(context) * 0.02),
                         Text(
                           'تغيير كلمة المرور',
                           style: TextStyle(

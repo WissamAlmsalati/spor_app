@@ -10,15 +10,27 @@ import 'coustom_button.dart';
 import 'coustom_text_field.dart';
 import 'form_decoration.dart';
 
-class LoginFormWidget extends StatelessWidget {
+class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController firstnameController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+  _LoginFormWidgetState createState() => _LoginFormWidgetState();
+}
 
+class _LoginFormWidgetState extends State<LoginFormWidget> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    firstnameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return FormDecoration(
       height: Responsive.screenHeight(context) * 0.47,
       child: Padding(
@@ -32,6 +44,7 @@ class LoginFormWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomTextField(
+                isPhoneNumber: true,
                 labelSize: Responsive.textSize(context, 6),
                 hintSize: Responsive.textSize(context, 10),
                 validatorSize: Responsive.textSize(context, 6),
@@ -40,13 +53,14 @@ class LoginFormWidget extends StatelessWidget {
                 validatorText: 'ادخل رقم الهاتف',
                 keyboardType: TextInputType.phone,
                 validator: (value) =>
-                    (value == null || value.isEmpty) ? 'ادخل رقم الهاتف' : null,
+                (value == null || value.isEmpty) ? 'ادخل رقم الهاتف' : null,
               ),
               CustomTextField(
                 labelSize: Responsive.textSize(context, 8),
                 hintSize: Responsive.textSize(context, 8),
                 validatorSize: Responsive.textSize(context, 6),
                 controller: passwordController,
+                obscureText: true,
                 labelText: 'كلمة المرور',
                 validatorText: 'ادخل كلمة المرور',
                 validator: (value) {

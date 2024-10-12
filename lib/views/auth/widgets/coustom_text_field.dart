@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sport/utilits/responsive.dart';
 import '../../../utilits/constants.dart';
-
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -17,6 +17,7 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onForgotPassword;
   final bool obscureText;
   final FocusNode? focusNode; // Added FocusNode
+  final bool isPhoneNumber; // New parameter to determine if it's a phone number
 
   const CustomTextField({
     Key? key,
@@ -32,6 +33,7 @@ class CustomTextField extends StatelessWidget {
     this.onForgotPassword,
     this.obscureText = false,
     this.focusNode, // Added FocusNode
+    this.isPhoneNumber = false, // Default is false
   }) : super(key: key);
 
   @override
@@ -42,10 +44,10 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          labelText,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Constants.txtColor
-          )
+            labelText,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Constants.txtColor
+            )
         ),
         SizedBox(height: Responsive.screenHeight(context) * 0.01),
         Container(
@@ -59,6 +61,12 @@ class CustomTextField extends StatelessWidget {
                 keyboardType: keyboardType ?? TextInputType.text,
                 controller: controller,
                 obscureText: _obscureText,
+                inputFormatters: isPhoneNumber
+                    ? [
+                  FilteringTextInputFormatter.digitsOnly, // Only allow digits
+                  LengthLimitingTextInputFormatter(10), // Max length of 10
+                ]
+                    : [], // No restrictions for non-phone fields
                 decoration: InputDecoration(
                   filled: true,
                   enabledBorder: OutlineInputBorder(
@@ -69,7 +77,7 @@ class CustomTextField extends StatelessWidget {
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.02)          ,
+                    borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.02),
                     borderSide: const BorderSide(
                       color: Constants.mainColor,
                       width: 1.2,
@@ -150,7 +158,6 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-
 
 extension PersianToArabicNumerals on String {
   String toArabicNumerals() {

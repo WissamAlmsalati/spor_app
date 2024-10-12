@@ -76,6 +76,17 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.chevron_right),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: FocusScope(
           child: PageView(
@@ -91,14 +102,12 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-//
-
   Widget _buildSignUpForm(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: Responsive.screenWidth(context) * 0.07,
-          vertical: Responsive.screenHeight(context) * 0.10,
+          vertical: Responsive.screenHeight(context) * 0.07,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -181,10 +190,6 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget _buildPasswordAndBirthDayForm(BuildContext context) {
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController confirmPasswordController =
-    TextEditingController();
-
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -223,6 +228,7 @@ class _SignUpState extends State<SignUp> {
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: passwordController,
+                        obscureText: true,
                         labelText: 'كلمة المرور',
                         validatorText: 'الرجاء ادخال كلمة المرور',
                         validator: (value) {
@@ -240,8 +246,8 @@ class _SignUpState extends State<SignUp> {
                         labelSize: Responsive.textSize(context, 6),
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
+                        obscureText: true,
                         controller: confirmPasswordController,
-
                         labelText: 'تأكيد كلمة المرور',
                         validatorText: 'الرجاء ادخال تأكيد كلمة المرور',
                         validator: (value) {
@@ -256,12 +262,16 @@ class _SignUpState extends State<SignUp> {
                       BlocBuilder<AuthenticationCubit, AuthenticationState>(
                         builder: (context, state) {
                           return CustomButton(
+
                             height: Responsive.screenHeight(context) * 0.06,
                             width: Responsive.screenWidth(context) * 0.9,
                             text: state is AuthenticationLoading
                                 ? 'جاري التحميل...'
                                 : 'انشاء حساب',
                             color: Constants.mainColor,
+                            isLoading: state is AuthenticationLoading,
+                            loadingSize: Responsive.screenHeight(context) * 0.04,
+                            loadingColor: Constants.secondaryColor,
                             onPress: () {
                               if (passwordFormKey.currentState!.validate()) {
                                 SubmitSignUpFormFun.trySubmitForm(
@@ -283,9 +293,9 @@ class _SignUpState extends State<SignUp> {
                         text: 'رجوع',
                         color: Constants.secondaryColor,
                         onPress: previousPage,
-                        textColor: Constants.thirdColor,
                         height: Responsive.screenHeight(context) * 0.06,
                         width: Responsive.screenWidth(context) * 0.9,
+                        textColor: Constants.thirdColor,
                       ),
                     ],
                   ),

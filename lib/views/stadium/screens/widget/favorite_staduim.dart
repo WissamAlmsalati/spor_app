@@ -25,43 +25,41 @@ class FavoriteStadium extends StatelessWidget {
             ),
             child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
               builder: (BuildContext context, state) {
-                if (state is FetchFavoriteLoading) {
-                  // Placeholder shimmer effect
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 1,
-                    ),
-                    itemCount: 4, // Placeholder item count
-                    itemBuilder: (context, index) {
-                      return const ShimmerPlaceholder();
-                    },
-                  );
-                } else if (state is FavoriteSocketExceptionError) {
-                  return const Center(child: Text('لا يوجد اتصال بالانترنت'));
-                } else if (state is FetchFavoriteLoaded) {
-                  if (state.stadiums.isEmpty) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
-                        Text(
-                          'لا توجد ملاعب مفضلة',
-                          style: TextStyle(
-                            fontSize: Responsive.textSize(context, 14),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                try {
+                  if (state is FetchFavoriteLoading) {
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: 4, // Placeholder item count
+                      itemBuilder: (context, index) {
+                        return const ShimmerPlaceholder();
+                      },
                     );
-                  }
-                  // Display loaded stadiums
-                  return Expanded(
-                    child: GridView.builder(
+                  } else if (state is FavoriteSocketExceptionError) {
+                    return const Center(child: Text('لا يوجد اتصال بالانترنت'));
+                  } else if (state is FetchFavoriteLoaded) {
+                    if (state.stadiums.isEmpty) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
+                          Text(
+                            'لا توج�� ملاعب مفضلة',
+                            style: TextStyle(
+                              fontSize: Responsive.textSize(context, 14),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -87,22 +85,27 @@ class FavoriteStadium extends StatelessWidget {
                           },
                         );
                       },
-                    ),
-                  );
-                } else if (state is UnAuthorizedError) {
-                  return Center(
-                    child: Text(
-                      'قم ب انشاء حساب لعرض الملاعب المفضلة',
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 8),
-                        fontWeight: FontWeight.bold,
+                    );
+                  } else if (state is UnAuthorizedError) {
+                    return Center(
+                      child: Text(
+                        'ق�� ب انشاء حساب لعرض الملاعب المفضلة',
+                        style: TextStyle(
+                          fontSize: Responsive.textSize(context, 8),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  );
-                } else if (state is FetchFavoriteError) {
-                  return Center(child: Text(state.message));
-                } else {
-                  return const Center(child: Text('Unknown state'));
+                    );
+                  } else if (state is FetchFavoriteError) {
+                    return Center(child: Text(state.message));
+                  } else {
+                    return const Center(child: Text('Unknown state'));
+                  }
+                } catch (e, stackTrace) {
+                  // Log the error and stack trace
+                  print('Error: $e');
+                  print('StackTrace: $stackTrace');
+                  return const Center(child: Text('An unexpected error occurred'));
                 }
               },
             ),
@@ -112,7 +115,6 @@ class FavoriteStadium extends StatelessWidget {
     );
   }
 }
-
 class ShimmerPlaceholder extends StatelessWidget {
   const ShimmerPlaceholder({super.key});
 

@@ -8,8 +8,6 @@ import '../../models/staduim_info.dart';
 import '../../repostry/staduim_repostry.dart';
 import '../../utilits/secure_data.dart';
 
-
-
 part 'staduim_detail_state.dart';
 
 class StadiumDetailCubit extends Cubit<StaduimDetailState> {
@@ -30,14 +28,22 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
       if (kDebugMode) {
         print('Fetching stadium details from: $url');
       }
+
+      final headers = <String, String>{};
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
       final response = await http.get(
         Uri.parse(url),
+        headers: headers,
       );
+
       if (kDebugMode) {
-        print(
-        'Request URL: ${response.request?.url}',
-      );
+        print('Request URL: ${response.request?.url}');
       }
+
+      print('Response status: ${response.statusCode}');
       if (response.statusCode == 200) {
         print('Response status: ${response.statusCode}');
         final data = json.decode(utf8.decode(response.bodyBytes));

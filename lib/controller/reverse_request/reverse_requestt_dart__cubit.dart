@@ -60,7 +60,6 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         context.read<FetchProfileCubit>().fetchProfileInfo();
       } else if (response.statusCode == 402) {
         emit(NoBalance("لا يوجد رصيد كافي"));
-
       } else if (response.statusCode == 409) {
         emit(ReservationConflict("هناك حجز متعارض"));
       } else if (response.statusCode == 400) {

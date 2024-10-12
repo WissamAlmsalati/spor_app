@@ -52,13 +52,24 @@ class SignIn extends StatelessWidget {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Scaffold(
+          appBar: AppBar(
+         automaticallyImplyLeading: false,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.chevron_right),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(
                     left: Responsive.screenWidth(context) * 0.07,
                     right: Responsive.screenWidth(context) * 0.07,
-                    top: Responsive.screenHeight(context) * 0.10),
+                    top: Responsive.screenHeight(context) * 0.06),
                 child: Column(
                   children: [
                     const TitleLogoTitle(

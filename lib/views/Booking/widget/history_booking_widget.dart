@@ -338,39 +338,44 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
           ],
         ),
         actions: [
-          CustomButton(
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-            text: 'الغاء',
-            hasBorder: true,
-            borderColor: Constants.mainColor,
-            color: Colors.white,
-            textColor: Constants.mainColor,
-            textSize: MediaQuery.of(context).size.width * 0.03,
-            height: MediaQuery.of(context).size.height * 0.05,
-            width: MediaQuery.of(context).size.width * 0.33,
-          ),
-          CustomButton(
-            onPress: () {
-              String comment = commentController.text;
+          Row(
+            children: [
+              CustomButton(
+                onPress: () {
+                  Navigator.of(context).pop();
+                },
+                text: 'الغاء',
+                hasBorder: true,
+                borderColor: Constants.mainColor,
+                color: Colors.white,
+                textColor: Constants.mainColor,
+                textSize: MediaQuery.of(context).size.width * 0.03,
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.33,
+              ),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+              CustomButton(
+                onPress: () {
+                  String comment = commentController.text;
 
-              if (comment.isNotEmpty || rating != 0) {
-                context.read<CommentReviewCubit>().sendCommentReview(
-                  stadiumId: widget.stadiumId,
-                  playerId: widget.playerId,
-                  comment: comment,
-                  rating: rating,
-                  context: context,
-                );
-              }
-            },
-            text: 'تعليق',
-            color: Constants.mainColor,
-            textColor: Colors.white,
-            textSize: MediaQuery.of(context).size.width * 0.03,
-            height: MediaQuery.of(context).size.height * 0.05,
-            width: MediaQuery.of(context).size.width * 0.33,
+                  if (comment.isNotEmpty || rating != 0) {
+                    context.read<CommentReviewCubit>().sendCommentReview(
+                      stadiumId: widget.stadiumId,
+                      playerId: widget.playerId,
+                      comment: comment,
+                      rating: rating,
+                      context: context,
+                    );
+                  }
+                },
+                text: 'تعليق',
+                color: Constants.mainColor,
+                textColor: Colors.white,
+                textSize: MediaQuery.of(context).size.width * 0.03,
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.33,
+              ),
+            ],
           ),
         ],
       ),

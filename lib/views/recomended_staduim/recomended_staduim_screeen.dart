@@ -17,7 +17,7 @@ class RecomendedStadiumScreen extends StatelessWidget {
     final PagingController<int, RecomendedStadium> _pagingController = PagingController(firstPageKey: 1);
 
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<FetchRecomendedStaduimCubit>().fetchRecomendedStaduims(pageKey: pageKey);
+      context.read<FetchRecomendedStaduimCubit>().fetchRecomendedStaduims();
     });
 
     return Scaffold(
