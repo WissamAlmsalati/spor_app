@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sport/views/search_screen/staduim_screen.dart';
 import 'package:uni_links/uni_links.dart';
 import 'dart:async';
@@ -19,6 +20,7 @@ import 'controller/region_search_controler/region_search_cubit.dart';
 import 'controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import 'controller/review_comment_controller/comment_review_cubit.dart';
 import 'controller/update_profile/update_profile_cubit.dart';
+import 'models/recomended_staduim.dart';
 import 'repostry/staduim_repostry.dart';
 import 'app/app_packges.dart';
 
@@ -121,7 +123,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),
         BlocProvider(create: (context) => CanceklReservCubit()),
-        BlocProvider(create: (context) => FetchRecomendedStaduimCubit()..fetchRecomendedStaduims(),),
+        BlocProvider(
+          create: (context) => FetchRecomendedStaduimCubit(),
+        ),
         BlocProvider(create: (context) => ForgetPasswordCubit()),
         BlocProvider(create: (context) => ProfilePictureCubit()),
         BlocProvider(create: (context) => UpdateProfileCubit()),

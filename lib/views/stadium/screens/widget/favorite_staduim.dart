@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../app/app_packges.dart';
+import '../../../../models/stedum_model.dart';
 import '../../../search_screen/staduim_screen.dart';
+
 
 class FavoriteStadium extends StatelessWidget {
   const FavoriteStadium({super.key});
@@ -10,103 +13,80 @@ class FavoriteStadium extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
-        listener: (context, state) {
-          if (state is AdedToFavorite) {
-            context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
-          }
-        },
-        child: SingleChildScrollView(
+      body: BlocProvider(
+        create: (context) => FetchFavoriteCubit(),
+        child: BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
+          listener: (context, state) {
+            if (state is AdedToFavorite) {
+              context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
+            }
+          },
           child: Padding(
             padding: EdgeInsets.only(
-              top: Responsive.screenHeight(context) * 0.02,
+              top: Responsive.screenHeight(context) * 0.01,
+              bottom: Responsive.screenHeight(context) * 0.01,
               left: Responsive.screenWidth(context) * 0.05,
               right: Responsive.screenWidth(context) * 0.04,
             ),
             child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
               builder: (BuildContext context, state) {
-                try {
-                  if (state is FetchFavoriteLoading) {
-                    return GridView.builder(
+                return PagedGridView<int, Stadium>(
+                  pagingController: context.read<FetchFavoriteCubit>().pagingController,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 1,
+                  ),
+                  builderDelegate: PagedChildBuilderDelegate<Stadium>(
+                    itemBuilder: (context, item, index) {
+                      return StadiumBoxWidget(
+                        isFavoriteWidget: true,
+                        imageUrl: item.image,
+                        name: item.name,
+                        isAvailable: item.isAvailable,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StadiumDetailScreen(stadiumId: item.id),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    firstPageProgressIndicatorBuilder: (context) => GridView.builder(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                         childAspectRatio: 1,
                       ),
-                      itemCount: 4, // Placeholder item count
+                      itemCount: 4,
                       itemBuilder: (context, index) {
                         return const ShimmerPlaceholder();
                       },
-                    );
-                  } else if (state is FavoriteSocketExceptionError) {
-                    return const Center(child: Text('لا يوجد اتصال بالانترنت'));
-                  } else if (state is FetchFavoriteLoaded) {
-                    if (state.stadiums.isEmpty) {
-                      return Column(
+                    ),
+                    newPageProgressIndicatorBuilder: (context) => const Center(child: ShimmerPlaceholder()),
+                    noItemsFoundIndicatorBuilder: (context) => Center(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
                           Text(
-                            'لا توج�� ملاعب مفضلة',
+                            'لا توجد ملاعب مفضلة',
                             style: TextStyle(
                               fontSize: Responsive.textSize(context, 14),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
-                      );
-                    }
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 1,
                       ),
-                      itemCount: state.stadiums.length,
-                      itemBuilder: (context, index) {
-                        return StadiumBoxWidget(
-                          isFavoriteWidget: true,
-                          imageUrl: state.stadiums[index].image,
-                          name: state.stadiums[index].name,
-                          isAvailable: state.stadiums[index].isAvailable,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => StadiumDetailScreen(stadiumId: state.stadiums[index].id),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  } else if (state is UnAuthorizedError) {
-                    return Center(
-                      child: Text(
-                        'ق�� ب انشاء حساب لعرض الملاعب المفضلة',
-                        style: TextStyle(
-                          fontSize: Responsive.textSize(context, 8),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    );
-                  } else if (state is FetchFavoriteError) {
-                    return Center(child: Text(state.message));
-                  } else {
-                    return const Center(child: Text('Unknown state'));
-                  }
-                } catch (e, stackTrace) {
-                  // Log the error and stack trace
-                  print('Error: $e');
-                  print('StackTrace: $stackTrace');
-                  return const Center(child: Text('An unexpected error occurred'));
-                }
+                    ),
+                  ),
+                );
               },
             ),
           ),

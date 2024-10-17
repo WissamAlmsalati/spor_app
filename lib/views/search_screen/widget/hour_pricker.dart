@@ -22,7 +22,7 @@ class SelectableTimeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateTime parsedTime = DateFormat("HH:mm:ss").parse(time);
-    final String formattedTime = DateFormat("HH:mm").format(parsedTime);
+    final String formattedTime = DateFormat("hh:mm a", 'en').format(parsedTime).replaceAll('AM', 'ص').replaceAll('PM', 'م');
 
     return GestureDetector(
       onTap: isReserved || isLocked
@@ -58,11 +58,10 @@ class SelectableTimeTile extends StatelessWidget {
                   ),
                 Text(
                   formattedTime,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isSelected && !isLocked && !isReserved ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.w700,
-
-                    )
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: isSelected && !isLocked && !isReserved ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),

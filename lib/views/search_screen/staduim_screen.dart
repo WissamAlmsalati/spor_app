@@ -73,6 +73,9 @@ class _StadiumDetailScreenState extends State<StadiumDetailScreen> {
                 }
               },
             ),
+
+
+
           ],
           child: BlocBuilder<StadiumDetailCubit, StaduimDetailState>(
             builder: (context, state) {

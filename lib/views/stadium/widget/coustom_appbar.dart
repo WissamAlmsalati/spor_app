@@ -4,6 +4,8 @@ import 'package:sport/app/app_packges.dart';
 import '../../../utilits/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../screens/widget/profile_appbar.dart';
+
 class CoustomAppBr extends StatelessWidget {
   final String? logo;
   final String title;
@@ -55,12 +57,10 @@ class CoustomAppBr extends StatelessWidget {
               )
             : Row(
                 children: [
-    Text(
-    title,
-    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: color),
-
-
-    ),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: color),
+                  ),
                   Text(
                     userName ?? '',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Constants.mainColor),
@@ -72,7 +72,11 @@ class CoustomAppBr extends StatelessWidget {
             if (isHomeScreen)
               IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: onPressedFav,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+                  );
+                },
                 icon: SizedBox(
                   height: height,
                   width: width,

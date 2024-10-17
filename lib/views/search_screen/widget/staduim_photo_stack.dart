@@ -1,20 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sport/app/app_packges.dart';
-import 'package:sport/utilits/responsive.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:uni_links/uni_links.dart';
-import 'dart:async';
-import '../../../controller/add_to_favorit/favorite_mangment_cubit.dart';
-import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
-import '../../../utilits/images.dart';
-import '../../../utilits/secure_data.dart';
 
 class StaduimPhotoStack extends StatelessWidget {
   final List<String> stdPhotos;
@@ -174,14 +161,14 @@ class StaduimPhotoStack extends StatelessWidget {
               valueListenable: _currentPageNotifier,
               builder: (context, currentPage, child) {
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Text(
                     '${currentPage + 1} / ${stdPhotos.length}',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 );
               },

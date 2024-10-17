@@ -50,6 +50,9 @@ class OnboardingScreen extends StatelessWidget {
         return OnboardingCubit();
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Constants.mainColor,
+        ),
         body: SafeArea(
           child: Stack(
             children: [
@@ -60,7 +63,6 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: Responsive.screenHeight(context) * 0.03,
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,

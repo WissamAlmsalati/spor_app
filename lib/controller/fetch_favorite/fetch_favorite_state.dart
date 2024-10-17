@@ -3,6 +3,8 @@ part of 'fetch_favorite_cubit.dart';
 @immutable
 abstract class FetchFavoriteState {}
 
+class FetchFavoriteInitial extends FetchFavoriteState {}
+
 class FetchFavoriteLoading extends FetchFavoriteState {}
 
 class FetchFavoriteLoaded extends FetchFavoriteState {
@@ -17,6 +19,6 @@ class FetchFavoriteError extends FetchFavoriteState {
   FetchFavoriteError(this.message);
 }
 
-class UnAuthorizedError extends FetchFavoriteState {}
-
 class FavoriteSocketExceptionError extends FetchFavoriteState {}
+
+class UnAuthorizedError extends FetchFavoriteState {}

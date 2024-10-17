@@ -1,25 +1,36 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:sport/models/stedum_model.dart';
-import '../../utilits/secure_data.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import '../../app/app_packges.dart';
+import '../../models/stedum_model.dart';
+import '../../utilits/secure_data.dart';
 
 part 'fetch_favorite_state.dart';
 
 class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
-  FetchFavoriteCubit() : super(FetchFavoriteLoading());
+  final PagingController<int, Stadium> _pagingController = PagingController(firstPageKey: 1);
+  final int _pageSize = 10;
+
+  FetchFavoriteCubit() : super(FetchFavoriteInitial()) {
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchFavoriteStadiums(pageKey);
+    });
+  }
+
+  PagingController<int, Stadium> get pagingController => _pagingController;
 
   Future<void> fetchFavoriteStadiums() async {
-    emit(FetchFavoriteLoading());
+    _pagingController.refresh();
+  }
+
+  Future<void> _fetchFavoriteStadiums(int pageKey) async {
     try {
       final token = await SecureStorageData.getToken();
       final response = await http.get(
-        Uri.parse('https://api.sport.com.ly/player/favorite'),
+        Uri.parse('https://api.sport.com.ly/player/favorite?page=$pageKey'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -28,20 +39,26 @@ class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
       final decodedResponse = utf8.decode(response.bodyBytes);
 
       if (response.statusCode == 200) {
-      print(decodedResponse);
-        final data = json.decode(decodedResponse)['results'] as List;
-        final stadiums = data.map((json) => Stadium.fromJson(json)).toList();
-        emit(FetchFavoriteLoaded(stadiums));
-      } else if (response.statusCode == 401) {
-        emit(UnAuthorizedError());
+        final data = json.decode(decodedResponse) as Map<String, dynamic>;
+        final stadiums = (data['results'] as List<dynamic>)
+            .map((json) => Stadium.fromJson(json as Map<String, dynamic>))
+            .toList();
+        final isLastPage = stadiums.length < _pageSize;
+
+        if (isLastPage) {
+          _pagingController.appendLastPage(stadiums);
+        } else {
+          final nextPageKey = pageKey + 1;
+          _pagingController.appendPage(stadiums, nextPageKey);
+        }
       } else {
-        emit(FetchFavoriteError('Failed to fetch favorite stadiums'));
+        _pagingController.error = 'Failed to fetch favorite stadiums';
       }
     } catch (e) {
       if (e is SocketException) {
-        emit(FavoriteSocketExceptionError());
+        _pagingController.error = 'No Internet connection';
       } else {
-        emit(FetchFavoriteError('An error occurred: $e'));
+        _pagingController.error = 'An error occurred: $e';
       }
     }
   }
@@ -50,5 +67,3 @@ class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
   }
 }
-
-

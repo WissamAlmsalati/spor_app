@@ -71,7 +71,6 @@ class StadiumDetailFooter extends StatelessWidget {
                                 cancelText: 'إلغاء',
                                 onConfirm: () {
                                   print ('stadium.id: ${stadium.id}+cubit.selectedDate: ${cubit.selectedDate}+cubit.selectedSessionId: ${cubit.selectedSessionId}');
-
                                   Navigator.of(context).pop(true);
 
                                 },
@@ -127,9 +126,7 @@ class StadiumDetailFooter extends StatelessWidget {
               );
             } else {
               return CustomButton(
-                onPress: () {
-                  Navigator.pushNamed(context, '/login');
-                },
+                onPress: () {Navigator.pushNamed(context, '/login');},
                 text: 'تسجيل الدخول',
                 color: Constants.mainColor,
                 textColor: Colors.white,

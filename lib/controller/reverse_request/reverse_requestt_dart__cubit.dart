@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../utilits/secure_data.dart';
-import '../../views/search_screen/widget/stadium_detail_dialog.dart';
+import '../../views/profile/widget/coustom_dialog.dart';
 import '../Reservation_fetch/reservation_fetch_cubit.dart';
 import '../profile/fetch_profile_cubit.dart';
 
@@ -46,44 +46,38 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         headers: requestHeaders,
         body: requestBody,
       );
-      print(response.statusCode);
-      print(response.body);
-      if (response.statusCode == 201) {
-        print('Failed to send request: ${response.reasonPhrase}');
 
+      print('Response status code: ${response.statusCode}');
+      if (response.statusCode == 201) {
         print('Request sent successfully');
         await _saveReservationState(true);
         emit(ReverseRequestSuccess());
-        StadiumDetailDialog.showReservationStatusDialog(
-            context, 'تم الحجز بنجاح', 'تم حجز الملعب بنجاح');
+        _showDialog(context, 'Success', 'تم الحجز بنجاح', );
         context.read<ReservationCubit>().fetchReservations();
         context.read<FetchProfileCubit>().fetchProfileInfo();
       } else if (response.statusCode == 402) {
         emit(NoBalance("لا يوجد رصيد كافي"));
+        _showDialog(context, 'فشل في الحجز', 'لا يوجد رصيد كافي', );
       } else if (response.statusCode == 409) {
         emit(ReservationConflict("هناك حجز متعارض"));
+        _showDialog(context, 'فشل في الحجز', 'هناك حجز متعارض', );
       } else if (response.statusCode == 400) {
-        print('Failed to send request: ${response.reasonPhrase}');
         emit(ReverseRequestError('حدث خطأ ما'));
+        _showDialog(context, 'Error', 'فشل في الحجز', );
       } else if (response.statusCode == 404) {
-        print('Failed to send request: ${response.reasonPhrase}');
-
-        print('Request failed: Not Found (404)');
         emit(ReverseRequestError('Request failed: Not Found (404)'));
+        _showDialog(context, 'Error', 'فشل في الحجز');
       } else if (response.statusCode == 500) {
-        print('Failed to send request: ${response.reasonPhrase}');
-
-        print('Request failed: Internal Server Error (500)');
-        emit(
-            ReverseRequestError('Request failed: Internal Server Error (500)'));
+        emit(ReverseRequestError('Request failed: Internal Server Error (500)'));
+        _showDialog(context, 'Error', 'فشل في الحجز');
       } else {
-        print('Failed to send request: ${response.reasonPhrase}');
-        emit(ReverseRequestError(
-            'Failed to send request: ${response.reasonPhrase}'));
+        emit(ReverseRequestError('Failed to send request: ${response.reasonPhrase}'));
+        _showDialog(context, 'Error', 'فشل في الحجز');
       }
     } catch (e) {
       print('An error occurred: $e');
       emit(ReverseRequestError('An error occurred: $e'));
+      _showDialog(context, 'Error', 'فشل في الحجز');
     }
   }
 
@@ -98,5 +92,22 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
     if (isReserved) {
       emit(ReverseRequestSuccess());
     }
+  }
+
+  // Helper method to show dialog
+  void _showDialog(BuildContext context, String title, String content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          title: title,
+          content: content,
+          canceText: 'حسنا',
+          onCancel: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        );
+      },
+    );
   }
 }

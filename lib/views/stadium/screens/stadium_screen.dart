@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sport/app/app_packges.dart';
 import 'package:sport/controller/fetch_recomended_staduim/fetch_recomended_staduim_cubit.dart';
 import 'package:sport/controller/profile/fetch_profile_cubit.dart';
@@ -8,10 +9,13 @@ import 'package:sport/controller/ads_controler/ads_photos_cubit.dart';
 import 'package:sport/controller/fetch_favorite/fetch_favorite_cubit.dart';
 import 'package:sport/utilits/constants.dart';
 import 'package:sport/utilits/responsive.dart';
+import 'package:sport/views/stadium/screens/widget/favorite_staduim.dart';
 import 'package:sport/views/stadium/screens/widget/profile_appbar.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
 
+import '../../../models/recomended_staduim.dart';
 import '../../recomended_staduim/recomended_staduim_screeen.dart';
+import '../../search_screen/staduim_screen.dart';
 import '../../search_screen/widget/ads_photo_cursol.dart';
 import '../widget/coustom_appbar.dart';
 import '../widget/logo_text.dart';
@@ -147,9 +151,15 @@ class StadiumScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const RecommendedStadiums(
-                    isInHomeScreen: true,
+                  SizedBox(
+                    height: Responsive.screenHeight(context) * 0.005,
                   ),
+                  Container(
+                    height: Responsive.screenHeight(context) * 0.435,
+
+                      child: RecomendedStaduimsList(isInHomeScreen: true,)),
+
+
                 ],
               ),
             ),
