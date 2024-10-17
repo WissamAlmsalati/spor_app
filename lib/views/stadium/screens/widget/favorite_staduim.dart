@@ -30,64 +30,64 @@ class FavoriteStadium extends StatelessWidget {
             ),
             child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
               builder: (BuildContext context, state) {
-                return Center(child: Text('data'));
-                //   PagedGridView<int, Stadium>(
-                //   pagingController: context.read<FetchFavoriteCubit>().pagingController,
-                //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                //     crossAxisCount: 2,
-                //     crossAxisSpacing: 10,
-                //     mainAxisSpacing: 10,
-                //     childAspectRatio: 1,
-                //   ),
-                //   builderDelegate: PagedChildBuilderDelegate<Stadium>(
-                //     itemBuilder: (context, item, index) {
-                //       return StadiumBoxWidget(
-                //         isFavoriteWidget: true,
-                //         imageUrl: item.image,
-                //         name: item.name,
-                //         isAvailable: item.isAvailable,
-                //         onTap: () {
-                //           Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //               builder: (context) => StadiumDetailScreen(stadiumId: item.id),
-                //             ),
-                //           );
-                //         },
-                //       );
-                //     },
-                //     firstPageProgressIndicatorBuilder: (context) => GridView.builder(
-                //       shrinkWrap: true,
-                //       physics: const ClampingScrollPhysics(),
-                //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                //         crossAxisCount: 2,
-                //         crossAxisSpacing: 10,
-                //         mainAxisSpacing: 10,
-                //         childAspectRatio: 1,
-                //       ),
-                //       itemCount: 4,
-                //       itemBuilder: (context, index) {
-                //         return const ShimmerPlaceholder();
-                //       },
-                //     ),
-                //     newPageProgressIndicatorBuilder: (context) => const Center(child: ShimmerPlaceholder()),
-                //     noItemsFoundIndicatorBuilder: (context) => Center(
-                //       child: Column(
-                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: [
-                //           Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
-                //           Text(
-                //             'لا توجد ملاعب مفضلة',
-                //             style: TextStyle(
-                //               fontSize: Responsive.textSize(context, 14),
-                //               fontWeight: FontWeight.bold,
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // );
+                return
+                  PagedGridView<int, Stadium>(
+                  pagingController: context.read<FetchFavoriteCubit>().pagingController,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 1,
+                  ),
+                  builderDelegate: PagedChildBuilderDelegate<Stadium>(
+                    itemBuilder: (context, item, index) {
+                      return StadiumBoxWidget(
+                        isFavoriteWidget: true,
+                        imageUrl: item.image,
+                        name: item.name,
+                        isAvailable: item.isAvailable,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StadiumDetailScreen(stadiumId: item.id),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    firstPageProgressIndicatorBuilder: (context) => GridView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return const ShimmerPlaceholder();
+                      },
+                    ),
+                    newPageProgressIndicatorBuilder: (context) => const Center(child: ShimmerPlaceholder()),
+                    noItemsFoundIndicatorBuilder: (context) => Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
+                          Text(
+                            'لا توجد ملاعب مفضلة',
+                            style: TextStyle(
+                              fontSize: Responsive.textSize(context, 14),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
           ),
