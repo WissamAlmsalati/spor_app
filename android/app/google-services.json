@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "222879757968",
+    "project_id": "spor-f0208",
+    "storage_bucket": "spor-f0208.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222879757968:android:8fe3b73136f9ae178a0a15",
+        "android_client_info": {
+          "package_name": "com.example.spor_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6FTu_5ZxeUCZs0ax7EnYAUf5bWR1v7oI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,20 +22,25 @@ import 'controller/region_search_controler/region_search_cubit.dart';
 import 'controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import 'controller/review_comment_controller/comment_review_cubit.dart';
 import 'controller/update_profile/update_profile_cubit.dart';
+import 'firebase_options.dart';
 import 'models/recomended_staduim.dart';
 import 'repostry/staduim_repostry.dart';
 import 'app/app_packges.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SecureStorageData.getIsSign();
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
   runApp(const MyApp());
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
 }
 
 class MyApp extends StatefulWidget {
@@ -44,16 +51,43 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   StreamSubscription? _sub;
 
   @override
   void initState() {
     super.initState();
+    _initFirebaseMessaging();
     _initUniLinks();
   }
 
+  Future<void> _initFirebaseMessaging() async {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+
+    FirebaseMessaging.instance.getToken().then((token) {
+      print("Device Token: $token");
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Message received: ${message.notification?.title}');
+    });
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+
   Future<void> _initUniLinks() async {
-    // Handle incoming links
     _sub = linkStream.listen((String? link) {
       if (link != null) {
         _handleDeepLink(link);
@@ -62,7 +96,6 @@ class _MyAppState extends State<MyApp> {
       // Handle error
     });
 
-    // Handle initial link
     final initialLink = await getInitialLink();
     if (initialLink != null) {
       _handleDeepLink(initialLink);
@@ -70,7 +103,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _handleDeepLink(String link) async {
-    // Parse the link and navigate to the appropriate screen
     if (link.contains('stadium-info')) {
       final uri = Uri.parse(link);
       final stadiumId = uri.queryParameters['stadium_id'];
@@ -83,7 +115,6 @@ class _MyAppState extends State<MyApp> {
         );
       }
     } else {
-      // Launch the URL in the default browser
       if (await canLaunch(link)) {
         await launchUrl(Uri.parse(link), mode: LaunchMode.platformDefault);
       } else {
@@ -123,9 +154,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => ChangePasswordCubit()),
         BlocProvider(create: (context) => CommentReviewCubit()),
         BlocProvider(create: (context) => CanceklReservCubit()),
-        BlocProvider(
-          create: (context) => FetchRecomendedStaduimCubit(),
-        ),
+        BlocProvider(create: (context) => FetchRecomendedStaduimCubit()),
         BlocProvider(create: (context) => ForgetPasswordCubit()),
         BlocProvider(create: (context) => ProfilePictureCubit()),
         BlocProvider(create: (context) => UpdateProfileCubit()),
@@ -197,4 +226,3 @@ class AuthenticationWrapper extends StatelessWidget {
     );
   }
 }
-
