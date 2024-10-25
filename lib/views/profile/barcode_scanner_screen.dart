@@ -43,14 +43,17 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('تمت عملية الشحن بنجاح')),
               );
+              _stopScanning();
             } else if (state is RechargeFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('خطأ في الرقم السري')),
               );
+              _resumeScanning();
             } else if (state is RechargeSocketExceptionError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('لا يوجد اتصال بالانترنت')),
               );
+              _resumeScanning();
             }
           },
           child: Column(
@@ -167,12 +170,23 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
         if (scanData.code != null) {
           context.read<RechargeCubit>().rechargeCard(scanData.code!, context);
           controller?.pauseCamera();
-          setState(() {
-            isScanning = false;
-          });
         }
       });
     }
+  }
+
+  void _stopScanning() {
+    setState(() {
+      isScanning = false;
+    });
+    controller?.pauseCamera();
+  }
+
+  void _resumeScanning() {
+    setState(() {
+      isScanning = true;
+    });
+    controller?.resumeCamera();
   }
 
   @override

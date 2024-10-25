@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../app/authintication_middleware.dart';
 import '../../services/apis.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/app_cubits.dart';
@@ -13,7 +14,12 @@ import '../fetch_favorite/fetch_favorite_cubit.dart';
 part 'favorite_mangment_state.dart';
 
 class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
-  AddToFavoriteCubit() : super(AddToFavoriteInitial());
+  final BuildContext context;
+  late final http.Client _client;
+
+  AddToFavoriteCubit(this.context) : super(AddToFavoriteInitial()) {
+    _client = HttpInterceptor(http.Client());
+  }
 
   Timer? _debounce;
 
@@ -36,39 +42,39 @@ class AddToFavoriteCubit extends Cubit<AddToFavoriteState> {
     });
   }
 
-  Future<http.Response> addToFavorite(int stadiumId, BuildContext context) async {
-    final token = await SecureStorageData.getToken();
-    emit(AddToFavoriteLoading());
+Future<http.Response> addToFavorite(int stadiumId, BuildContext context) async {
+  final token = await SecureStorageData.getToken();
+  emit(AddToFavoriteLoading());
 
-    try {
-      final response = await http.post(
-        Uri.parse('${Apis.addToFavorite}?stadium=$stadiumId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({'stadium': stadiumId}),
-      );
+  try {
+    final response = await _client.post(
+      Uri.parse('${Apis.addToFavorite}?stadium=$stadiumId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'stadium': stadiumId}),
+    );
 
-      if (response.statusCode == 201) {
-        emit(AdedToFavorite());
-        FetchFavoriteCubit.refreshFavoriteStadiums(context);
-      } else {
-        emit(AddToFavoriteError('Failed to add to favorite'));
-      }
-      return response;
-    } catch (e) {
-      emit(AddToFavoriteError('An error occurred: $e'));
-      rethrow;
+    if (response.statusCode == 201) {
+      emit(AdedToFavorite());
+      FetchFavoriteCubit.refreshFavoriteStadiums(context);
+    } else {
+      emit(AddToFavoriteError('Failed to add to favorite'));
     }
+    return response;
+  } catch (e) {
+    emit(AddToFavoriteError('An error occurred: $e'));
+    rethrow;
   }
+}
 
   Future<http.Response> removeFromFavorite(int stadiumId, BuildContext context) async {
     final token = await SecureStorageData.getToken();
     emit(AddToFavoriteLoading());
 
     try {
-      final response = await http.delete(
+      final response = await _client.delete(
         Uri.parse('${Apis.removeFavorite}?stadium=$stadiumId'),
         headers: {
           'Authorization': 'Bearer $token',

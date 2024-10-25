@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/views/profile/widget/profile_buttom.dart';
-
-import '../../../controller/ThemeCubit/ThemeCubit.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../controller/auth/authintication_cubit.dart';
 import '../../../utilits/images.dart';
 import '../../../utilits/responsive.dart';
@@ -38,7 +39,17 @@ class UserLogged extends StatelessWidget {
           ProfileButton(
             icon: AppPhotot.startLg,
             text: 'قيم التطبيق',
-            onPressed: () {},
+            onPressed: () async {
+              const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.example.yourapp';
+              const appStoreUrl = 'https://apps.apple.com/app/id1234567890'; // Replace with your App Store URL
+
+              final url = Platform.isIOS ? appStoreUrl : googlePlayUrl;
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
             fontsize: Responsive.textSize(context, 16),
 
             //ميزة للاصدار القادم

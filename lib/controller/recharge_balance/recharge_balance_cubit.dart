@@ -8,18 +8,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/services/apis.dart';
 import '../../app/app_cubits.dart';
 import '../../utilits/secure_data.dart';
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'recharge_balance_state.dart';
 
 class RechargeCubit extends Cubit<RechargeState> {
-  RechargeCubit() : super(RechargeInitial());
+  final http.Client _client;
+
+  RechargeCubit() : _client = HttpInterceptor(http.Client()), super(RechargeInitial());
 
   Future<void> rechargeCard(String cardNumber, BuildContext context) async {
     emit(RechargeLoading());
     try {
       final token = await SecureStorageData.getToken();
 
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse(Apis.rechargeBalance),
         headers: {
           'Authorization': 'Bearer $token',
@@ -29,16 +32,15 @@ class RechargeCubit extends Cubit<RechargeState> {
           'code': cardNumber,
         },
       );
-
+print('Response status code: ${response.statusCode}');
+print('Response body: ${response.body}');
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         emit(RechargeSuccess(data));
         RefreshCubit.refreshBalance(context);
-
-    }else if (response.statusCode == 400) {
+      } else if (response.statusCode == 400) {
         emit(RechargeEmpty());
-      }
-      else {
+      } else {
         if (kDebugMode) {
           print(response.statusCode);
         }

@@ -9,11 +9,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../utilits/secure_data.dart';
 import '../../services/apis.dart';
-
-
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
-  OldReservationFetchCubit() : super(OldReservationLoading());
+  final http.Client _client;
+
+  OldReservationFetchCubit() : _client = HttpInterceptor(http.Client()), super(OldReservationLoading());
 
   int _currentPage = 1; // Track the current page number
   List<Reservation> _reservations = []; // Store fetched old reservations
@@ -28,7 +29,7 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
 
     try {
       final token = await SecureStorageData.getToken();
-      final response = await http.get(
+      final response = await _client.get(
         Uri.parse('${Apis.oldReservations}?page=$pageKey'),
         headers: {
           'Authorization': 'Bearer $token',

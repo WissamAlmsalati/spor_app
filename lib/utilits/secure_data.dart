@@ -23,11 +23,9 @@ class SecureStorageData {
     await _storage.write(key: 'phone', value: phone);
   }
 
-
   static Future<void> setIsSignedUp(bool value) async {
     await _storage.write(key: 'isSignedUp', value: value.toString());
   }
-
 
   static Future<void> clearData() async {
     await _storage.deleteAll();
@@ -43,4 +41,11 @@ class SecureStorageData {
     return await _storage.read(key: _themeKey);
   }
 
+  static Future<void> saveDeviceToken(String token) async {
+    await _storage.write(key: 'deviceToken', value: token);
+  }
+
+  static Future<String?> getDeviceToken() async {
+    return await _storage.read(key: 'deviceToken');
+  }
 }

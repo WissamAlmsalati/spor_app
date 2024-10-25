@@ -60,10 +60,12 @@ class _CommentsWidgetState extends State<CommentsWidget> {
               ),
               noItemsFoundIndicatorBuilder: (context) => Container(
                 margin: EdgeInsets.only(top: Responsive.screenHeight(context) * 0.1),
-                child: Text('لاتوجد تعليقات علي هاذا الملعب', style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                )),
+                child: Center(
+                  child: Text('لاتوجد تعليقات علي هاذا الملعب', style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                  )),
+                ),
               ),
               newPageErrorIndicatorBuilder: (context) => const Column(
                 mainAxisAlignment: MainAxisAlignment.start,

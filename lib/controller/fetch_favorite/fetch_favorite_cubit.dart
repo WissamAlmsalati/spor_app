@@ -7,14 +7,16 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../app/app_packges.dart';
 import '../../models/stedum_model.dart';
 import '../../utilits/secure_data.dart';
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'fetch_favorite_state.dart';
 
 class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
   final PagingController<int, Stadium> _pagingController = PagingController(firstPageKey: 1);
   final int _pageSize = 10;
+  final http.Client _client;
 
-  FetchFavoriteCubit() : super(FetchFavoriteInitial()) {
+  FetchFavoriteCubit() : _client = HttpInterceptor(http.Client()), super(FetchFavoriteInitial()) {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchFavoriteStadiums(pageKey);
     });
@@ -29,7 +31,7 @@ class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
   Future<void> _fetchFavoriteStadiums(int pageKey) async {
     try {
       final token = await SecureStorageData.getToken();
-      final response = await http.get(
+      final response = await _client.get(
         Uri.parse('https://api.sport.com.ly/player/favorite?page=$pageKey'),
         headers: {
           'Authorization': 'Bearer $token',

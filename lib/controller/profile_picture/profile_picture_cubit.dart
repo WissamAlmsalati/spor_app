@@ -7,13 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:sport/app/app_packges.dart';
 import 'package:sport/views/profile/widget/coustom_dialog.dart';
 import 'package:image/image.dart' as img; // Import the image package
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'profile_picture_state.dart';
 
 class ProfilePictureCubit extends Cubit<ProfilePictureState> {
   final ImagePicker _picker = ImagePicker();
+  final http.Client _client;
 
-  ProfilePictureCubit() : super(ProfilePictureInitial());
+  ProfilePictureCubit() : _client = HttpInterceptor(http.Client()), super(ProfilePictureInitial());
 
   Future<void> pickImage() async {
     print('Picking image');

@@ -31,27 +31,26 @@ class RefreshCubit {
     context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
   }
 
-  static void checkNetworkAndRefresh(BuildContext context) {
+  static void checkNetworkAndRefresh(VoidCallback refreshCallback) {
     Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
       if (result.isNotEmpty && result.first != ConnectivityResult.none) {
-        refreshCubits(context);
+        refreshCallback();
       }
     });
   }
 
-  static void checkNetworkAndRefreshOnDisconnect(BuildContext context) {
+  static void checkNetworkAndRefreshOnDisconnect(VoidCallback refreshCallback) {
     Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
       if (result.isNotEmpty && result.first == ConnectivityResult.none) {
         Timer.periodic(Duration(seconds: 5), (timer) async {
           var connectivityResult = await Connectivity().checkConnectivity();
           if (connectivityResult.isNotEmpty && connectivityResult.first != ConnectivityResult.none) {
             timer.cancel();
-            refreshCubits(context);
+            refreshCallback();
           }
         });
       } else {
-        refreshCubits(context);
-
+        refreshCallback();
       }
     });
   }

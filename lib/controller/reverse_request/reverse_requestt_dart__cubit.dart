@@ -7,11 +7,14 @@ import '../../utilits/secure_data.dart';
 import '../../views/profile/widget/coustom_dialog.dart';
 import '../Reservation_fetch/reservation_fetch_cubit.dart';
 import '../profile/fetch_profile_cubit.dart';
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'reverse_requestt_dart__state.dart';
 
 class ReverseRequestCubit extends Cubit<ReverseRequestState> {
-  ReverseRequestCubit() : super(ReverseRequestInitial()) {
+  final http.Client _client;
+
+  ReverseRequestCubit() : _client = HttpInterceptor(http.Client()), super(ReverseRequestInitial()) {
     _loadReservationState();
   }
 
@@ -41,7 +44,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         'Content-Type': 'application/json',
       };
 
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('https://api.sport.com.ly/player/reserve'),
         headers: requestHeaders,
         body: requestBody,

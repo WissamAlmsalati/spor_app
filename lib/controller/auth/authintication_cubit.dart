@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sport/app/app_packges.dart';
 import '../../services/apis.dart';
-
 import '../../views/auth/screens/otp_screen.dart';
 import '../Reservation_fetch/reservation_fetch_state.dart';
 import '../old_reveresition/old_reservation_fetch_state.dart';
@@ -19,16 +18,44 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
-  Future<void> logIn(
-      {required String username,
-      required String password,
-      required BuildContext context}) async {
+  Future<void> sendTokensToServer({
+    required String accessToken,
+    required String deviceToken,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('https://api.sport.com.ly/notification/register-fcm-token'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(<String, String>{
+          'fcm_token': deviceToken,
+        }),
+      );
+      print("send device token ${response.statusCode}");
+      if (response.statusCode == 200) {
+        print('Tokens sent successfully.');
+      } else {
+        print('Failed to send tokens: ${response.body}');
+      }
+    } catch (e) {
+      print('Error sending tokens: $e');
+    }
+  }
+
+  Future<void> logIn({
+    required String username,
+    required String password,
+    required BuildContext context,
+  }) async {
     if (username.isEmpty || password.isEmpty) {
       emit(AuthenticationFailure('Username or password cannot be empty'));
       return;
     }
     try {
       emit(AuthenticationLoading());
+      print('Sending login request...');
       final response = await http.post(
         Uri.parse(Apis.login),
         headers: <String, String>{
@@ -40,8 +67,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         }),
       );
 
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
+
         await _secureStorage.write(
             key: 'refreshToken', value: responseBody['refresh']);
         await _secureStorage.write(
@@ -53,6 +84,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             value: responseBody['phone_verified'].toString());
 
         await SecureStorageData.setIsSignedUp(true);
+
+        // Call sendTokensToServer after storing the access token and device token
+        print('Sending tokens to server...');
+        await sendTokensToServer(
+          accessToken: responseBody['access'],
+          deviceToken: await SecureStorageData.getDeviceToken() ?? '',
+        );
 
         if (responseBody['phone_verified'] == false) {
           Navigator.pushAndRemoveUntil(
@@ -71,6 +109,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         emit(AuthenticationFailure('Invalid username or password'));
       }
     } catch (e) {
+      print('Error: $e');
       if (e is SocketException) {
         emit(SocketExceptionError());
       } else {
@@ -115,6 +154,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         },
       );
 
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
         await _secureStorage.write(
@@ -128,6 +170,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             value: responseBody['phone_verified'].toString());
 
         await SecureStorageData.setIsSignedUp(true);
+
+        // Call sendTokensToServer after storing the access token and device token
+        print('Sending tokens to server...');
+        await sendTokensToServer(
+          accessToken: responseBody['access'],
+          deviceToken: await SecureStorageData.getDeviceToken() ?? '',
+        );
+
         Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => OtpScreen(userId: responseBody['id'])),
@@ -136,6 +186,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         emit(AuthenticationFailure('Sign up failed'));
       }
     } catch (e) {
+      print('Error: $e');
       if (e is SocketException) {
         emit(SocketExceptionError());
       } else {

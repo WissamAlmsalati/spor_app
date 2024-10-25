@@ -1,17 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:sport/services/notification_service.dart';
+import 'package:sport/services/spor_deep_link.dart';
 import 'package:sport/views/search_screen/staduim_screen.dart';
-import 'package:uni_links/uni_links.dart';
-import 'dart:async';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:sport/controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/views/onBoarding/on_boarding.dart';
 import 'package:sport/views/naviggation/home_navigation.dart';
+import 'app/authintication_wrapper.dart';
 import 'controller/ads_controler/ads_photos_cubit.dart';
 import 'controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import 'controller/change_pass_controler/change_password_cubit.dart';
@@ -21,26 +18,25 @@ import 'controller/profile_picture/profile_picture_cubit.dart';
 import 'controller/region_search_controler/region_search_cubit.dart';
 import 'controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import 'controller/review_comment_controller/comment_review_cubit.dart';
+import 'controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'controller/update_profile/update_profile_cubit.dart';
 import 'firebase_options.dart';
 import 'models/recomended_staduim.dart';
 import 'repostry/staduim_repostry.dart';
 import 'app/app_packges.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await NotificationService.initialize();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
   runApp(const MyApp());
-}
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
 }
 
 class MyApp extends StatefulWidget {
@@ -51,81 +47,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  StreamSubscription? _sub;
+  final DeepLinkService _deepLinkService = DeepLinkService();
 
   @override
   void initState() {
     super.initState();
-    _initFirebaseMessaging();
-    _initUniLinks();
-  }
-
-  Future<void> _initFirebaseMessaging() async {
-    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-      print('User granted provisional permission');
-    } else {
-      print('User declined or has not accepted permission');
-    }
-
-    FirebaseMessaging.instance.getToken().then((token) {
-      print("Device Token: $token");
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Message received: ${message.notification?.title}');
-    });
-
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  }
-
-  Future<void> _initUniLinks() async {
-    _sub = linkStream.listen((String? link) {
-      if (link != null) {
-        _handleDeepLink(link);
-      }
-    }, onError: (err) {
-      // Handle error
-    });
-
-    final initialLink = await getInitialLink();
-    if (initialLink != null) {
-      _handleDeepLink(initialLink);
-    }
-  }
-
-  void _handleDeepLink(String link) async {
-    if (link.contains('stadium-info')) {
-      final uri = Uri.parse(link);
-      final stadiumId = uri.queryParameters['stadium_id'];
-      if (stadiumId != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => StadiumDetailScreen(stadiumId: int.parse(stadiumId)),
-          ),
-        );
-      }
-    } else {
-      if (await canLaunch(link)) {
-        await launchUrl(Uri.parse(link), mode: LaunchMode.platformDefault);
-      } else {
-        throw 'Could not launch $link';
-      }
-    }
+    _deepLinkService.initUniLinks(context);
   }
 
   @override
   void dispose() {
-    _sub?.cancel();
+    _deepLinkService.dispose();
     super.dispose();
   }
 
@@ -139,7 +71,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => ThemeCubit(context)),
         BlocProvider(create: (context) => AppModeSwicherCubit()),
         BlocProvider(create: (context) => StadiumSearchCubit()),
-        BlocProvider(create: (context) => AddToFavoriteCubit()),
+        BlocProvider(create: (context) => AddToFavoriteCubit(context)),
         BlocProvider(create: (context) => FetchProfileCubit()..fetchProfileInfo()),
         BlocProvider(create: (context) => ReservationCubit()..fetchReservations()),
         BlocProvider(create: (context) => OldReservationFetchCubit()..fetchOldReservations()),
@@ -161,7 +93,9 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Builder(
         builder: (context) {
-          Future.microtask(() => RefreshCubit.checkNetworkAndRefreshOnDisconnect(context));
+          Future.microtask(() => RefreshCubit.checkNetworkAndRefreshOnDisconnect(() {
+            RefreshCubit.refreshCubits(context);
+          }));
 
           return BlocBuilder<AppModeSwicherCubit, AppModeSwicherState>(
             builder: (context, state) {
@@ -172,6 +106,8 @@ class _MyAppState extends State<MyApp> {
               return ResponsiveInfoProvider(
                 context: context,
                 child: MaterialApp(
+
+                  navigatorKey: navigatorKey,
                   supportedLocales: const [
                     Locale('en', ''), // English
                     Locale('ar', ''), // Arabic
@@ -197,32 +133,6 @@ class _MyAppState extends State<MyApp> {
           );
         },
       ),
-    );
-  }
-}
-
-class AuthenticationWrapper extends StatelessWidget {
-  const AuthenticationWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<AuthenticationCubit, AuthenticationState>(
-      listener: (context, state) {
-        if (state is AuthenticationAuthenticated) {
-          Navigator.pushReplacementNamed(context, '/homeNavigation');
-        } else if (state is AuthenticationUnauthenticated || state is AuthenticationPhoneNotVirefy) {
-          Navigator.pushReplacementNamed(context, '/onboarding');
-        }
-      },
-      builder: (context, state) {
-        if (state is AuthenticationLoading) {
-          return Center(child: LoadingAnimation(size: Responsive.screenWidth(context) * 0.2));
-        } else {
-          return Container(
-            color: Colors.white,
-          );
-        }
-      },
     );
   }
 }

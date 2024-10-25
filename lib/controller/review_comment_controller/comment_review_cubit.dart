@@ -6,11 +6,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'comment_review_state.dart';
 
 class CommentReviewCubit extends Cubit<CommentReviewState> {
-  CommentReviewCubit() : super(CommentReviewInitial());
+  final http.Client _client;
+
+  CommentReviewCubit() : _client = HttpInterceptor(http.Client()), super(CommentReviewInitial());
 
   Future<void> sendCommentReview({
     required BuildContext context,
@@ -53,7 +56,7 @@ class CommentReviewCubit extends Cubit<CommentReviewState> {
       'content': comment,
     };
 
-    final response = await http.post(
+    final response = await _client.post(
       Uri.parse('https://api.sport.com.ly/stadium/comment'),
       headers: {
         'Authorization': 'Bearer $token',
@@ -75,7 +78,7 @@ class CommentReviewCubit extends Cubit<CommentReviewState> {
       'review': rating,
     };
 
-    final response = await http.post(
+    final response = await _client.post(
       Uri.parse('https://api.sport.com.ly/stadium/review'),
       headers: {
         'Authorization': 'Bearer $token',

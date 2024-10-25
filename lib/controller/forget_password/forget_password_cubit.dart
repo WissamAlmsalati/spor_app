@@ -3,11 +3,14 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'forget_password_state.dart';
 
 class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
-  ForgetPasswordCubit() : super(ForgetPasswordInitial());
+  final http.Client _client;
+
+  ForgetPasswordCubit() : _client = HttpInterceptor(http.Client()), super(ForgetPasswordInitial());
 
   String? _token; // Private variable to store the token
   String? _otp;   // Private variable to store the OTP
@@ -17,7 +20,7 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
     emit(ForgetPasswordLoading());
     print('Sending step 1 request...');
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('https://api.sport.com.ly/auth/forgot-password'),
         body: jsonEncode({'step': 1, 'username': username}),
         headers: {'Content-Type': 'application/json'},
@@ -41,7 +44,7 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
     emit(ForgetPasswordLoading());
     print('Sending step 2 request...');
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('https://api.sport.com.ly/auth/forgot-password'),
         body: jsonEncode({'step': 2, 'username': username, 'otp_password': otp}),
         headers: {'Content-Type': 'application/json'},
@@ -66,7 +69,7 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
     emit(ForgetPasswordLoading());
     print('Sending step 3 request...');
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('https://api.sport.com.ly/auth/forgot-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({

@@ -7,12 +7,14 @@ import 'package:http/http.dart' as http;
 import '../../models/user_model.dart';
 import '../../services/apis.dart';
 import '../../utilits/secure_data.dart';
+import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'fetch_profile_state.dart';
 
-
 class FetchProfileCubit extends Cubit<FetchProfileState> {
-  FetchProfileCubit() : super(FetchProfileLoading());
+  final http.Client _client;
+
+  FetchProfileCubit() : _client = HttpInterceptor(http.Client()), super(FetchProfileLoading());
 
   Future<void> fetchProfileInfo() async {
     emit(FetchProfileLoading());
@@ -22,7 +24,7 @@ class FetchProfileCubit extends Cubit<FetchProfileState> {
         print('Token: $token');
       }
 
-      final response = await http.get(
+      final response = await _client.get(
         Uri.parse(Apis.fetchProfile),
         headers: {
           'Authorization': 'Bearer $token',
@@ -49,9 +51,10 @@ class FetchProfileCubit extends Cubit<FetchProfileState> {
       if (e is SocketException) {
         emit(ProfileSocketExceptionError());
       } else {
-      emit(FetchProfileError('An error occurred: $e'));
+        emit(FetchProfileError('An error occurred: $e'));
+      }
     }
-  }}
+  }
 
   Future<void> loadSignUpStatus() async {
     try {

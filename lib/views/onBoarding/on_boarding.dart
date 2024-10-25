@@ -37,13 +37,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure this runs after the first frame is rendered
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Constants.mainColor, // Set your desired color
-        statusBarIconBrightness: Brightness.light, // Change based on your color
-      ));
-    });
+
 
     return BlocProvider(
       create: (BuildContext context) {
