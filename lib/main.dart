@@ -47,19 +47,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final DeepLinkService _deepLinkService = DeepLinkService();
+  // final DeepLinkService _deepLinkService = DeepLinkService();
 
-  @override
-  void initState() {
-    super.initState();
-    _deepLinkService.initUniLinks(context);
-  }
-
-  @override
-  void dispose() {
-    _deepLinkService.dispose();
-    super.dispose();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _deepLinkService.initUniLinks(context);
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   _deepLinkService.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
