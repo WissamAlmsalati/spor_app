@@ -71,5 +71,14 @@
     <array>
         <string>https</string>
     </array>
+    <!-- Add Background Modes -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+    <!-- Add Firebase Configuration -->
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
 </dict>
 </plist>

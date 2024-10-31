@@ -1,5 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/services/notification_service.dart';
+import 'package:sport/services/spor_deep_link.dart';
+import 'package:sport/views/search_screen/staduim_screen.dart';
+import 'package:sport/utilits/loading_animation.dart';
+import 'package:sport/views/onBoarding/on_boarding.dart';
+import 'package:sport/views/naviggation/home_navigation.dart';
 import 'app/authintication_wrapper.dart';
 import 'controller/ads_controler/ads_photos_cubit.dart';
 import 'controller/cancel_reservation/cancekl_reserv_cubit.dart';
@@ -13,15 +22,27 @@ import 'controller/review_comment_controller/comment_review_cubit.dart';
 import 'controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'controller/update_profile/update_profile_cubit.dart';
 import 'firebase_options.dart';
+import 'models/recomended_staduim.dart';
 import 'repostry/staduim_repostry.dart';
 import 'app/app_packges.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+// This function must be a top-level function
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message: ${message.messageId}');
+  NotificationService.showLocalNotification(message);
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await NotificationService.initialize();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await NotificationService.initialize(navigatorKey);
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -38,20 +59,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // final DeepLinkService _deepLinkService = DeepLinkService();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _deepLinkService.initUniLinks(context);
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   _deepLinkService.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -97,7 +104,6 @@ class _MyAppState extends State<MyApp> {
               return ResponsiveInfoProvider(
                 context: context,
                 child: MaterialApp(
-
                   navigatorKey: navigatorKey,
                   supportedLocales: const [
                     Locale('en', ''), // English

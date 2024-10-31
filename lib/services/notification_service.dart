@@ -1,16 +1,25 @@
-// lib/services/notification_service.dart
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/material.dart';
 
 class NotificationService {
   static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   static final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  static late GlobalKey<NavigatorState> _navigatorKey;
 
-  // Method to initialize Firebase Messaging
-  static Future<void> initialize() async {
+  // Initialize Firebase Messaging and local notifications
+  static Future<void> initialize(GlobalKey<NavigatorState> navigatorKey) async {
+    _navigatorKey = navigatorKey;
     await _requestNotificationPermission();
+    await _initializeLocalNotifications();
     await _setFirebaseHandlers();
     await _saveDeviceToken();
+
+    // Check if the app was launched by tapping a notification
+    _checkInitialMessage();
   }
 
   // Request permission for notifications
@@ -30,36 +39,93 @@ class NotificationService {
     }
   }
 
+  // Initialize local notifications
+  static Future<void> _initializeLocalNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+
+    await _localNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        if (response.payload != null) {
+          _handleNotificationClick(response.payload!);
+        }
+      },
+    );
+  }
+
+  // Show local notification when a message is received
+  static Future<void> showLocalNotification(RemoteMessage message) async {
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      'high_importance_channel', // Channel ID
+      'High Importance Notifications', // Channel name
+      channelDescription: 'This channel is used for important notifications.',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    const NotificationDetails platformDetails = NotificationDetails(android: androidDetails);
+
+    await _localNotificationsPlugin.show(
+      message.hashCode,
+      message.notification?.title,
+      message.notification?.body,
+      platformDetails,
+      payload: message.data['payload'], // Pass any payload data here
+    );
+  }
+
   // Save device token to secure storage
   static Future<void> _saveDeviceToken() async {
     try {
       String? token = await _firebaseMessaging.getToken();
       if (token != null) {
         await _secureStorage.write(key: 'deviceToken', value: token);
-        print("Device Token saved: $token");
-      } else {
-        print("Failed to get device token");
       }
     } catch (e) {
-      print("Error saving device token: $e");
+      print('Error saving device token: $e');
     }
   }
 
-  // Set up handlers for different notification types
+  // Set Firebase handlers
   static Future<void> _setFirebaseHandlers() async {
-    // Handle foreground notifications
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Foreground message received: ${message.notification?.title}');
-      // Handle message here, e.g., show a dialog or notification
+      print('Received a message while in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+        showLocalNotification(message);
+      }
     });
 
-    // Handle background notifications
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Message clicked!');
+      if (message.data['payload'] != null) {
+        _handleNotificationClick(message.data['payload']);
+      }
+    });
   }
 
-  // Background message handler
-  static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    print("Handling a background message: ${message.messageId}");
-    // Handle the background message if necessary
+  // Check if the app was launched by tapping on a notification
+  static Future<void> _checkInitialMessage() async {
+    RemoteMessage? initialMessage = await _firebaseMessaging.getInitialMessage();
+    if (initialMessage != null) {
+      _handleNotificationClick(initialMessage.data['payload'] ?? 'No payload');
+    }
+  }
+
+  // Handle notification click
+  static void _handleNotificationClick(String payload) {
+    // Navigate to a specific screen if needed or simply resume the app without any dialog
+    final context = _navigatorKey.currentState?.overlay?.context;
+    if (context != null) {
+      // You can navigate to a specific screen here if desired, e.g.,:
+      // Navigator.of(context).pushNamed('/specificScreen');
+      
+      print("Notification clicked with payload: $payload"); // Remove dialog display
+    }
   }
 }
