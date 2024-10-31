@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -33,9 +34,17 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           'fcm_token': deviceToken,
         }),
       );
-      print("send device token ${response.statusCode}");
+
+      // Log the response status and body
+      print("Sending device token response status: ${response.statusCode}");
+      print("Sending device token response body: ${response.body}");
+print("notification status code${response.statusCode}");
+print("${response.body}");
+      // Handle the response codes
       if (response.statusCode == 200) {
         print('Tokens sent successfully.');
+      } else if (response.statusCode == 400) {
+        print('Bad request: ${response.body}');
       } else {
         print('Failed to send tokens: ${response.body}');
       }
@@ -87,7 +96,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
         // Call sendTokensToServer after storing the access token and device token
         print('Sending tokens to server...');
-        final deviceToken = await SecureStorageData.getDeviceToken() ?? '';
+        final deviceToken = await FirebaseMessaging.instance.getToken() ?? '';
         if (deviceToken.isNotEmpty) {
           await sendTokensToServer(
             accessToken: responseBody['access'],
@@ -102,7 +111,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             context,
             MaterialPageRoute(
                 builder: (context) => OtpScreen(userId: responseBody['id'])),
-                (route) => false,
+            (route) => false,
           );
           emit(AuthenticationPhoneNotVirefy());
         } else {
@@ -178,8 +187,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
         // Call sendTokensToServer after storing the access token and device token
         print('Sending tokens to server...');
-        final deviceToken = await SecureStorageData.getDeviceToken() ?? '';
+      String? deviceToken = await FirebaseMessaging.instance.getToken() ?? '';
         if (deviceToken.isNotEmpty) {
+          print(deviceToken);
           await sendTokensToServer(
             accessToken: responseBody['access'],
             deviceToken: deviceToken,
@@ -204,6 +214,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       }
     }
   }
+
+  // ... (rest of the code remains unchanged)
 
   Future<void> sendOtp(int userId) async {
     try {
@@ -279,12 +291,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     context.read<FetchProfileCubit>().emit(FetchProfileLoading());
     context.read<ReservationCubit>().emit(ReservationLoading());
     context.read<OldReservationFetchCubit>().emit(OldReservationLoading());
-    context.read<FetchFavoriteCubit>().emit(FetchFavoriteLoading());
-
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/onboarding',
-          (route) => false,
-    );
+    context.read<StadiumSearchCubit>().emit(StadiumSearchLoading());
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 }

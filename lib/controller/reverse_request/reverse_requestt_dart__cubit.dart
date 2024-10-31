@@ -58,6 +58,9 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         _showDialog(context, 'Success', 'تم الحجز بنجاح', );
         context.read<ReservationCubit>().fetchReservations();
         context.read<FetchProfileCubit>().fetchProfileInfo();
+      } else if (response.statusCode == 200) {
+        print('Request sent successfully with status 200');
+        Navigator.of(context).pop(); // Push out of the screen
       } else if (response.statusCode == 402) {
         emit(NoBalance("لا يوجد رصيد كافي"));
         _showDialog(context, 'فشل في الحجز', 'لا يوجد رصيد كافي', );

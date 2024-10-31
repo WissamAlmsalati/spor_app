@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 class NotificationService {
   static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   static final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin = FlutterLocalNotificationsPlugin();
   static late GlobalKey<NavigatorState> _navigatorKey;
 
   // Initialize Firebase Messaging and local notifications
@@ -16,7 +15,7 @@ class NotificationService {
     await _requestNotificationPermission();
     await _initializeLocalNotifications();
     await _setFirebaseHandlers();
-    await _saveDeviceToken();
+    await _saveDeviceToken(); // Ensure device token is saved here
 
     // Check if the app was launched by tapping a notification
     _checkInitialMessage();
@@ -41,11 +40,9 @@ class NotificationService {
 
   // Initialize local notifications
   static Future<void> _initializeLocalNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
     await _localNotificationsPlugin.initialize(
       initializationSettings,
@@ -82,7 +79,14 @@ class NotificationService {
     try {
       String? token = await _firebaseMessaging.getToken();
       if (token != null) {
-        await _secureStorage.write(key: 'deviceToken', value: token);
+        // Check if the token is already saved
+        String? savedToken = await _secureStorage.read(key: 'deviceToken');
+        if (savedToken != token) {
+          await _secureStorage.write(key: 'deviceToken', value: token);
+          print('New device token saved: $token');
+        } else {
+          print('Device token already saved: $token');
+        }
       }
     } catch (e) {
       print('Error saving device token: $e');
@@ -119,13 +123,10 @@ class NotificationService {
 
   // Handle notification click
   static void _handleNotificationClick(String payload) {
-    // Navigate to a specific screen if needed or simply resume the app without any dialog
     final context = _navigatorKey.currentState?.overlay?.context;
     if (context != null) {
-      // You can navigate to a specific screen here if desired, e.g.,:
-      // Navigator.of(context).pushNamed('/specificScreen');
-      
-      print("Notification clicked with payload: $payload"); // Remove dialog display
+      print("Notification clicked with payload: $payload");
+      // You can navigate to a specific screen here if desired
     }
   }
 }
