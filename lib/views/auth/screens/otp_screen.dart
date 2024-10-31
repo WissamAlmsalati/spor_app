@@ -68,7 +68,7 @@ class OtpScreenState extends State<OtpScreen> {
           },
           child: Padding(
             padding: EdgeInsets.only(
-              top: Responsive.blockHeight(context) * 20,
+              top: Responsive.screenHeight(context) * 0.20,
             ),
             child: Column(
               children: [
@@ -77,7 +77,7 @@ class OtpScreenState extends State<OtpScreen> {
                   children: [
                     SvgPicture.asset(
                       AppPhotot.rCamIcon,
-                      height: Responsive.blockHeight(context) * 3,
+                      height: Responsive.screenHeight(context) * 0.3,
                       width: Responsive.screenWidth(context) * 0.3,
                     ),
                     const Text(
@@ -90,13 +90,13 @@ class OtpScreenState extends State<OtpScreen> {
                     ),
                     SvgPicture.asset(
                       AppPhotot.lCamIcon,
-                      height: Responsive.blockHeight(context) * 3,
+                      height: Responsive.screenHeight(context) * 0.3,
                       width: Responsive.screenWidth(context) * 3,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: Responsive.blockHeight(context) * 1,
+                  height: Responsive.screenHeight(context) * 0.1,
                 ),
                 Text(
                   "ادخل رمز التحقق ل اتمام عمليةانشاء\nالحساب",
@@ -107,7 +107,7 @@ class OtpScreenState extends State<OtpScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: Responsive.blockHeight(context) * 5,
+                  height: Responsive.screenHeight(context) * 0.5,
                 ),
                 Pinput(
                   controller: _pinPutController,
@@ -137,7 +137,7 @@ class OtpScreenState extends State<OtpScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: Responsive.blockHeight(context) * 5,
+                  height: Responsive.screenHeight(context) * 0.5,
                 ),
                 Text(
                   _formatTime(_start),

@@ -62,7 +62,7 @@ class OtpScreenState extends State<ChangePassOtpScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
-            top: Responsive.blockHeight(context) * 20,
+            top: Responsive.screenHeight(context) * 0.20,
           ),
           child: Column(
             children: [
@@ -71,7 +71,7 @@ class OtpScreenState extends State<ChangePassOtpScreen> {
                 children: [
                   SvgPicture.asset(
                     AppPhotot.rCamIcon,
-                    height: Responsive.blockHeight(context) * 3,
+                    height: Responsive.screenHeight(context) * 0.03,
                     width: Responsive.screenWidth(context) * 0.3,
                   ),
                   const Text(
@@ -84,13 +84,13 @@ class OtpScreenState extends State<ChangePassOtpScreen> {
                   ),
                   SvgPicture.asset(
                     AppPhotot.lCamIcon,
-                    height: Responsive.blockHeight(context) * 3,
+                    height: Responsive.screenHeight(context) * 0.3,
                     width: Responsive.screenWidth(context) * 0.3,
                   ),
                 ],
               ),
               SizedBox(
-                height: Responsive.blockHeight(context) * 1,
+                height: Responsive.screenHeight(context) * 0.01,
               ),
               Text(
                 "ادخل رمز التحقق ل اتمام عمليةانشاء\nالحساب",
@@ -101,7 +101,7 @@ class OtpScreenState extends State<ChangePassOtpScreen> {
                 ),
               ),
               SizedBox(
-                height: Responsive.blockHeight(context) * 5,
+                height: Responsive.screenHeight(context) * 0.05,
               ),
               Pinput(
                 controller: _pinPutController,
@@ -131,7 +131,7 @@ class OtpScreenState extends State<ChangePassOtpScreen> {
                 ),
               ),
               SizedBox(
-                height: Responsive.blockHeight(context) * 5,
+                height: Responsive.screenHeight(context) * 0.05,
               ),
               Text(
                 _formatTime(_start),
@@ -157,7 +157,7 @@ class OtpScreenState extends State<ChangePassOtpScreen> {
                 },
                 color: Constants.mainColor,
                 textColor: Colors.white,
-                height: Responsive.blockHeight(context) * 5.3,
+                height: Responsive.screenHeight(context) * 0.53,
                 width: double.infinity,
               ),
 

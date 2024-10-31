@@ -21,8 +21,8 @@ class IOSSwitchButton extends StatelessWidget {
         final isDarkTheme = state is AppModeSwicherDarkMood;
 
         return SizedBox(
-          height: Responsive.blockHeight(context) * 3,
-          width: Responsive.blockHeight(context) * 5,
+          height: Responsive.screenWidth(context) * 0.3,
+          width: Responsive.screenWidth(context) * 0.5,
           child: CupertinoSwitch(
             value: isDarkTheme,
             onChanged: (value) {

@@ -23,8 +23,8 @@ class ConfairmChangePass extends StatelessWidget {
           child: SafeArea(
             child: Padding(
               padding: EdgeInsets.only(
-                left: Responsive.blockHeight(context) * 2,
-                right: Responsive.blockHeight(context) * 2,
+                left: Responsive.screenHeight(context) * 0.02,
+                right: Responsive.screenHeight(context) * 0.02,
               ),
               child: Column(
                 children: [
@@ -38,15 +38,15 @@ class ConfairmChangePass extends StatelessWidget {
                       },
                       color: Constants.mainColor, isHomeScreen:  false,),
                   SizedBox(
-                    height: Responsive.blockHeight(context) * 3,
+                    height: Responsive.screenHeight(context) * 0.03,
                   ),
                   SvgPicture.asset(
                     AppPhotot.changePass,
-                    height: Responsive.blockHeight(context) * 10,
-                    width: Responsive.blockHeight(context) * 10,
+                    height: Responsive.screenHeight(context) * 0.10,
+                    width: Responsive.screenHeight(context) * 10,
                   ),
                   SizedBox(
-                    height: Responsive.blockHeight(context) * 3,
+                    height: Responsive.screenHeight(context) * 0.03,
                   ),
                   const Text(
                     'اعدت تعين كلمة المرور',
@@ -57,13 +57,13 @@ class ConfairmChangePass extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: Responsive.blockHeight(context) * 3,
+                    height: Responsive.screenHeight(context) * 0.3,
                   ),
                   FormDecoration(
-                    height: Responsive.blockHeight(context) * 30,
+                    height: Responsive.screenHeight(context) * 0.0430,
                     child: Padding(
                       padding: EdgeInsets.only(
-                        top: Responsive.blockHeight(context) * 6,
+                        top: Responsive.screenHeight(context) * 0.06,
                         right: 20,
                         left: 20,
                       ),
@@ -75,12 +75,12 @@ class ConfairmChangePass extends StatelessWidget {
                             validatorText: " كلمة المرور الجديدة مطلوبة",
                           ),
                           SizedBox(
-                            height: Responsive.blockHeight(context) * 2.9,
+                            height: Responsive.screenHeight(context) * 0.9,
                           ),
 
 
                           SizedBox(
-                            height: Responsive.blockHeight(context) * 2.9,
+                            height: Responsive.screenHeight(context) * 0.29,
                           ),
                           CustomButton(
                             text: 'حفظ',
@@ -89,11 +89,11 @@ class ConfairmChangePass extends StatelessWidget {
                             },
                             color: Constants.mainColor,
                             textColor: Colors.white,
-                            height: Responsive.blockHeight(context) * 5.3,
+                            height: Responsive.screenHeight(context) * 0.53,
                             width: double.infinity,
                           ),
                           SizedBox(
-                            height: Responsive.blockHeight(context) * 2.9,
+                            height: Responsive.screenHeight(context) * 0.29,
                           ),
 
                         ],

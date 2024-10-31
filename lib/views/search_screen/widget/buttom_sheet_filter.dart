@@ -33,9 +33,9 @@ void showCustomBottomSheet(
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: Responsive.screenHeight(context) * 0.02),
+            SizedBox(height: Responsive.screenHeight(context) * 0.01),
             Divider(),
-            SizedBox(height: Responsive.screenHeight(context) * 0.02),
+            SizedBox(height: Responsive.screenHeight(context) * 0.01),
 
             // Title: حدد التاريخ (Select Date)
             Text(
@@ -45,7 +45,7 @@ void showCustomBottomSheet(
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: Responsive.screenHeight(context) * 0.02),
+            SizedBox(height: Responsive.screenHeight(context) * 0.01),
 
             // Calendar to select date
             CalendarRow(
@@ -54,7 +54,7 @@ void showCustomBottomSheet(
                 onDateSelected(date);
               },
             ),
-            SizedBox(height: Responsive.screenHeight(context) * 0.02),
+            SizedBox(height: Responsive.screenHeight(context) * 0.01),
 
             // Title: حدد الوقت (Select Time)
             Text(
@@ -64,7 +64,7 @@ void showCustomBottomSheet(
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: Responsive.screenHeight(context) * 0.02),
+            SizedBox(height: Responsive.screenHeight(context) * 0.01),
 
             // Hour selection row
             BlocBuilder<StadiumSearchCubit, StadiumSearchState>(

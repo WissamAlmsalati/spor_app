@@ -84,7 +84,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         margin: EdgeInsets.all(0),
         child: SizedBox(
-          height: Responsive.blockHeight(context) * 10,
+          height: Responsive.screenHeight(context) * 0.10,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -180,10 +180,13 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SvgPicture.asset('assets/icons/no_result.svg'),
-                    const Text(
-                      'لاتوجد ملاعب متاحةً',
+                     Text(
+                    "لاتوجد ملاعب متاحة في في هاذا الوقت",
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                     Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Constants.txtColor,
+                        fontWeight: FontWeight.w700,
+                     )
                     ),
                   ],
                 ),

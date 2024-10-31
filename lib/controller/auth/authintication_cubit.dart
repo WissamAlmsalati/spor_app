@@ -87,17 +87,22 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
         // Call sendTokensToServer after storing the access token and device token
         print('Sending tokens to server...');
-        await sendTokensToServer(
-          accessToken: responseBody['access'],
-          deviceToken: await SecureStorageData.getDeviceToken() ?? '',
-        );
+        final deviceToken = await SecureStorageData.getDeviceToken() ?? '';
+        if (deviceToken.isNotEmpty) {
+          await sendTokensToServer(
+            accessToken: responseBody['access'],
+            deviceToken: deviceToken,
+          );
+        } else {
+          print('Device token is empty.');
+        }
 
         if (responseBody['phone_verified'] == false) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
                 builder: (context) => OtpScreen(userId: responseBody['id'])),
-            (route) => false,
+                (route) => false,
           );
           emit(AuthenticationPhoneNotVirefy());
         } else {
@@ -173,10 +178,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
         // Call sendTokensToServer after storing the access token and device token
         print('Sending tokens to server...');
-        await sendTokensToServer(
-          accessToken: responseBody['access'],
-          deviceToken: await SecureStorageData.getDeviceToken() ?? '',
-        );
+        final deviceToken = await SecureStorageData.getDeviceToken() ?? '';
+        if (deviceToken.isNotEmpty) {
+          await sendTokensToServer(
+            accessToken: responseBody['access'],
+            deviceToken: deviceToken,
+          );
+        } else {
+          print('Device token is empty.');
+        }
 
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -274,7 +284,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/onboarding',
-      (route) => false,
+          (route) => false,
     );
   }
 }

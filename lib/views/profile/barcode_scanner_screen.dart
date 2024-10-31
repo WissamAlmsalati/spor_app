@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -20,6 +21,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   bool isScanning = false;
+  StreamSubscription? scanSubscription;
 
   @override
   void reassemble() {
@@ -57,10 +59,10 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(Responsive.blockHeight(context) * 2),
+                padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.02),
                 child: Column(
                   children: [
-                    SizedBox(height: Responsive.blockHeight(context) * 1),
+                    SizedBox(height: Responsive.screenHeight(context) * 0.01),
                     Row(
                       children: [
                         IconButton(
@@ -81,7 +83,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: Responsive.blockHeight(context) * 1),
+                            SizedBox(height: Responsive.screenHeight(context) * 0.01),
                             Text(
                               'يرجى توجيه الكاميرا نحو رمز الاستجابة السريعة لمسحه',
                               style: TextStyle(
@@ -113,7 +115,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(Responsive.blockHeight(context) * 2),
+                padding: EdgeInsets.all(Responsive.screenHeight(context) * 0.02),
                 child: Column(
                   children: [
                     CustomButton(
@@ -128,7 +130,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                       height: Responsive.screenHeight(context) * 0.053,
                       width: double.infinity,
                     ),
-                    SizedBox(height: Responsive.blockHeight(context) * 2),
+                    SizedBox(height: Responsive.screenHeight(context) * 0.02),
                     CustomButton(
                       text: 'إدخال الرمز يدوياً',
                       onPress: () {
@@ -164,10 +166,11 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
         isScanning = true;
       });
       controller?.resumeCamera();
-      controller?.scannedDataStream.listen((scanData) {
+      scanSubscription = controller?.scannedDataStream.listen((scanData) {
         if (scanData.code != null) {
           context.read<RechargeCubit>().rechargeCard(scanData.code!, context);
           controller?.pauseCamera();
+          scanSubscription?.cancel();
         }
       });
     }
@@ -178,6 +181,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       isScanning = false;
     });
     controller?.pauseCamera();
+    scanSubscription?.cancel();
   }
 
   void _resumeScanning() {
@@ -190,6 +194,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   @override
   void dispose() {
     controller?.dispose();
+    scanSubscription?.cancel();
     super.dispose();
   }
 

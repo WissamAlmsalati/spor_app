@@ -31,15 +31,15 @@ class ProfileButton extends StatelessWidget {
       child: Row(
         children: [
           SvgPicture.asset(icon),
-          SizedBox(width: Responsive.blockHeight(context) * 2),
+          SizedBox(width: Responsive.screenWidth(context) * 0.03),
           Text(text,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                  fontSize: fontsize ?? Responsive.textSize(context, 10))),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: fontsize,
+                  )),
           if (hasLeading) ...[
             const Spacer(),
             IOSSwitchButton(onToggle: onSwitchToggle),
-            SizedBox(width: Responsive.blockHeight(context) * 2),
+            SizedBox(width: Responsive.screenWidth(context) * 0.2),
           ],
         ],
       ),
@@ -57,7 +57,7 @@ class ShimmerProfileButton extends StatelessWidget {
       highlightColor: Colors.grey[100]!,
       child: Container(
         width: double.infinity,
-        height: Responsive.blockHeight(context) * 6,
+        height: Responsive.screenHeight(context) * 0.6,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),

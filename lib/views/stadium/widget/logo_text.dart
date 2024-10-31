@@ -11,7 +11,7 @@ class LogoText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: Responsive.blockHeight(context) * 2),
+      padding: EdgeInsets.only(top: Responsive.screenHeight(context) * 0.02),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

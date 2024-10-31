@@ -154,8 +154,8 @@ class StadiumScreen extends StatelessWidget {
                   SizedBox(
                     height: Responsive.screenHeight(context) * 0.005,
                   ),
-                  Container(
-                    height: Responsive.screenHeight(context) * 0.435,
+                  SizedBox(
+                    height: Responsive.screenHeight(context) * 0.48,
 
                       child: RecomendedStaduimsList(isInHomeScreen: true,)),
 

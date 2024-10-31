@@ -12,90 +12,90 @@ class FavoriteStadium extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
-        create: (context) => FetchFavoriteCubit(),
-        child: BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
-          listener: (context, state) {
-            if (state is AdedToFavorite) {
-              context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
-            }
-          },
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: Responsive.screenHeight(context) * 0.01,
-              bottom: Responsive.screenHeight(context) * 0.01,
-              left: Responsive.screenWidth(context) * 0.05,
-              right: Responsive.screenWidth(context) * 0.04,
-            ),
-            child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
-              builder: (BuildContext context, state) {
-                return
-                  PagedGridView<int, Stadium>(
-                  pagingController: context.read<FetchFavoriteCubit>().pagingController,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 1,
-                  ),
-                  builderDelegate: PagedChildBuilderDelegate<Stadium>(
-                    itemBuilder: (context, item, index) {
-                      return StadiumBoxWidget(
-                        isFavoriteWidget: true,
-                        imageUrl: item.image,
-                        name: item.name,
-                        isAvailable: item.isAvailable,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StadiumDetailScreen(stadiumId: item.id),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    firstPageProgressIndicatorBuilder: (context) => GridView.builder(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 1,
-                      ),
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return const ShimmerPlaceholder();
-                      },
-                    ),
-                    newPageProgressIndicatorBuilder: (context) => const Center(child: ShimmerPlaceholder()),
-                    noItemsFoundIndicatorBuilder: (context) => Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(Icons.heart_broken_outlined, color: Constants.mainColor, size: Responsive.screenHeight(context) * 0.2),
-                          Text(
-                            'لا توجد ملاعب مفضلة',
-                            style: TextStyle(
-                              fontSize: Responsive.textSize(context, 14),
-                              fontWeight: FontWeight.bold,
-                            ),
+    return BlocProvider(
+      create: (context) => FetchFavoriteCubit(),
+      child: BlocListener<AddToFavoriteCubit, AddToFavoriteState>(
+        listener: (context, state) {
+          if (state is AdedToFavorite) {
+            context.read<FetchFavoriteCubit>().fetchFavoriteStadiums();
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: Responsive.screenHeight(context) * 0.01,
+            horizontal: Responsive.screenWidth(context) * 0.05,
+          ),
+          child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
+            builder: (BuildContext context, state) {
+              return PagedGridView<int, Stadium>(
+                pagingController: context.read<FetchFavoriteCubit>().pagingController,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 1,
+                ),
+                builderDelegate: PagedChildBuilderDelegate<Stadium>(
+                  itemBuilder: (context, item, index) {
+                    return StadiumBoxWidget(
+                      isFavoriteWidget: true,
+                      imageUrl: item.image,
+                      name: item.name,
+                      isAvailable: item.isAvailable,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StadiumDetailScreen(stadiumId: item.id),
                           ),
-                        ],
-                      ),
+                        );
+                      },
+                    );
+                  },
+                  firstPageProgressIndicatorBuilder: (context) => GridView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 1,
+                    ),
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return const ShimmerPlaceholder();
+                    },
+                  ),
+                  newPageProgressIndicatorBuilder: (context) => const Center(child: ShimmerPlaceholder()),
+                  noItemsFoundIndicatorBuilder: (context) => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.heart_broken_outlined,
+                          color: Constants.mainColor,
+                          size: Responsive.screenHeight(context) * 0.2,
+                        ),
+                        Text(
+                          'لا توجد ملاعب مفضلة',
+                          style: TextStyle(
+                            fontSize: Responsive.textSize(context, 14),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
 }
+
 class ShimmerPlaceholder extends StatelessWidget {
   const ShimmerPlaceholder({super.key});
 

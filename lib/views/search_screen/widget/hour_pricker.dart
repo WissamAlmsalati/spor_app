@@ -58,7 +58,7 @@ class SelectableTimeTile extends StatelessWidget {
                   ),
                 Text(
                   formattedTime,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: isSelected && !isLocked && !isReserved ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w700,
                   ),

@@ -69,11 +69,14 @@ class FavoriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('الملاعب المفضلة',style: TextStyle(
-          fontSize: Responsive.textSize(context, 16),
-        ),),
+        title: Text(
+          'الملاعب المفضلة',
+          style: TextStyle(
+            fontSize: Responsive.textSize(context, 16),
+          ),
+        ),
       ),
-      body: Expanded(child: FavoriteStadium())
+      body: FavoriteStadium(),
     );
   }
 }

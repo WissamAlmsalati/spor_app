@@ -96,6 +96,11 @@ class CustomThemeData {
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
+        titleSmall: GoogleFonts.cairo(
+          fontSize: customFontSize(10), // Adjust font size
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       ),
       cardTheme: CardTheme(
         color: Colors.white,

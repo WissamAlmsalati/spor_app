@@ -29,12 +29,12 @@ class UserInfo extends StatelessWidget {
             }
 
             return CircleAvatar(
-              radius: Responsive.blockHeight(context) * 5,
+              radius: Responsive.screenHeight(context) * 0.05,
               backgroundImage: NetworkImage(imageUrl),
             );
           },
         ),
-        SizedBox(height: Responsive.blockHeight(context) * 2),
+        SizedBox(height: Responsive.screenHeight(context) * 0.02),
         BlocBuilder<FetchProfileCubit, FetchProfileState>(
           builder: (context, state) {
             if (state is FetchProfileLoading) {
@@ -113,20 +113,20 @@ class ProfilePictureOverlay extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: Responsive.blockHeight(context) * 5,
-          height: Responsive.blockHeight(context) * 2.5,
+          width: Responsive.screenHeight(context) * 0.5,
+          height: Responsive.screenHeight(context) * 0.25,
           decoration: BoxDecoration(
             color: Constants.mainColor,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(Responsive.blockHeight(context) * 2.5),
-              bottomRight: Radius.circular(Responsive.blockHeight(context) * 2.5),
+              topLeft: Radius.circular(Responsive.screenHeight(context) * 0.25),
+              bottomRight: Radius.circular(Responsive.screenHeight(context) * 0.25),
             ),
           ),
           child: Center(
             child: Icon(
               Icons.camera_alt,
               color: Colors.white,
-              size: Responsive.blockHeight(context) * 2,
+              size: Responsive.screenHeight(context) * 0.2,
             ),
           ),
         ),

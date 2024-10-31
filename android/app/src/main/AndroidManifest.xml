@@ -2,7 +2,7 @@
     package="com.example.spor_flutter">
 
     <application
-        android:label="spor_flutter"
+        android:label="spor"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">

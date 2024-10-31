@@ -297,12 +297,10 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
         title: Center(
           child: Text(
             'اضف مراجعتك',
-            style: TextStyle(
-              fontSize: 20,
-              fontFamily: GoogleFonts.cairo().fontFamily,
-              fontWeight: FontWeight.bold,
-              color: Constants.mainColor,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: Constants.mainColor,
+                  fontSize: MediaQuery.of(context).size.width * 0.04,
+                ),
           ),
         ),
         content: Column(
@@ -351,7 +349,7 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
                 textColor: Constants.mainColor,
                 textSize: MediaQuery.of(context).size.width * 0.03,
                 height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.33,
+                width: MediaQuery.of(context).size.width * 0.30,
               ),
               SizedBox(width: MediaQuery.of(context).size.width * 0.02),
               CustomButton(
@@ -373,7 +371,7 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
                 textColor: Colors.white,
                 textSize: MediaQuery.of(context).size.width * 0.03,
                 height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.33,
+                width: MediaQuery.of(context).size.width * 0.30,
               ),
             ],
           ),

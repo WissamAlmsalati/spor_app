@@ -50,8 +50,8 @@ class AccountDetailsState extends State<AccountDetails> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
-            left: Responsive.blockHeight(context) * 2,
-            right: Responsive.blockHeight(context) * 2,
+            left: Responsive.screenHeight(context) * 0.02,
+            right: Responsive.screenHeight(context) * 0.02,
           ),
           child: BlocListener<UpdateProfileCubit, UpdateProfileState>(
             listener: (context, state) {
@@ -238,13 +238,13 @@ class AccountDetailsState extends State<AccountDetails> {
                     ),
                   ],
                 ),
-                SizedBox(height: Responsive.blockHeight(context) * 3),
+                SizedBox(height: Responsive.screenHeight(context) * 0.03),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, '/changePasswordScreen');
                   },
                   child: FormDecoration(
-                    height: Responsive.blockHeight(context) * 7,
+                    height: Responsive.screenHeight(context) * 0.07,
                     width: Responsive.screenWidth(context) * 0.99,
                     child: Row(
                       children: [

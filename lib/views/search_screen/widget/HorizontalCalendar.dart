@@ -57,7 +57,7 @@ class DateSelector extends StatelessWidget {
                 children: [
                   Text(
                     getMonthName(date),  // Display the month name
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: isSelected ? Colors.white : Colors.black,
                         fontWeight: FontWeight.w700,
 
@@ -65,15 +65,16 @@ class DateSelector extends StatelessWidget {
                   ),
                   Text(
                     getDayName(date),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: isSelected ? Colors.white : Colors.black,
                         fontWeight: FontWeight.w700,
+
 
                       )
                   ),
                   Text(
                     getDayNumber(date),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color:isSelected ? Colors.white : Colors.black,
                         fontWeight: FontWeight.w700,
 

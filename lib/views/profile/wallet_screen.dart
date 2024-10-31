@@ -25,8 +25,8 @@ class WalletScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: Responsive.blockHeight(context) * 2,
-                    right: Responsive.blockHeight(context) * 2,
+                    left: Responsive.screenWidth(context) * 0.02,
+                    right: Responsive.screenWidth(context) * 0.02,
                   ),
                   child: Column(
                     children: [

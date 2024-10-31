@@ -24,7 +24,11 @@ class RecomendedStadiumScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) => FetchRecomendedStaduimCubit(),
         child: Padding(
-          padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.05),
+          padding: EdgeInsets.only(
+            right: Responsive.screenWidth(context) * 0.03,
+            left: Responsive.screenWidth(context) * 0.03,
+            top: Responsive.screenHeight(context) * 0.010,
+          ),
           child: RecomendedStaduimsList(isInHomeScreen: false),
         ),
       ),

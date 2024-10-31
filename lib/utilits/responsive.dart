@@ -5,16 +5,13 @@ class Responsive {
   Responsive(BuildContext context);
 
   static double screenWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width;
+    return MediaQuery.sizeOf(context).width;
   }
 
   static double screenHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height;
+    return MediaQuery.sizeOf(context).height;
   }
 
-  static double blockHeight(BuildContext context) {
-    return screenHeight(context) / 100;
-  }
 
   static double textSize(BuildContext context, double size) {
     final width = MediaQuery.of(context).size.width;

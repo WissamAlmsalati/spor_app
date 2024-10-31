@@ -1,3 +1,4 @@
+// lib/services/notification_service.dart
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -31,12 +32,16 @@ class NotificationService {
 
   // Save device token to secure storage
   static Future<void> _saveDeviceToken() async {
-    String? token = await _firebaseMessaging.getToken();
-    if (token != null) {
-      await _secureStorage.write(key: 'deviceToken', value: token);
-      print("Device Token saved: $token");
-    } else {
-      print("Failed to get device token");
+    try {
+      String? token = await _firebaseMessaging.getToken();
+      if (token != null) {
+        await _secureStorage.write(key: 'deviceToken', value: token);
+        print("Device Token saved: $token");
+      } else {
+        print("Failed to get device token");
+      }
+    } catch (e) {
+      print("Error saving device token: $e");
     }
   }
 
