@@ -76,7 +76,7 @@ class FavoriteScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: FavoriteStadium(),
+      body: const FavoriteStadium(),
     );
   }
 }

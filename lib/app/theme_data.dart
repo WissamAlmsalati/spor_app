@@ -20,7 +20,7 @@ class CustomThemeData {
         scrolledUnderElevation: 0,
         backgroundColor: Constants.backGroundColor,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(
           color: Colors.black,
           fontFamily: GoogleFonts.cairo().fontFamily,
@@ -112,29 +112,29 @@ class CustomThemeData {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all<TextStyle>(
+          textStyle: WidgetStateProperty.all<TextStyle>(
             GoogleFonts.cairo(
               fontSize: customFontSize(14), // Adjust font size
             ),
           ),
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-          shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.5)),
-          elevation: MaterialStateProperty.all<double>(0),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+          foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
+          shadowColor: WidgetStateProperty.all<Color>(Colors.black.withOpacity(0.5)),
+          elevation: WidgetStateProperty.all<double>(0),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          padding: MaterialStateProperty.all<EdgeInsets>(
+          padding: WidgetStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(
               vertical: Responsive.screenHeight(context) * 0.01,
               horizontal: Responsive.screenWidth(context) * 0.032,
             ),
           ),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.pressed)) {
+          overlayColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
                 return Constants.mainColor.withOpacity(0.5); // Pressed color
               }
               return null; // Default color
@@ -222,29 +222,29 @@ class CustomThemeData {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all<TextStyle>(
+          textStyle: WidgetStateProperty.all<TextStyle>(
             GoogleFonts.cairo(
               fontSize: customFontSize(14), // Adjust font size
             ),
           ),
-          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF272829)),
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.5)),
-          elevation: MaterialStateProperty.all<double>(0),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF272829)),
+          foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+          shadowColor: WidgetStateProperty.all<Color>(Colors.black.withOpacity(0.5)),
+          elevation: WidgetStateProperty.all<double>(0),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          padding: MaterialStateProperty.all<EdgeInsets>(
+          padding: WidgetStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(
               vertical: Responsive.screenHeight(context) * 0.01,
               horizontal: Responsive.screenWidth(context) * 0.032,
             ),
           ),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.pressed)) {
+          overlayColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
                 return Constants.mainColor.withOpacity(0.5); // Pressed color
               }
               return null; // Default color

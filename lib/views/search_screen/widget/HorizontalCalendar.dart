@@ -9,11 +9,11 @@ class DateSelector extends StatelessWidget {
   final Function(String) onDateSelected;
 
   const DateSelector({
-    Key? key,
+    super.key,
     required this.dates,
     required this.selectedDate,
     required this.onDateSelected,
-  }) : super(key: key);
+  });
 
   String getDayName(String date) {
     DateTime dateTime = DateTime.parse(date);

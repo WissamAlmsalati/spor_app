@@ -43,11 +43,10 @@ class ResponsiveInfo {
 class ResponsiveInfoProvider extends InheritedWidget {
   final ResponsiveInfo responsiveInfo;
 
-  ResponsiveInfoProvider({
-    required Widget child,
+  ResponsiveInfoProvider({super.key, 
+    required super.child,
     required BuildContext context,
-  })  : responsiveInfo = _getResponsiveInfo(context),
-        super(child: child);
+  })  : responsiveInfo = _getResponsiveInfo(context);
 
   static ResponsiveInfo _getResponsiveInfo(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

@@ -137,7 +137,7 @@ class PasswordAndBirthDayScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              TitleLogoTitle(
+              const TitleLogoTitle(
                 logo: AppPhotot.signLogo,
                 title: AppText.signUptxt,
                 description: AppText.signUpdes,

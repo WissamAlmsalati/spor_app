@@ -15,8 +15,8 @@ class ConfairmChangePass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _oldpassword = TextEditingController();
-    final TextEditingController _newpassword = TextEditingController();
+    final TextEditingController oldpassword = TextEditingController();
+    final TextEditingController newpassword = TextEditingController();
     return Scaffold(
         body:SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
@@ -70,7 +70,7 @@ class ConfairmChangePass extends StatelessWidget {
                       child: Column(
                         children: [
                           CustomTextField(
-                            controller: _oldpassword,
+                            controller: oldpassword,
                             labelText: "كلمة المرور الجديدة",
                             validatorText: " كلمة المرور الجديدة مطلوبة",
                           ),

@@ -53,7 +53,7 @@ class OldReservationFetchCubit extends Cubit<OldReservationFetchState> {
           emit(OldReservationLoaded(_reservations, _isLastPage));
           return reservations;
         } else {
-          emit(OldReservationError('Invalid data format'));
+          emit(const OldReservationError('Invalid data format'));
         }
       } else if (response.statusCode == 401) {
         emit(UnAuthenticatedUser());

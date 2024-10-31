@@ -85,7 +85,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
 class CommentWidget extends StatelessWidget {
   final Comment comment;
 
-  const CommentWidget({Key? key, required this.comment}) : super(key: key);
+  const CommentWidget({super.key, required this.comment});
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +184,8 @@ class CommentWidget extends StatelessWidget {
 }
 
 class CommentsShimmer extends StatelessWidget {
+  const CommentsShimmer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(

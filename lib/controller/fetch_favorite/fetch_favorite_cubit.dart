@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../app/app_packges.dart';
 import '../../models/stedum_model.dart';
-import '../../utilits/secure_data.dart';
 import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
 part 'fetch_favorite_state.dart';

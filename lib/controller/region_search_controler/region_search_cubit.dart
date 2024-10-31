@@ -34,11 +34,11 @@ class RegionSearchCubit extends Cubit<RegionSearchState> {
         emit(RegionSearchLoaded(regions));
       } else {
         print('Failed to fetch regions: ${response.statusCode}');
-        emit(RegionSearchError('Failed to fetch regions'));
+        emit(const RegionSearchError('Failed to fetch regions'));
       }
     } catch (e) {
       print('Failed to fetch regions: $e');
-      emit(RegionSearchError('Failed to fetch regions'));
+      emit(const RegionSearchError('Failed to fetch regions'));
     }
   }
 

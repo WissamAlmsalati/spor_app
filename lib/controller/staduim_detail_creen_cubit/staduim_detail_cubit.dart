@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../models/avilable_sesion_model.dart';

@@ -1,14 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:card_swiper/card_swiper.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sport/app/app_cubits.dart';
-import 'package:sport/utilits/responsive.dart';
-import 'package:sport/utilits/secure_data.dart';
 import '../../app/app_packges.dart';
-import '../../controller/onboarding_cubit/onboarding_cubit.dart';
-import '../../utilits/constants.dart';
 import '../auth/widgets/coustom_button.dart';
 
 class OnboardingScreen extends StatelessWidget {

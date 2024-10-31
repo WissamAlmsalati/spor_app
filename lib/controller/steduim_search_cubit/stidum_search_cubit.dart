@@ -61,7 +61,7 @@ Future<void> searchStadiumsWithFilter({
     );
 
     // Add one hour to get timeTo
-    final timeToDateTime = timeFromDateTime.add(Duration(hours: 1));
+    final timeToDateTime = timeFromDateTime.add(const Duration(hours: 1));
     final formattedTimeFrom = timeFromDateTime.toIso8601String().substring(11, 19);
     final formattedTimeTo = timeToDateTime.toIso8601String().substring(11, 19);
 

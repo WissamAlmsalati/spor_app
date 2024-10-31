@@ -30,7 +30,7 @@ class FetchRecomendedStaduimCubit extends Cubit<FetchRecomendedStaduimState> {
         Uri.parse('https://api.sport.com.ly/player/stadiums?page=$pageKey'),
       );
       final decodedResponse = utf8.decode(response.bodyBytes);
-print("Recomended State: " + decodedResponse);
+print("Recomended State: $decodedResponse");
       if (response.statusCode == 200) {
         final data = json.decode(decodedResponse) as Map<String, dynamic>;
         final staduims = (data['results'] as List<dynamic>)

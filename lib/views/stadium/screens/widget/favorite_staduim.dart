@@ -165,9 +165,9 @@ class StadiumBoxWidget extends StatelessWidget {
     required this.name,
     required this.isAvailable,
     required this.onTap,
-    Key? key,
+    super.key,
     this.isFavoriteWidget = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

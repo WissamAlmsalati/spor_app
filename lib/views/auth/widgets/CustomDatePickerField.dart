@@ -44,7 +44,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black26,
                   blurRadius: 8,
@@ -54,7 +54,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
             ),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: Responsive.screenHeight(context) * 0.25,
                   child: CupertinoTheme(
                     data: CupertinoThemeData(
@@ -123,7 +123,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
           ),
         ),
         SizedBox(height: Responsive.screenHeight(context) * 0.01),
-        Container(
+        SizedBox(
           height: Responsive.screenHeight(context) * 0.06,
           child: TextFormField(
             keyboardType: widget.keyboardType ?? TextInputType.text,

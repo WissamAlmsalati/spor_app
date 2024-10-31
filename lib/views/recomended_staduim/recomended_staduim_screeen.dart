@@ -29,7 +29,7 @@ class RecomendedStadiumScreen extends StatelessWidget {
             left: Responsive.screenWidth(context) * 0.03,
             top: Responsive.screenHeight(context) * 0.010,
           ),
-          child: RecomendedStaduimsList(isInHomeScreen: false),
+          child: const RecomendedStaduimsList(isInHomeScreen: false),
         ),
       ),
     );

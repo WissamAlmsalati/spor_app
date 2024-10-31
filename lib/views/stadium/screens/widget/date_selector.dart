@@ -9,7 +9,7 @@ class CustomDateSelector extends StatelessWidget {
   final DateTime selectedDate;
   final ValueChanged<DateTime> onDateSelected;
 
-  CustomDateSelector({
+  const CustomDateSelector({super.key, 
     required this.initialDate,
     required this.firstDate,
     required this.lastDate,
@@ -19,7 +19,7 @@ class CustomDateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: Responsive.screenHeight(context) * 0.13,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

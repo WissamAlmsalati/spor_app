@@ -243,7 +243,7 @@ class CommentReviewDialog extends StatefulWidget {
   final int stadiumId;
   final int playerId;
 
-  const CommentReviewDialog({Key? key, required this.stadiumId, required this.playerId}) : super(key: key);
+  const CommentReviewDialog({super.key, required this.stadiumId, required this.playerId});
 
   @override
   _CommentReviewDialogState createState() => _CommentReviewDialogState();
@@ -322,7 +322,7 @@ class _CommentReviewDialogState extends State<CommentReviewDialog> {
               allowHalfRating: true,
               itemCount: 5,
               itemPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
-              itemBuilder: (context, _) => Icon(
+              itemBuilder: (context, _) => const Icon(
                 Icons.star,
                 color: Constants.mainColor,
               ),

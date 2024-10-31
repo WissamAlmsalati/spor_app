@@ -13,6 +13,8 @@ import '../../controller/region_search_controler/region_search_cubit.dart';
 import '../../controller/steduim_search_cubit/stidum_search_cubit.dart';
 
 class StadiumSearchScreen extends StatefulWidget {
+  const StadiumSearchScreen({super.key});
+
   @override
   _StadiumSearchScreenState createState() => _StadiumSearchScreenState();
 }
@@ -81,8 +83,8 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
       color: Colors.transparent,
       child: Card(
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        margin: EdgeInsets.all(0),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        margin: const EdgeInsets.all(0),
         child: SizedBox(
           height: Responsive.screenHeight(context) * 0.10,
           child: Row(
@@ -90,7 +92,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
             children: [
               IconButton(
                 onPressed: () => _showBottomSheet(context),
-                icon: Icon(Icons.menu),
+                icon: const Icon(Icons.menu),
               ),
               Expanded(
                 child: Center(
@@ -113,7 +115,7 @@ class _StadiumSearchScreenState extends State<StadiumSearchScreen> {
               ),
               IconButton(
                 onPressed: () => _closeScreen(context),
-                icon: Icon(Icons.chevron_right),
+                icon: const Icon(Icons.chevron_right),
               ),
             ],
           ),

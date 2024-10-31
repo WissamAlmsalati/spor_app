@@ -26,7 +26,7 @@ class StadiumDetailBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
               height: Responsive.screenHeight(context) * 0.05,
               child: Center(
                   child: Align(

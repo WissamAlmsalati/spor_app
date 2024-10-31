@@ -13,7 +13,7 @@ class RouteGenerator {
 
       case '/signup':
         return PageTransition(
-          child:  SignUp(),
+          child:  const SignUp(),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 300),
         );
@@ -33,7 +33,7 @@ class RouteGenerator {
         );
 
       case '/onboarding':
-        return MaterialPageRoute(builder: (_) => OnboardingScreen());
+        return MaterialPageRoute(builder: (_) => const OnboardingScreen());
 
       case '/changePasswordScreen':
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());

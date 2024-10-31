@@ -300,7 +300,7 @@ class OtpScreenState extends State<OtpScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("ارسال رمز جديد في "),
+                    const Text("ارسال رمز جديد في "),
                     Text(
                       _formatTime(_start),
                       style: const TextStyle(
@@ -331,17 +331,17 @@ class NewPasswordScreen extends StatelessWidget {
   final TextEditingController newPasswordController = TextEditingController();
 
   NewPasswordScreen({
-    Key? key,
+    super.key,
     required this.usernameController,
     required this.otpController,
     required this.token,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Password'),
+        title: const Text('New Password'),
       ),
       body: BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
         listener: (context, state) {
@@ -350,14 +350,14 @@ class NewPasswordScreen extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Success'),
-                  content: Text('Password changed successfully'),
+                  title: const Text('Success'),
+                  content: const Text('Password changed successfully'),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('OK'),
+                      child: const Text('OK'),
                     ),
                   ],
                 );
@@ -368,14 +368,14 @@ class NewPasswordScreen extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Error'),
+                  title: const Text('Error'),
                   content: Text(state.error),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('OK'),
+                      child: const Text('OK'),
                     ),
                   ],
                 );
@@ -389,25 +389,25 @@ class NewPasswordScreen extends StatelessWidget {
             children: [
               TextField(
                 controller: otpController,
-                decoration: InputDecoration(labelText: 'OTP'),
+                decoration: const InputDecoration(labelText: 'OTP'),
               ),
               TextField(
                 controller: usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                decoration: const InputDecoration(labelText: 'Username'),
               ),
               TextField(
                 controller: newPasswordController,
-                decoration: InputDecoration(labelText: 'New Password'),
+                decoration: const InputDecoration(labelText: 'New Password'),
                 obscureText: true,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   context.read<ForgetPasswordCubit>().sendStep3(usernameController.text,
 
                   );
                 },
-                child: Text('Reset Password'),
+                child: const Text('Reset Password'),
               ),
             ],
           ),

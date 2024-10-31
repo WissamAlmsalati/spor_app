@@ -7,7 +7,7 @@ import '../../models/reservation.dart';
 import 'widget/current_book_widget.dart';
 
 class CurrentBooking extends StatefulWidget {
-  const CurrentBooking({Key? key}) : super(key: key);
+  const CurrentBooking({super.key});
 
   @override
   _CurrentBookingState createState() => _CurrentBookingState();
@@ -75,11 +75,11 @@ class _CurrentBookingState extends State<CurrentBooking> with AutomaticKeepAlive
             return ReservationWidget(reservation: reservation);
           },
           firstPageErrorIndicatorBuilder: (context) =>
-              Center(child: Text('حدث خطأ أثناء تحميل الحجوزات')),
+              const Center(child: Text('حدث خطأ أثناء تحميل الحجوزات')),
           noItemsFoundIndicatorBuilder: (context) =>
-              Center(child: Text('لا توجد حجوزات')),
+              const Center(child: Text('لا توجد حجوزات')),
           newPageErrorIndicatorBuilder: (context) =>
-              Center(child: Text('حدث خطأ')),
+              const Center(child: Text('حدث خطأ')),
           newPageProgressIndicatorBuilder: (context) => const Center(
               child: ShimmerCurrentBookWidget()), // Replace default loading indicator here
         ),
@@ -94,8 +94,7 @@ class _CurrentBookingState extends State<CurrentBooking> with AutomaticKeepAlive
 class ReservationWidget extends StatelessWidget {
   final Reservation reservation;
 
-  const ReservationWidget({Key? key, required this.reservation})
-      : super(key: key);
+  const ReservationWidget({super.key, required this.reservation});
 
   @override
   Widget build(BuildContext context) {

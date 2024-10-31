@@ -11,13 +11,13 @@ class SelectableTimeTile extends StatelessWidget {
   final VoidCallback onTap;
 
   const SelectableTimeTile({
-    Key? key,
+    super.key,
     required this.time,
     required this.isSelected,
     required this.isReserved,
     required this.isLocked,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

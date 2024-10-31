@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import '../../models/user_model.dart';
 import '../../services/apis.dart';

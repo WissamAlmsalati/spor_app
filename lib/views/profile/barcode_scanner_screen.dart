@@ -66,7 +66,7 @@ class BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                     Row(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back, color: Constants.txtColor),
+                          icon: const Icon(Icons.arrow_back, color: Constants.txtColor),
                           onPressed: () {
                             Navigator.pop(context);
                           },

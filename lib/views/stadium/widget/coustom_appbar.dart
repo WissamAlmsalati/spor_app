@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sport/app/app_packges.dart';
-import '../../../utilits/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../screens/widget/profile_appbar.dart';

@@ -41,10 +41,10 @@ class ReservationCubit extends Cubit<ReservationState> {
           emit(ReservationLoaded(_reservations)); // Emit loaded state
           return reservations; // Return reservations for further processing
         } else {
-          emit(ReservationError('Invalid data format'));
+          emit(const ReservationError('Invalid data format'));
         }
       } else if (response.statusCode == 401) {
-        emit(ReservationError('Unauthorized'));
+        emit(const ReservationError('Unauthorized'));
       } else {
         emit(ReservationError('An error occurred: ${response.reasonPhrase}'));
       }

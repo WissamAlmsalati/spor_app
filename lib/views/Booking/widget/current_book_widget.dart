@@ -36,7 +36,7 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
   void initState() {
     super.initState();
     _checkTime();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _checkTime();
     });
   }
@@ -147,7 +147,7 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                         }
 
                         return IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete,
                             color: Colors.red,
                           ),
@@ -346,7 +346,7 @@ class CustomToast {
 
     Overlay.of(context).insert(overlayEntry);
 
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       overlayEntry.remove();
     });
   }
@@ -377,7 +377,7 @@ class _AnimatedToast extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0, end: 1),
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       builder: (context, value, child) {
         return Opacity(
@@ -391,7 +391,7 @@ class _AnimatedToast extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
           decoration: BoxDecoration(
             color: Constants.mainColor,
             shape: BoxShape.rectangle,

@@ -39,7 +39,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
       emit(UpdateProfileSuccess());
     } else {
       print('Failed to update profile: ${response.reasonPhrase}');
-      emit(UpdateProfileError('Failed to update profile'));
+      emit(const UpdateProfileError('Failed to update profile'));
     }
   }
 }

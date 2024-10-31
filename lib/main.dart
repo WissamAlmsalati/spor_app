@@ -1,13 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/services/notification_service.dart';
-import 'package:sport/services/spor_deep_link.dart';
-import 'package:sport/views/search_screen/staduim_screen.dart';
-import 'package:sport/utilits/loading_animation.dart';
-import 'package:sport/views/onBoarding/on_boarding.dart';
-import 'package:sport/views/naviggation/home_navigation.dart';
 import 'app/authintication_wrapper.dart';
 import 'controller/ads_controler/ads_photos_cubit.dart';
 import 'controller/cancel_reservation/cancekl_reserv_cubit.dart';
@@ -21,7 +13,6 @@ import 'controller/review_comment_controller/comment_review_cubit.dart';
 import 'controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'controller/update_profile/update_profile_cubit.dart';
 import 'firebase_options.dart';
-import 'models/recomended_staduim.dart';
 import 'repostry/staduim_repostry.dart';
 import 'app/app_packges.dart';
 

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 
 class OnboardingCubit extends Cubit<int> {

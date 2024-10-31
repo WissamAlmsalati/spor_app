@@ -9,7 +9,7 @@ class TimeSelector extends StatelessWidget {
   final int selectedSessionId;
   final OnTimeSelected onTimeSelected;
 
-  TimeSelector({
+  const TimeSelector({
     super.key,
     required this.sessions,
     required this.selectedSessionId,

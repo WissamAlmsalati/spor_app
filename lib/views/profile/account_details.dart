@@ -77,14 +77,14 @@ class AccountDetailsState extends State<AccountDetails> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Error'),
+                      title: const Text('Error'),
                       content: Text(state.message),
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('OK'),
+                          child: const Text('OK'),
                         ),
                       ],
                     );

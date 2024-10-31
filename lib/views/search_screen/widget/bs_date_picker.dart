@@ -7,7 +7,7 @@ import 'package:sport/utilits/responsive.dart';
 class CalendarRow extends StatefulWidget {
   final Function(DateTime) onDateSelected;
 
-  const CalendarRow({required this.onDateSelected});
+  const CalendarRow({super.key, required this.onDateSelected});
 
   @override
   _CalendarRowState createState() => _CalendarRowState();

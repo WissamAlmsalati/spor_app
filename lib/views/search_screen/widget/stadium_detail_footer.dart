@@ -172,8 +172,8 @@ class AcceptReservationBottomSheet extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             blurRadius: 8,
             spreadRadius: 2,
@@ -288,10 +288,10 @@ class DottedRowDivider extends StatelessWidget {
   final Color color;
 
   const DottedRowDivider({
-    Key? key,
+    super.key,
     this.height = 1.0,
     this.color = Colors.grey,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

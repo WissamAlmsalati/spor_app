@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sport/views/search_screen/widget/screen_detail_shimmer.dart';
 import 'package:sport/views/search_screen/widget/stadium_detail_body.dart';
@@ -8,7 +6,6 @@ import 'package:sport/views/search_screen/widget/stadium_detail_header.dart';
 import 'package:sport/views/search_screen/widget/staduim_rating.dart';
 import '../../app/app_packges.dart';
 import '../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
-import '../../controller/add_to_favorit/favorite_mangment_cubit.dart';
 import '../stadium/screens/widget/comments_widget.dart';
 
 class StadiumDetailScreen extends StatefulWidget {

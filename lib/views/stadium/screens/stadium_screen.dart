@@ -141,7 +141,7 @@ class StadiumScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => RecomendedStadiumScreen()),
+                            MaterialPageRoute(builder: (context) => const RecomendedStadiumScreen()),
                           );
                         },
                         child: Text(
@@ -157,7 +157,7 @@ class StadiumScreen extends StatelessWidget {
                   SizedBox(
                     height: Responsive.screenHeight(context) * 0.48,
 
-                      child: RecomendedStaduimsList(isInHomeScreen: true,)),
+                      child: const RecomendedStaduimsList(isInHomeScreen: true,)),
 
 
                 ],

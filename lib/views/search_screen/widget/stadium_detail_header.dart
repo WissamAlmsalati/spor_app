@@ -13,6 +13,6 @@ class StadiumDetailHeader extends StatelessWidget {
       //StaduimPhotoStack(stdPhotos: stadium.images, stdId: stadiumId);
     return stadium.images.isNotEmpty
         ? StaduimPhotoStack(stdPhotos: stadium.images, stdId: stadiumId)
-        : StaduimPhotoStack(stdPhotos: ["https://interactive.guim.co.uk/atoms/thrashers/2022/03/moving-the-goalposts/assets/v/1718361372272/moving-the-goalposts-5-3.jpg"], stdId: stadiumId);
+        : StaduimPhotoStack(stdPhotos: const ["https://interactive.guim.co.uk/atoms/thrashers/2022/03/moving-the-goalposts/assets/v/1718361372272/moving-the-goalposts-5-3.jpg"], stdId: stadiumId);
   }
 }

@@ -25,7 +25,7 @@ class ProfilePictureCubit extends Cubit<ProfilePictureState> {
       emit(ProfilePictureSelected(pickedFile.path));
     } else {
       print('No image selected');
-      emit(ProfilePictureError("No image selected"));
+      emit(const ProfilePictureError("No image selected"));
     }
   }
 

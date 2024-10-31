@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport/controller/auth/authintication_cubit.dart';
 import 'package:sport/utilits/constants.dart';
-import 'package:sport/utilits/images.dart';
 import 'package:sport/views/profile/widget/user_info.dart';
 import 'package:sport/views/profile/widget/user_loged_widget.dart';
 import 'package:sport/views/profile/widget/vistor_widget.dart';

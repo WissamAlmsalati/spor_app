@@ -7,7 +7,7 @@ class HourRow extends StatefulWidget {
   final Function(String, String) onHourSelected; // Update the callback to pass both display time and formatted time
   final DateTime? selectedDate;
 
-  const HourRow({required this.onHourSelected, required this.selectedDate});
+  const HourRow({super.key, required this.onHourSelected, required this.selectedDate});
 
   @override
   _HourRowState createState() => _HourRowState();

@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../models/comments_model.dart';
-import '../../services/apis.dart';
 import '../../utilits/secure_data.dart';
 
 part 'fetch_comments_state.dart';

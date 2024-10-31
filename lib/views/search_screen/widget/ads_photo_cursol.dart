@@ -8,9 +8,11 @@ import '../../../utilits/responsive.dart';
 import '../../../models/ads_photo_model.dart';
 
 class AdsCarouselSlider extends StatelessWidget {
+  const AdsCarouselSlider({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<int> _current = ValueNotifier<int>(0);
+    final ValueNotifier<int> current = ValueNotifier<int>(0);
 
     return BlocBuilder<FetchAdsImagesCubit, AdsImagesState>(
       builder: (context, state) {
@@ -38,7 +40,7 @@ class AdsCarouselSlider extends StatelessWidget {
                   return Container(
                     width: Responsive.screenWidth(context) * 0.04,
                     height: Responsive.screenHeight(context) * 0.01,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.01),
                       shape: BoxShape.rectangle,
@@ -74,7 +76,7 @@ class AdsCarouselSlider extends StatelessWidget {
                   return Container(
                     width: Responsive.screenWidth(context) * 0.04,
                     height: Responsive.screenHeight(context) * 0.01,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.01),
                       shape: BoxShape.rectangle,
@@ -105,7 +107,7 @@ class AdsCarouselSlider extends StatelessWidget {
                       image: DecorationImage(
                         image: ad.image.isNotEmpty
                             ? NetworkImage(ad.image)
-                            : AssetImage('assets/photos/Frame 4.png'),
+                            : const AssetImage('assets/photos/Frame 4.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -121,12 +123,12 @@ class AdsCarouselSlider extends StatelessWidget {
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   viewportFraction: 1,
                   onPageChanged: (index, reason) {
-                    _current.value = index;
+                    current.value = index;
                   },
                 ),
               ),
               ValueListenableBuilder<int>(
-                valueListenable: _current,
+                valueListenable: current,
                 builder: (context, value, child) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -134,7 +136,7 @@ class AdsCarouselSlider extends StatelessWidget {
                       return Container(
                         width: Responsive.screenWidth(context) * 0.04,
                         height: Responsive.screenHeight(context) * 0.01,
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 2.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(
@@ -175,7 +177,7 @@ class AdsCarouselSlider extends StatelessWidget {
                   return Container(
                     width: Responsive.screenWidth(context) * 0.04,
                     height: Responsive.screenHeight(context) * 0.01,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.01),
                       shape: BoxShape.rectangle,
@@ -210,7 +212,7 @@ class AdsCarouselSlider extends StatelessWidget {
                   return Container(
                     width: Responsive.screenWidth(context) * 0.04,
                     height: Responsive.screenHeight(context) * 0.01,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Responsive.screenWidth(context) * 0.01),
                       shape: BoxShape.rectangle,

@@ -103,7 +103,7 @@ class UserInfo extends StatelessWidget {
 class ProfilePictureOverlay extends StatelessWidget {
   final VoidCallback onTap;
 
-  const ProfilePictureOverlay({required this.onTap, Key? key}) : super(key: key);
+  const ProfilePictureOverlay({required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {

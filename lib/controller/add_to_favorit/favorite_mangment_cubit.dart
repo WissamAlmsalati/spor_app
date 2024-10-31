@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../app/authintication_middleware.dart';
 import '../../services/apis.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../app/app_cubits.dart';
 import '../../utilits/secure_data.dart';
 import '../fetch_favorite/fetch_favorite_cubit.dart';
 part 'favorite_mangment_state.dart';

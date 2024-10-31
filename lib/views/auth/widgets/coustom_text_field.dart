@@ -20,7 +20,7 @@ class CustomTextField extends StatelessWidget {
   final bool isPhoneNumber; // New parameter to determine if it's a phone number
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     required this.validatorText,
@@ -34,11 +34,11 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.focusNode, // Added FocusNode
     this.isPhoneNumber = false, // Default is false
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<bool> _obscureTextNotifier = ValueNotifier<bool>(obscureText);
+    final ValueNotifier<bool> obscureTextNotifier = ValueNotifier<bool>(obscureText);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,17 +50,17 @@ class CustomTextField extends StatelessWidget {
             )
         ),
         SizedBox(height: Responsive.screenHeight(context) * 0.01),
-        Container(
+        SizedBox(
           height: Responsive.screenHeight(context) * 0.08 - 2,
           child: ValueListenableBuilder<bool>(
-            valueListenable: _obscureTextNotifier,
-            builder: (context, _obscureText, child) {
+            valueListenable: obscureTextNotifier,
+            builder: (context, obscureText, child) {
               return TextFormField(
                 cursorColor: Constants.mainColor,
                 focusNode: focusNode, // Assigned FocusNode here
                 keyboardType: keyboardType ?? TextInputType.text,
                 controller: controller,
-                obscureText: _obscureText,
+                obscureText: obscureText,
                 inputFormatters: isPhoneNumber
                     ? [
                   FilteringTextInputFormatter.digitsOnly, // Only allow digits
@@ -115,10 +115,10 @@ class CustomTextField extends StatelessWidget {
                   suffixIcon: obscureText
                       ? IconButton(
                     icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      obscureText ? Icons.visibility : Icons.visibility_off,
                     ),
                     onPressed: () {
-                      _obscureTextNotifier.value = !_obscureTextNotifier.value;
+                      obscureTextNotifier.value = !obscureTextNotifier.value;
                     },
                   )
                       : null,
@@ -140,8 +140,8 @@ class CustomTextField extends StatelessWidget {
             child: TextButton(
               onPressed: onForgotPassword,
               style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-                minimumSize: MaterialStateProperty.all<Size>(Size.zero),
+                padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                minimumSize: WidgetStateProperty.all<Size>(Size.zero),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
@@ -174,6 +174,6 @@ extension PersianToArabicNumerals on String {
       '۹': '9',
     };
 
-    return this.split('').map((char) => persianToArabicMap[char] ?? char).join('');
+    return split('').map((char) => persianToArabicMap[char] ?? char).join('');
   }
 }

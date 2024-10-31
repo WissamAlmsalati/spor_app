@@ -42,7 +42,7 @@ class RefreshCubit {
   static void checkNetworkAndRefreshOnDisconnect(VoidCallback refreshCallback) {
     Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
       if (result.isNotEmpty && result.first == ConnectivityResult.none) {
-        Timer.periodic(Duration(seconds: 5), (timer) async {
+        Timer.periodic(const Duration(seconds: 5), (timer) async {
           var connectivityResult = await Connectivity().checkConnectivity();
           if (connectivityResult.isNotEmpty && connectivityResult.first != ConnectivityResult.none) {
             timer.cancel();

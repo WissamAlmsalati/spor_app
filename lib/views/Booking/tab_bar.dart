@@ -27,7 +27,7 @@ class CoustomTapBar extends StatelessWidget {
                       fontFamily: GoogleFonts.cairo().fontFamily,
                       fontSize: Responsive.textSize(context, 12)),
                   // Customize the unselected ta
-                  tabs:  [
+                  tabs:  const [
                     Tab(
                       text: 'الحجوزات الحالية',
 

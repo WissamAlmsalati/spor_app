@@ -8,12 +8,12 @@ class SelectableTimeTile extends StatelessWidget {
   final Function(bool) onSelected;
 
   const SelectableTimeTile({
-    Key? key,
+    super.key,
     required this.time,
     required this.isAvailable,
     required this.isSelected,
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
