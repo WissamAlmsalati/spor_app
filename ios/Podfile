@@ -31,8 +31,9 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
-  # Add this line for GoogleDataTransport dependency
-  pod 'GoogleDataTransport', '~> 10.0'
+  # Remove this line for GoogleDataTransport dependency
+  # pod 'GoogleDataTransport', '~> 10.0'
+  pod 'GoogleDataTransport', '< 10.0'  # or specify a compatible version like '~> 9.4'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
