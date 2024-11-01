@@ -3,7 +3,7 @@ name: iOS-ipa-build
 on:
   push:
     branches:
-      - notification-and-middleware-auth
+      - main
 
 jobs:
   build-ios:
