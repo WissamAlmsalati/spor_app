@@ -19,7 +19,14 @@ jobs:
 
       - run: flutter pub get
 
+      - name: Update iOS Deployment Target
+        run: |
+          sed -i '' 's/platform :ios, '\'\(.*\)\'/platform :ios, '10.0'/g' ios/Podfile
+
       - run: pod repo update
+        working-directory: ios
+
+      - run: pod install
         working-directory: ios
 
       - run: flutter build ios --release --no-codesign --target=lib/main.dart
