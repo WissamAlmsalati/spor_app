@@ -1,8 +1,8 @@
 
 
 import 'package:shimmer/shimmer.dart';
+import 'package:sport/app/app_packges.dart';
 
-import '../../../app/app_packges.dart';
 
 class StadiumDetailShimmerLoading extends StatelessWidget {
   const StadiumDetailShimmerLoading({super.key});

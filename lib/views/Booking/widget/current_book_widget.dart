@@ -12,10 +12,8 @@ import 'package:sport/utilits/images.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sport/views/profile/widget/coustom_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../app/app_cubits.dart';
 import '../../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
 import '../../../controller/cancel_reservation/cancekl_reserv_cubit.dart';
-import '../../../controller/fetch_favorite/fetch_favorite_cubit.dart';
 import '../../auth/widgets/coustom_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 

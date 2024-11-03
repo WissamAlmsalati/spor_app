@@ -56,7 +56,9 @@ class SignIn extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.chevron_right),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => const OnboardingScreen())
+                  );
                 },
               ),
             ],

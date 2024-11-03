@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../app/app_packges.dart';
-import '../../../utilits/constants.dart';
 import '../../../utilits/responsive.dart';
 import '../../../utilits/texts.dart';
 import '../functions/sign_up_fun.dart';
@@ -82,7 +81,7 @@ class _SignUpState extends State<SignUp> {
           IconButton(
             icon: const Icon(Icons.chevron_right),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const OnboardingScreen()));
             },
           ),
         ],

@@ -6,7 +6,6 @@ import '../../../../app/app_packges.dart';
 import '../../../../models/stedum_model.dart';
 import '../../../search_screen/staduim_screen.dart';
 
-
 class FavoriteStadium extends StatelessWidget {
   const FavoriteStadium({super.key});
 
@@ -27,6 +26,37 @@ class FavoriteStadium extends StatelessWidget {
           ),
           child: BlocBuilder<FetchFavoriteCubit, FetchFavoriteState>(
             builder: (BuildContext context, state) {
+              if (state is FetchFavoriteLoading) {
+                print('Loading favorite stadiums...');
+              } else if (state is FetchFavoriteLoaded) {
+                print('Favorite stadiums loaded: ${state.stadiums}');
+              } else if (state is FetchFavoriteError) {
+                print('Error loading favorite stadiums: ${state.message}');
+              } else if (state is UnAuthorizedError) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    
+                      Text(
+                        'يرجى إنشاء حساب',
+                        style: TextStyle(
+                          fontSize: Responsive.textSize(context, 14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/signup');
+                        },
+                        child: Text('إنشاء حساب'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
               return PagedGridView<int, Stadium>(
                 pagingController: context.read<FetchFavoriteCubit>().pagingController,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

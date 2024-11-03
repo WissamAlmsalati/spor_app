@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:sport/utilits/loading_animation.dart';
 import 'package:sport/utilits/responsive.dart';
 import 'package:sport/views/auth/widgets/coustom_button.dart';
 import '../../../controller/profile/fetch_profile_cubit.dart';
-import '../../../controller/profile_picture/profile_picture_cubit.dart';
 
 class UserInfo extends StatelessWidget {
   const UserInfo({super.key});

@@ -22,7 +22,6 @@ import 'controller/review_comment_controller/comment_review_cubit.dart';
 import 'controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import 'controller/update_profile/update_profile_cubit.dart';
 import 'firebase_options.dart';
-import 'models/recomended_staduim.dart';
 import 'repostry/staduim_repostry.dart';
 import 'app/app_packges.dart';
 

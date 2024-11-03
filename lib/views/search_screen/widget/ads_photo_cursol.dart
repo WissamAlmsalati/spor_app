@@ -5,7 +5,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sport/app/app_packges.dart';
 import '../../../controller/ads_controler/ads_photos_cubit.dart';
 import '../../../utilits/responsive.dart';
-import '../../../models/ads_photo_model.dart';
 
 class AdsCarouselSlider extends StatelessWidget {
   const AdsCarouselSlider({super.key});

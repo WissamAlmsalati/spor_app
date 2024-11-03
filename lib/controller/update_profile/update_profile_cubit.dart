@@ -7,7 +7,6 @@ import '../../utilits/secure_data.dart';
 import 'package:http/http.dart' as http;
 import '../../app/authintication_middleware.dart'; // Import the HttpInterceptor
 
-import '../../views/profile/widget/coustom_dialog.dart';
 
 part 'update_profile_state.dart';
 

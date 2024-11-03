@@ -13,9 +13,7 @@ import 'package:sport/views/stadium/screens/widget/favorite_staduim.dart';
 import 'package:sport/views/stadium/screens/widget/profile_appbar.dart';
 import 'package:sport/views/stadium/screens/widget/search_field_widget.dart';
 
-import '../../../models/recomended_staduim.dart';
 import '../../recomended_staduim/recomended_staduim_screeen.dart';
-import '../../search_screen/staduim_screen.dart';
 import '../../search_screen/widget/ads_photo_cursol.dart';
 import '../widget/coustom_appbar.dart';
 import '../widget/logo_text.dart';

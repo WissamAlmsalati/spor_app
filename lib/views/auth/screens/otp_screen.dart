@@ -1,8 +1,6 @@
 import '../../../app/app_packges.dart';
 
-import '../../../app/app_packges.dart';
 
-import '../../../app/app_packges.dart';
 
 class OtpScreen extends StatefulWidget {
   final int userId;

@@ -78,17 +78,15 @@ class NotificationService {
   static Future<void> _saveDeviceToken() async {
     try {
       String? token = await _firebaseMessaging.getToken();
-      if (token != null) {
-        // Check if the token is already saved
-        String? savedToken = await _secureStorage.read(key: 'deviceToken');
-        if (savedToken != token) {
-          await _secureStorage.write(key: 'deviceToken', value: token);
-          print('New device token saved: $token');
-        } else {
-          print('Device token already saved: $token');
-        }
+      // Check if the token is already saved
+      String? savedToken = await _secureStorage.read(key: 'deviceToken');
+      if (savedToken != token) {
+        await _secureStorage.write(key: 'deviceToken', value: token);
+        print('New device token saved: $token');
+      } else {
+        print('Device token already saved: $token');
       }
-    } catch (e) {
+        } catch (e) {
       print('Error saving device token: $e');
     }
   }

@@ -1,5 +1,7 @@
+import 'package:sport/app/app_packges.dart';
+import 'package:sport/views/profile/wallet_screen.dart';
+
 import '../views/auth/screens/otp_screen.dart';
-import 'app_packges.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

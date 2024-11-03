@@ -269,18 +269,18 @@ print("${response.body}");
     }
   }
 
-  Future<void> checkAuthentication() async {
-    String? token = await _secureStorage.read(key: 'accessToken');
-    String? phoneVerified = await _secureStorage.read(key: 'phoneVerified');
-    if (token != null && token.isNotEmpty) {
-      if (phoneVerified == 'false') {
-        emit(AuthenticationPhoneNotVirefy());
+   Future<void> checkAuthentication() async {
+      String? token = await _secureStorage.read(key: 'accessToken');
+      String? phoneVerified = await _secureStorage.read(key: 'phoneVerified');
+      if (token != null && token.isNotEmpty) {
+        if (phoneVerified == 'false') {
+          emit(AuthenticationPhoneNotVirefy());
+        } else {
+          emit(AuthenticationAuthenticated());
+        }
       } else {
-        emit(AuthenticationAuthenticated());
+        emit(AuthenticationUnauthenticated());
       }
-    } else {
-      emit(AuthenticationUnauthenticated());
-    }
   }
 
   void logOut(BuildContext context) async {
@@ -292,6 +292,6 @@ print("${response.body}");
     context.read<ReservationCubit>().emit(ReservationLoading());
     context.read<OldReservationFetchCubit>().emit(OldReservationLoading());
     context.read<StadiumSearchCubit>().emit(StadiumSearchLoading());
-    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, '/onboarding', (route) => false);
   }
 }

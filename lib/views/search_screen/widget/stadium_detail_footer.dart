@@ -5,13 +5,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sport/app/app_packges.dart';
 import 'package:sport/views/auth/widgets/coustom_button.dart';
 
-import '../../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
 import '../../../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../../utilits/constants.dart';
 import '../../../utilits/responsive.dart';
-import '../../Booking/booking_screen.dart';
-import 'stadium_detail_dialog.dart';
 
 class StadiumDetailFooter extends StatelessWidget {
   final stadium;

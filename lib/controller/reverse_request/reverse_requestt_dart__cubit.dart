@@ -18,7 +18,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
     _loadReservationState();
   }
 
-  Future<void> sendReverseRequest(
+    Future<void> sendReverseRequest(
       int stadiumId,
       String selectedDate,
       int selectedSessionId,
@@ -38,52 +38,52 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
         "payment_type": paymentType,
         "is_monthly_reservation": isMonthlyReservation,
       });
-
+  
       final requestHeaders = {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       };
-
+  
       final response = await _client.post(
         Uri.parse('https://api.sport.com.ly/player/reserve'),
         headers: requestHeaders,
         body: requestBody,
       );
-
+  
       print('Response status code: ${response.statusCode}');
       if (response.statusCode == 201) {
         print('Request sent successfully');
-        await _saveReservationState(true);
         emit(ReverseRequestSuccess());
-        _showDialog(context, 'Success', 'تم الحجز بنجاح', );
+        _showDialog(context, 'Success', 'تم الحجز بنجاح', () {
+          Navigator.of(context).pop(); // Pop the screen
+        });
         context.read<ReservationCubit>().fetchReservations();
         context.read<FetchProfileCubit>().fetchProfileInfo();
       } else if (response.statusCode == 200) {
         print('Request sent successfully with status 200');
-        Navigator.of(context).pop(); // Push out of the screen
       } else if (response.statusCode == 402) {
         emit(NoBalance("لا يوجد رصيد كافي"));
-        _showDialog(context, 'فشل في الحجز', 'لا يوجد رصيد كافي', );
+        _showDialog(context, 'فشل في الحجز', 'لا يوجد رصيد كافي', () {});
       } else if (response.statusCode == 409) {
         emit(ReservationConflict("هناك حجز متعارض"));
-        _showDialog(context, 'فشل في الحجز', 'هناك حجز متعارض', );
+        _showDialog(context, 'فشل في الحجز', 'هناك حجز متعارض', () {});
       } else if (response.statusCode == 400) {
         emit(ReverseRequestError('حدث خطأ ما'));
-        _showDialog(context, 'Error', 'فشل في الحجز', );
+        _showDialog(context, 'Error', 'فشل في الحجز', () {});
       } else if (response.statusCode == 404) {
         emit(ReverseRequestError('Request failed: Not Found (404)'));
-        _showDialog(context, 'Error', 'فشل في الحجز');
+        _showDialog(context, 'Error', 'فشل في الحجز', () {});
       } else if (response.statusCode == 500) {
         emit(ReverseRequestError('Request failed: Internal Server Error (500)'));
-        _showDialog(context, 'Error', 'فشل في الحجز');
+        _showDialog(context, 'Error', 'فشل في الحجز', () {});
       } else {
         emit(ReverseRequestError('Failed to send request: ${response.reasonPhrase}'));
-        _showDialog(context, 'Error', 'فشل في الحجز');
+        _showDialog(context, 'Error', 'فشل في الحجز', () {});
       }
     } catch (e) {
       print('An error occurred: $e');
       emit(ReverseRequestError('An error occurred: $e'));
-      _showDialog(context, 'Error', 'فشل في الحجز');
+      _showDialog(context, 'Error', 'فشل في الحجز', () {});
     }
   }
 
@@ -101,7 +101,7 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
   }
 
   // Helper method to show dialog
-  void _showDialog(BuildContext context, String title, String content) {
+  void _showDialog(BuildContext context, String title, String content, VoidCallback onDialogClosed) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -109,8 +109,10 @@ class ReverseRequestCubit extends Cubit<ReverseRequestState> {
           title: title,
           content: content,
           canceText: 'حسنا',
-          onCancel: () {
+          onCancel: () async {
+            await _saveReservationState(true);
             Navigator.of(context).pop(); // Close the dialog
+            onDialogClosed(); // Execute the callback function
           },
         );
       },

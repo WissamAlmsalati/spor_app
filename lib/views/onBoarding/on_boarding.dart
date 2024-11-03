@@ -36,6 +36,7 @@ class OnboardingScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Constants.mainColor,
         ),
         body: SafeArea(

@@ -50,6 +50,8 @@ class FetchFavoriteCubit extends Cubit<FetchFavoriteState> {
           final nextPageKey = pageKey + 1;
           _pagingController.appendPage(stadiums, nextPageKey);
         }
+      } else if (response.statusCode == 401) {
+        emit(UnAuthorizedError());
       } else {
         _pagingController.error = 'Failed to fetch favorite stadiums';
       }
