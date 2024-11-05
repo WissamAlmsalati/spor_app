@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:222879757968:android:8fe3b73136f9ae178a0a15",
         "android_client_info": {
-          "package_name": "com.example.spor_flutter"
+          "package_name": "spor.app"
         }
       },
       "oauth_client": [],

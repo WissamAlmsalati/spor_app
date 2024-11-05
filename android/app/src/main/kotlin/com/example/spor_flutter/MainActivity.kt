@@ -1,4 +1,4 @@
-package com.example.spor_flutter
+package spor.app
 
 import io.flutter.embedding.android.FlutterActivity
 
