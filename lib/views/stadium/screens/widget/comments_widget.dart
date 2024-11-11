@@ -55,7 +55,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
               firstPageErrorIndicatorBuilder: (context) => const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Center(child: Text('حدث خطا اثناء تحميل التعليقات')),
+                  Center(child: Text('يرجي تسجبل الدخول')),
                 ],
               ),
               noItemsFoundIndicatorBuilder: (context) => Container(
