@@ -30,8 +30,11 @@ jobs:
         run: pod repo update
         working-directory: ios
 
-      - name: Update Specific Pod
-        run: pod update GoogleUtilities/UserDefaults
+      # Update nanopb to resolve version conflicts
+      - name: Update Specific Pods
+        run: |
+          pod update nanopb
+          pod update GoogleUtilities/UserDefaults
         working-directory: ios
 
       - name: Install Pods
