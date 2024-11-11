@@ -1,61 +1,59 @@
-name: iOS-ipa-build
+name: iOS Build
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-ios:
-    name: 🎉 iOS Build
+    name: Build iOS App
     runs-on: macos-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-          architecture: x64
+          flutter-version: 'stable'
 
-      - name: Install Dependencies
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods
+          pod repo update
+
+      - name: Flutter Pub Get
         run: flutter pub get
 
-      - name: Update CocoaPods
-        run: sudo gem install cocoapods
-
-      - name: Update Pod Repo
-        run: pod repo update
-        working-directory: ios
-
-      # Update nanopb to resolve version conflicts
-      - name: Update Specific Pods
+      - name: Build iOS
+        env:
+          CI: true
         run: |
-          pod update nanopb
-          pod update GoogleUtilities/UserDefaults
-        working-directory: ios
+          flutter build ios --no-codesign
 
-      - name: Install Pods
-        run: pod install --repo-update
-        working-directory: ios
-
-      - name: Build iOS App
-        run: flutter build ios --release --no-codesign --target=lib/main.dart
-
-      - name: Prepare IPA for Export
+      - name: Archive Build
         run: |
-          mkdir Payload
-          mv build/ios/iphoneos/Runner.app Payload/
-          zip -qq -r FlutterIpaExport.ipa Payload
-        working-directory: build/ios/iphoneos
+          xcodebuild -workspace ios/Runner.xcworkspace \
+                     -scheme Runner \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -archivePath $PWD/build/Runner.xcarchive \
+                     archive
 
-      - name: Upload IPA to Release
-        uses: svenstaro/upload-release-action@v2
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+                     -archivePath $PWD/build/Runner.xcarchive \
+                     -exportOptionsPlist ios/Runner/ExportOptions.plist \
+                     -exportPath $PWD/build
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v3
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ios/iphoneos/FlutterIpaExport.ipa
-          tag: v1.0
-          overwrite: true
-          body: "This is the first release"
+          name: ios-app
+          path: build/Runner.ipa
