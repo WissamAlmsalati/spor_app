@@ -19,18 +19,17 @@ jobs:
 
       - run: flutter pub get
 
+      # Update CocoaPods to the latest version to ensure compatibility
       - run: gem install cocoapods
-
 
       - run: pod repo update
         working-directory: ios
 
-
-
-      - run: pod update GoogleDataTransport
+      # Update the conflicting GoogleUtilities/UserDefaults pod
+      - run: pod update GoogleUtilities/UserDefaults
         working-directory: ios
 
-
+      # Install pods with the latest dependencies
       - run: pod install --repo-update
         working-directory: ios
 
