@@ -252,7 +252,7 @@ class StadiumBoxWidget extends StatelessWidget {
                   name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black ,fontWeight: FontWeight.w500),
                 ),
               ),
               Padding(
@@ -263,8 +263,8 @@ class StadiumBoxWidget extends StatelessWidget {
                 child: Text(
                   isAvailable ? 'متوفر للحجز' : 'غير متوفر للحجز',
                   style: isAvailable
-                      ? Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor)
-                      : Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red),
+                      ? Theme.of(context).textTheme.bodySmall?.copyWith(color: Constants.mainColor,fontWeight: FontWeight.w500)
+                      : Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red ,fontWeight: FontWeight.w500),
                 ),
               ),
             ],

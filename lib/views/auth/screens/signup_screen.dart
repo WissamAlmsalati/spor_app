@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../app/app_packges.dart';
 import '../../../utilits/responsive.dart';
 import '../../../utilits/texts.dart';
+import '../../profile/widget/coustom_dialog.dart';
 import '../functions/sign_up_fun.dart';
 import '../widgets/CustomDatePickerField.dart';
 import '../widgets/coustom_button.dart';
@@ -24,13 +25,16 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode confirmPasswordFocusNode = FocusNode();
 
   final GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
+
+  bool _isChecked = false;
 
   @override
   void initState() {
@@ -81,20 +85,38 @@ class _SignUpState extends State<SignUp> {
           IconButton(
             icon: const Icon(Icons.chevron_right),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const OnboardingScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const OnboardingScreen()));
             },
           ),
         ],
       ),
       body: SafeArea(
-        child: FocusScope(
-          child: PageView(
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              _buildSignUpForm(context),
-              _buildPasswordAndBirthDayForm(context),
-            ],
+        child: BlocListener<AuthenticationCubit, AuthenticationState>(
+          listener: (context, state) {
+            if (state is AuthenticationFailure &&
+                state.message == 'Phone number already exists') {
+              showDialog(
+                context: context,
+                builder: (context) => const CustomAlertDialog(
+                  title: "خطأ",
+                  content: 'رقم الهاتف موجود بالفعل , الرجاء استخدام رقم اخر',
+                  canceText: 'حسنا',
+                ),
+              );
+            }
+          },
+          child: FocusScope(
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildSignUpForm(context),
+                _buildPasswordAndBirthDayForm(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -129,7 +151,8 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CustomTextField(
-                        labelSize: Responsive.textSize(context, 6),
+                        labelSize:
+                            Theme.of(context).textTheme.bodySmall!.fontSize,
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: firstnameController,
@@ -140,7 +163,8 @@ class _SignUpState extends State<SignUp> {
                             : null,
                       ),
                       CustomTextField(
-                        labelSize: Responsive.textSize(context, 6),
+                        labelSize:
+                            Theme.of(context).textTheme.bodySmall!.fontSize,
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: lastnameController,
@@ -151,7 +175,8 @@ class _SignUpState extends State<SignUp> {
                             : null,
                       ),
                       CustomTextField(
-                        labelSize: Responsive.textSize(context, 6),
+                        labelSize:
+                            Theme.of(context).textTheme.bodySmall!.fontSize,
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: phoneController,
@@ -168,6 +193,9 @@ class _SignUpState extends State<SignUp> {
                         color: Constants.mainColor,
                         onPress: nextPage,
                         textColor: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        textSize:
+                            Theme.of(context).textTheme.bodyMedium!.fontSize,
                       ),
                       CustomButton(
                         height: Responsive.screenHeight(context) * 0.06,
@@ -176,6 +204,9 @@ class _SignUpState extends State<SignUp> {
                         color: Constants.secondaryColor,
                         onPress: () => Navigator.pushNamed(context, '/login'),
                         textColor: Constants.thirdColor,
+                        fontWeight: FontWeight.w600,
+                        textSize:
+                            Theme.of(context).textTheme.bodyMedium!.fontSize,
                       ),
                     ],
                   ),
@@ -217,13 +248,16 @@ class _SignUpState extends State<SignUp> {
                       CustomDatePickerField(
                         controller: birthdateController,
                         labeltext: 'تاريخ الميلاد',
+                        lableSize:
+                            Theme.of(context).textTheme.bodySmall!.fontSize,
                         validatorText: 'الرجاء ادخال تاريخ الميلاد',
                         validator: (value) => value == null || value.isEmpty
                             ? 'الرجاء ادخال تاريخ الميلاد'
                             : null,
                       ),
                       CustomTextField(
-                        labelSize: Responsive.textSize(context, 6),
+                        labelSize:
+                            Theme.of(context).textTheme.bodySmall!.fontSize,
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         controller: passwordController,
@@ -242,7 +276,8 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       CustomTextField(
-                        labelSize: Responsive.textSize(context, 6),
+                        labelSize:
+                            Theme.of(context).textTheme.bodySmall!.fontSize,
                         hintSize: Responsive.textSize(context, 10),
                         validatorSize: Responsive.textSize(context, 6),
                         obscureText: true,
@@ -258,10 +293,68 @@ class _SignUpState extends State<SignUp> {
                           return null;
                         },
                       ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _isChecked = value!;
+                              });
+                            },
+                          ),
+                          Flexible(
+                            child: Text.rich(
+                              TextSpan(
+                                text: 'أوافق على ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      color: Colors.black,
+                                    ),
+                                children: [
+                                  TextSpan(
+                                    text: 'سياسة الخصوصية',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .copyWith(
+                                          color: Constants.mainColor,
+                                        ),
+                                  ),
+                                  const TextSpan(text: ' و'),
+                                  WidgetSpan(
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        minimumSize: Size.zero,
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                      onPressed: () {
+                                        // Navigate to Terms and Conditions page
+                                      },
+                                      child: Text(
+                                        'الشروط والأحكام',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall!
+                                            .copyWith(
+                                              color: Constants.mainColor,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       BlocBuilder<AuthenticationCubit, AuthenticationState>(
                         builder: (context, state) {
                           return CustomButton(
-
                             height: Responsive.screenHeight(context) * 0.06,
                             width: Responsive.screenWidth(context) * 0.9,
                             text: state is AuthenticationLoading
@@ -269,7 +362,8 @@ class _SignUpState extends State<SignUp> {
                                 : 'انشاء حساب',
                             color: Constants.mainColor,
                             isLoading: state is AuthenticationLoading,
-                            loadingSize: Responsive.screenHeight(context) * 0.04,
+                            loadingSize:
+                                Responsive.screenHeight(context) * 0.04,
                             loadingColor: Constants.secondaryColor,
                             onPress: () {
                               if (passwordFormKey.currentState!.validate()) {

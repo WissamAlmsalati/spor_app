@@ -83,7 +83,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               ),
               CustomButton(
                 fontWeight: FontWeight.w600,
-                textSize: Responsive.textSize(context, 16),
+                textSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
                 width: Responsive.screenWidth(context) * 0.9,
                 height: Responsive.screenHeight(context) * 0.06,
                 text: 'انشاء حساب',
@@ -96,7 +96,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 builder: (context, state) {
                   return CustomButton(
                     fontWeight: FontWeight.w600,
-                    textSize: Responsive.textSize(context, 16),
+                    textSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
                     width: Responsive.screenWidth(context) * 0.9,
                     height: Responsive.screenHeight(context) * 0.06,
                     isLoading: state is AuthenticationLoading,

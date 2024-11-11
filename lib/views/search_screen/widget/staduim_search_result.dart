@@ -15,42 +15,45 @@ class StaduimSearchResult extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        height: Responsive.screenHeight(context) * 0.25,
+        height: Responsive.screenHeight(context) * 0.27,
         width: Responsive.screenWidth(context) * 9,
-        decoration:  BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(Responsive.screenWidth(context) * 0.05)  ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+              Radius.circular(Responsive.screenWidth(context) * 0.05)),
         ),
         child: Column(
           children: [
-       Container(
-  width: double.infinity,
-  height: Responsive.screenHeight(context) * 0.16,
-  decoration: BoxDecoration(
-    color: Colors.grey,
-    borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(Responsive.screenWidth(context) * 0.05),
-      topRight: Radius.circular(Responsive.screenWidth(context) * 0.05),
-    ),
-    image: stadium.image.isNotEmpty
-        ? DecorationImage(
-            image: NetworkImage(stadium.image),
-            fit: BoxFit.fill,
-            onError: (error, stackTrace) {
-              // Handle error
-            },
-          )
-        : null,
-  ),
-  child: stadium.image.isEmpty
-      ? const Center(
-          child: Text(
-            'No image available',
-            style: TextStyle(color: Colors.white),
-          ),
-        )
-      : null,
-),
+            Container(
+              width: double.infinity,
+              height: Responsive.screenHeight(context) * 0.16,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.only(
+                  topLeft:
+                      Radius.circular(Responsive.screenWidth(context) * 0.05),
+                  topRight:
+                      Radius.circular(Responsive.screenWidth(context) * 0.05),
+                ),
+                image: stadium.image.isNotEmpty
+                    ? DecorationImage(
+                        image: NetworkImage(stadium.image),
+                        fit: BoxFit.fill,
+                        onError: (error, stackTrace) {
+                          // Handle error
+                        },
+                      )
+                    : null,
+              ),
+              child: stadium.image.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No image available',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : null,
+            ),
             SizedBox(
               height: Responsive.screenHeight(context) * 0.011,
             ),
@@ -60,7 +63,6 @@ class StaduimSearchResult extends StatelessWidget {
                 left: Responsive.screenWidth(context) * 0.05,
                 right: Responsive.screenWidth(context) * 0.05,
               ),
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -70,46 +72,65 @@ class StaduimSearchResult extends StatelessWidget {
                     children: [
                       Text(
                         stadium.name.isNotEmpty == true ? stadium.name : 'ملعب',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                            fontSize: Responsive.textSize(context, 16)
-                        ),),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w900,
+
+                        ),
+                      ),
                       SizedBox(
                         height: Responsive.screenHeight(context) * 0.01,
                       ),
                       Row(
                         children: [
-                          Text('${stadium.address}.', style: TextStyle(
-                              color: Constants.txtColor,
-                              fontSize: Responsive.textSize(context, 12)
-                          ),),
+                          Text(
+                            '${stadium.address}.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color: Constants.txtColor,
+                                  fontWeight: FontWeight.w900,
 
-                          SvgPicture.asset(AppPhotot.starLogo,
+                                ),
+                          ),
+                          SvgPicture.asset(
+                            AppPhotot.starLogo,
                             height: Responsive.screenHeight(context) * 0.014,
                             width: Responsive.screenWidth(context) * 0.014,
                           ),
-                          Text(stadium.avgRating.toString(), style: TextStyle(
-                              fontSize: Responsive.textSize(context, 12.5)
-                          ),),
-                          Text(' (${stadium.totalRating.toString() })',
+                          Text(
+                            stadium.avgRating.toString(),
                             style: TextStyle(
-                                color: Constants.txtColor,
-                                fontSize: Responsive.textSize(context, 12.2)
-                            ),),
+                                fontSize: Responsive.textSize(context, 12.5)),
+                          ),
+                          Text(
+                            ' (${stadium.totalRating.toString()})',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                              color: Constants.txtColor,
+                              fontWeight: FontWeight.w900,
+
+                            ),
+                          ),
                         ],
                       )
                     ],
                   ),
                   Text(
                     stadium.isFavorite ? 'متوفر للحجز' : 'غير متوفر للحجز',
-                    style: TextStyle(
-                      color: stadium.isAvailable ? Constants.mainColor : Colors
-                          .red,
-                      fontSize: Responsive.textSize(
-                          context, 15), // Customize the font size as needed
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: stadium.isFavorite
+                              ? Constants.mainColor
+                              : Colors.red,
+                          fontWeight: FontWeight.w900,
+                        ),
                   ),
-
                 ],
               ),
             ),

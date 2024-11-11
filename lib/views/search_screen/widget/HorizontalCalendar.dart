@@ -40,7 +40,7 @@ class DateSelector extends StatelessWidget {
           return GestureDetector(
             onTap: () => onDateSelected(date),
             child: Container(
-              width: Responsive.screenWidth(context) * 0.2,
+              width: Responsive.screenWidth(context) * 0.22,
               height: Responsive.screenHeight(context) * 0.11,  // Adjust height to accommodate the month name
               margin: const EdgeInsets.only(right: 8.0),
               padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

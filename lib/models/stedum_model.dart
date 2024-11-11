@@ -29,8 +29,10 @@ class Stadium {
           ? double.parse(json['avg_rating'].toString())
           : 0.0,
       isAvailable: json['is_available'] ?? false,
-      image: json['image'] ?? "",
+      image: json['image'] ?? "https://interactive.guim.co.uk/atoms/thrashers/2022/11/football-daily-thrasher/assets/v/1721122748492/football-daily-5-3.jpg",
       isFavorite: json['is_favorite'] ?? false,
     );
   }
 }
+
+

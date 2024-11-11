@@ -22,19 +22,19 @@ class SelectableTimeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateTime parsedTime = DateFormat("HH:mm:ss").parse(time);
-    final String formattedTime = DateFormat("hh:mm a", 'en').format(parsedTime).replaceAll('AM', 'ص').replaceAll('PM', 'م');
+    final String formattedTime = DateFormat("h a", 'en').format(parsedTime).replaceAll('AM', 'ص').replaceAll('PM', 'م');
 
     return GestureDetector(
       onTap: isReserved || isLocked
           ? null
           : () {
-              print('Selected time: $formattedTime');
-              onTap();
-            },
+        print('Selected time: $formattedTime');
+        onTap();
+      },
       child: Stack(
         children: [
           Container(
-            width: Responsive.screenWidth(context) * 0.2,
+            width: Responsive.screenWidth(context) * 0.22,
             height: Responsive.screenHeight(context) * 0.1,
             margin: const EdgeInsets.only(right: 8.0),
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

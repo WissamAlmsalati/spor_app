@@ -7,6 +7,8 @@ import 'package:sport/views/Booking/widget/current_book_widget.dart';
 import 'package:sport/views/Booking/widget/history_booking_widget.dart';
 import '../../controller/old_reveresition/old_reservation_fetch_state.dart';
 import '../../models/reservation.dart';
+import '../../utilits/constants.dart';
+import '../auth/widgets/coustom_button.dart';
 
 class BookingHistoryScreen extends StatefulWidget {
   const BookingHistoryScreen({super.key});
@@ -22,14 +24,21 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<OldReservationFetchCubit>().fetchOldReservations(pageKey: pageKey).then((reservations) {
-        if (reservations.isNotEmpty) {
-          _pagingController.appendPage(reservations, pageKey + 1);
-        } else {
-          _pagingController.appendLastPage(reservations);
-        }
-      });
+      _fetchPage(pageKey);
     });
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final reservations = await context.read<OldReservationFetchCubit>().fetchOldReservations(pageKey: pageKey);
+      if (reservations.isNotEmpty) {
+        _pagingController.appendPage(reservations, pageKey + 1);
+      } else {
+        _pagingController.appendLastPage(reservations);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   @override
@@ -45,13 +54,35 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
       body: BlocBuilder<OldReservationFetchCubit, OldReservationFetchState>(
         builder: (context, state) {
           if (state is OldReservationLoading) {
-            // Show shimmer effect when loading reservations
             return const ShimmerCurrentBookWidget();
           } else if (state is UnAuthenticatedUser) {
-            // Show message for unauthenticated users
-            return const Center(child: Text('يجب تسجيل الدخول اولا'));
+            return  Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("يرجى تسجيل الدخول اولا"),
+                    const SizedBox(height: 16.0),
+                    CustomButton(
+                      onPress: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      text: 'تسجيل الدخول',
+                      color: Constants.mainColor,
+                      textColor: const Color(0xffFFFFFF),
+                      height: Responsive.screenHeight(context) * 0.045,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      textSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+                    ),
+                  ],
+                ));
+          } else if (state is OldReservationSocketExceptionError) {
+            return Center(
+              child: Text(
+                'حدث خطأ في الاتصال بالانترنت',
+                style: TextStyle(fontSize: Responsive.textSize(context, 12)),
+              ),
+            );
           } else if (state is OldReservationLoaded) {
-            // Handle loaded reservations
             final isLastPage = state.isLastPage;
             if (isLastPage) {
               _pagingController.appendLastPage(state.reservations);
@@ -59,7 +90,6 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
               _pagingController.appendPage(state.reservations, _pagingController.nextPageKey! + 1);
             }
           } else if (state is OldReservationEmpty) {
-            // Show message when no reservations are found
             return Center(
               child: Text(
                 'لا توجد حجوزات حالية',
@@ -67,14 +97,13 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> with Automa
               ),
             );
           } else if (state is OldReservationError) {
-            // Handle error state
             _pagingController.error = state.message;
           }
 
           return RefreshIndicator(
             onRefresh: () async {
               _pagingController.refresh();
-              context.read<OldReservationFetchCubit>().fetchOldReservations(pageKey: 1);
+              await _fetchPage(1);
             },
             child: PagedListView<int, Reservation>(
               pagingController: _pagingController,

@@ -28,10 +28,10 @@ void showCustomBottomSheet(
             // Title: تحديد التاريخ والوقت (Select Date and Time)
             Text(
               'تحديد التاريخ والوقت',
-              style: TextStyle(
-                fontSize: Responsive.textSize(context, 18),
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900,
+                  ),
             ),
             SizedBox(height: Responsive.screenHeight(context) * 0.01),
             const Divider(),
@@ -40,9 +40,9 @@ void showCustomBottomSheet(
             // Title: حدد التاريخ (Select Date)
             Text(
               "حدد التاريخ",
-              style: TextStyle(
-                fontSize: Responsive.textSize(context, 15),
-                fontWeight: FontWeight.w500,
+              style:  Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.black,
+                fontWeight: FontWeight.w900,
               ),
             ),
             SizedBox(height: Responsive.screenHeight(context) * 0.01),
@@ -59,9 +59,9 @@ void showCustomBottomSheet(
             // Title: حدد الوقت (Select Time)
             Text(
               "حدد الوقت",
-              style: TextStyle(
-                fontSize: Responsive.textSize(context, 15),
-                fontWeight: FontWeight.w500,
+              style:  Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.black,
+                fontWeight: FontWeight.w900,
               ),
             ),
             SizedBox(height: Responsive.screenHeight(context) * 0.01),
@@ -114,6 +114,7 @@ void showCustomBottomSheet(
                   color: Constants.mainColor,
                   textColor: Colors.white,
                   height: Responsive.screenHeight(context) * 0.06,
+                  fontWeight: FontWeight.w700,
                   width: Responsive.screenWidth(context) * 0.9,
                 );
               },

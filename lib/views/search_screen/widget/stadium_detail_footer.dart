@@ -9,6 +9,12 @@ import '../../../controller/reverse_request/reverse_requestt_dart__cubit.dart';
 import '../../../controller/staduim_detail_creen_cubit/staduim_detail_cubit.dart';
 import '../../../utilits/constants.dart';
 import '../../../utilits/responsive.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sport/utilits/constants.dart';
+import 'package:sport/utilits/responsive.dart';
+
 
 class StadiumDetailFooter extends StatelessWidget {
   final stadium;
@@ -138,6 +144,9 @@ class StadiumDetailFooter extends StatelessWidget {
     );
   }
 }
+
+
+
 class AcceptReservationBottomSheet extends StatelessWidget {
   final String stadiumName;
   final String date;
@@ -164,6 +173,10 @@ class AcceptReservationBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Parse the time and format it to show only the hour with ص or م
+    final DateTime parsedTime = DateFormat("HH:mm:ss").parse(time);
+    final String formattedTime = DateFormat("hh a", 'en').format(parsedTime).replaceAll('AM', 'ص').replaceAll('PM', 'م');
+
     return Container(
       padding: EdgeInsets.all(Responsive.screenWidth(context) * 0.04),
       decoration: BoxDecoration(
@@ -208,7 +221,7 @@ class AcceptReservationBottomSheet extends StatelessWidget {
           _buildReservationDetailRow(
             context,
             'الوقت:',
-            time,
+            formattedTime,
           ),
 
           _buildReservationDetailRow(
@@ -256,22 +269,22 @@ class AcceptReservationBottomSheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: Responsive.textSize(context, 14),
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[700],
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Constants.txtColor,
+              fontWeight: FontWeight.w700,
+
+            )
           ),
+          SizedBox(width: Responsive.screenWidth(context) * 0.02),
           Text(
             value,
-            style: TextStyle(
-              fontSize: Responsive.textSize(context, 14),
-              fontWeight: FontWeight.normal,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Colors.black,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],

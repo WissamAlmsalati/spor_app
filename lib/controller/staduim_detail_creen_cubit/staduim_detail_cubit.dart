@@ -43,6 +43,7 @@ class StadiumDetailCubit extends Cubit<StaduimDetailState> {
       }
 
       print('Response status: ${response.statusCode}');
+      print("response.body: ${response.body}");
       if (response.statusCode == 200) {
         print('Response status: ${response.statusCode}');
         final data = json.decode(utf8.decode(response.bodyBytes));

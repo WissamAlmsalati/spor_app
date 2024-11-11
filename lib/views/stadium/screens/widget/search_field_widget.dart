@@ -41,10 +41,9 @@ class SearchFieldWidget extends StatelessWidget {
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(vertical: 10), // Adjust padding to reduce height
                 hintText: "حدد المدينة",
-                hintStyle: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: GoogleFonts.cairo().fontFamily,
-                  fontSize: Responsive.textSize(context, 10),
+                hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: Colors.grey,
+                  fontSize: Responsive.textSize(context, 14),
                 ),
                 prefixIcon: const Icon(Icons.search),
                 alignLabelWithHint: true, // Align the hint text in the center

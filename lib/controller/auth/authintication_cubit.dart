@@ -202,7 +202,14 @@ print("${response.body}");
           MaterialPageRoute(
               builder: (context) => OtpScreen(userId: responseBody['id'])),
         );
-      } else {
+      }else if (response.statusCode == 400) {
+
+        emit(AuthenticationFailure('Phone number already exists'));
+      }
+
+
+
+      else {
         emit(AuthenticationFailure('Sign up failed'));
       }
     } catch (e) {

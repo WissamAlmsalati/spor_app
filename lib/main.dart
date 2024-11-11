@@ -108,13 +108,20 @@ class _MyAppState extends State<MyApp> {
                     Locale('en', ''), // English
                     Locale('ar', ''), // Arabic
                   ],
-                  locale: const Locale('ar', ''),
+                  locale: const Locale('ar', ''), // Default locale
                   localizationsDelegates: const [
                     GlobalMaterialLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,
                   ],
                   debugShowCheckedModeBanner: false,
+                  builder: (context, widget) {
+                    // Lock the text scale factor to 1.0
+                    return MediaQuery(
+                      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                      child: widget!,
+                    );
+                  },
                   theme: customThemeData,
                   initialRoute: '/',
                   routes: {
@@ -125,6 +132,7 @@ class _MyAppState extends State<MyApp> {
                   onGenerateRoute: RouteGenerator.generateRoute,
                 ),
               );
+
             },
           );
         },

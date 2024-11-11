@@ -10,7 +10,7 @@ class CoustomTapBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Number of tabs
+      length: 2,
       child: SafeArea(
         child: Scaffold(
           body: Column(
@@ -18,19 +18,23 @@ class CoustomTapBar extends StatelessWidget {
               SizedBox(
                 height: Responsive.screenHeight(context) * 0.07,
                 child: TabBar(
-                  labelStyle: TextStyle(
-                    fontFamily: GoogleFonts.cairo().fontFamily,
-                    fontSize: Responsive.textSize(context, 16),
-                  ),
+                  labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: Responsive.textSize(context, 16),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                      ),
+
                   // Customize the selected tab text size
-                  unselectedLabelStyle: TextStyle(
-                      fontFamily: GoogleFonts.cairo().fontFamily,
-                      fontSize: Responsive.textSize(context, 12)),
+                  unselectedLabelStyle:
+                      Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: Responsive.textSize(context, 10),
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
                   // Customize the unselected ta
-                  tabs:  const [
+                  tabs: const [
                     Tab(
                       text: 'الحجوزات الحالية',
-
                     ),
                     Tab(text: 'سجل حجوزاتك'),
                   ],
@@ -38,8 +42,7 @@ class CoustomTapBar extends StatelessWidget {
               ),
               const Expanded(
                 child: TabBarView(
-                  children: [
-                    CurrentBooking(), BookingHistoryScreen()],
+                  children: [CurrentBooking(), BookingHistoryScreen()],
                 ),
               ),
             ],

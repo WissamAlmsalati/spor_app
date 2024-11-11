@@ -12,6 +12,7 @@ import 'package:sport/utilits/images.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sport/views/profile/widget/coustom_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../app/app_cubits.dart';
 import '../../../controller/Reservation_fetch/reservation_fetch_cubit.dart';
 import '../../../controller/cancel_reservation/cancekl_reserv_cubit.dart';
 import '../../auth/widgets/coustom_button.dart';
@@ -74,6 +75,7 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                 widget.reservation.id.toString(), context);
             context.read<ReservationCubit>().fetchReservations();
             Navigator.of(context).pop();
+            RefreshCubit.refreshBalance(context);
           },
           onCancel: () {
             Navigator.of(context).pop();
@@ -168,15 +170,15 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                   children: [
                     SvgPicture.asset(
                       AppPhotot.locationIco,
-                      color: Colors.green,
+                      color: Constants.mainColor,
                       fit: BoxFit.fill,
                     ),
                     SizedBox(width: Responsive.screenWidth(context) * 0.02),
                     Text(
                       widget.reservation.stadiumAddress,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Colors.black.withOpacity(0.5),
-                        fontWeight: FontWeight.w600,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Constants.thirdColor,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
@@ -190,18 +192,17 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                   children: [
                     Text(
                       "يوم الحجز: ",
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 16),
-                        fontWeight: FontWeight.w500,
-                        color: Constants.txtColor,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Constants.thirdColor,
+                    fontWeight: FontWeight.w700,
+
                       ),
                     ),
                     Text(
                       formattedDate,
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.black,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     Container(
@@ -214,10 +215,9 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                     ),
                     Text(
                       date.day.toString(),
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.black,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
@@ -231,18 +231,16 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                   children: [
                     Text(
                       "ساعة الحجز: ",
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 16),
-                        fontWeight: FontWeight.w500,
-                        color: Constants.txtColor,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Constants.thirdColor,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     Text(
                       startTime,
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.black,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     Container(
@@ -255,10 +253,9 @@ class _CurrentBookWidgetState extends State<CurrentBookWidget> {
                     ),
                     Text(
                       endTime,
-                      style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.black,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],

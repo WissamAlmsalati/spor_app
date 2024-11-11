@@ -16,53 +16,56 @@ class HourRow extends StatefulWidget {
 class _HourRowState extends State<HourRow> {
   int? selectedIndex;
 
-  final List<String> hours = List.generate(12, (index) => '${index + 1}:00');
+  final List<String> hours = List.generate(12, (index) => '${index + 1}');
   final List<String> periods = ['ص', 'م'];
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        height: Responsive.screenHeight(context) * 0.109,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(hours.length * periods.length, (index) {
-            final hour = hours[index % hours.length];
-            final period = periods[index ~/ hours.length];
-            final displayTime = '$hour $period';
-            final formattedTime = period == 'م' ? '${int.parse(hour.split(':')[0]) + 12}:00:00' : '$hour:00';
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedIndex = index;
-                });
-                widget.onHourSelected(displayTime, formattedTime);
-                if (kDebugMode) {
-                  print('Selected Hour: $displayTime');
-                }
-              },
-              child: SizedBox(
-                width: Responsive.screenWidth(context) * 0.19,
-                height: Responsive.screenHeight(context) * 0.10,
-                child: Card(
-                  color: index == selectedIndex ? Constants.mainColor : null,
-                  elevation: 2,
-                  margin: EdgeInsets.only(right: Responsive.screenWidth(context) * 0.02),
-                  child: Center(
-                    child: Text(
-                      displayTime,
-                      style: TextStyle(
-                        color: index == selectedIndex ? Colors.white : null,
-                        fontSize: Responsive.textSize(context, 12),
-                      ),
-                    ),
+      child: Row(
+        children: List.generate(hours.length * periods.length, (index) {
+          final hour = hours[index % hours.length];
+          final period = periods[index ~/ hours.length];
+          final displayTime = '$hour $period';
+          final formattedTime = period == 'م' ? '${int.parse(hour) + 12}:00:00' : '$hour:00:00';
+          final isSelected = index == selectedIndex;
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedIndex = index;
+              });
+              widget.onHourSelected(displayTime, formattedTime);
+              if (kDebugMode) {
+                print('Selected Hour: $displayTime');
+              }
+            },
+            child: Container(
+              width: Responsive.screenWidth(context) * 0.2,
+              height: Responsive.screenHeight(context) * 0.11,
+              margin: const EdgeInsets.only(right: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: isSelected ? Constants.mainColor : Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(
+                  color: isSelected ? Constants.mainColor : Colors.white,
+                  width: 2.0,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  displayTime,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

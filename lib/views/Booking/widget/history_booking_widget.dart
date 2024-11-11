@@ -47,9 +47,9 @@ class HistoryBookingWidget extends StatelessWidget {
           children: [
             Text(
               reservation.stadiumName,
-              style: TextStyle(
-                  fontSize: Responsive.textSize(context, 20),
-                  fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: Colors.black,
+                  ),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -58,7 +58,7 @@ class HistoryBookingWidget extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     AppPhotot.locationIco,
-                    color: Colors.green,
+                    color: Constants.mainColor,
                     fit: BoxFit.fill,
                   ),
                   SizedBox(
@@ -66,10 +66,10 @@ class HistoryBookingWidget extends StatelessWidget {
                   ),
                   Text(
                     reservation.stadiumAddress,
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Constants.txtColor),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Constants.thirdColor,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -82,17 +82,17 @@ class HistoryBookingWidget extends StatelessWidget {
                 children: [
                   Text(
                     "يوم الحجز: ",
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 16),
-                        fontWeight: FontWeight.w500,
-                        color: Constants.txtColor),
+                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Constants.thirdColor,
+                       fontWeight: FontWeight.w700,
+              ),
                   ),
                   Text(
                     formattedDate,
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   Container(
                     height: Responsive.screenHeight(context) * 0.005,
@@ -104,10 +104,10 @@ class HistoryBookingWidget extends StatelessWidget {
                   ),
                   Text(
                     date.day.toString(),
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -120,17 +120,17 @@ class HistoryBookingWidget extends StatelessWidget {
                 children: [
                   Text(
                     "ساعة الحجز: ",
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Constants.txtColor),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Constants.thirdColor,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   Text(
                     startTime,
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   Container(
                     height: Responsive.screenHeight(context) * 0.005,
@@ -142,10 +142,10 @@ class HistoryBookingWidget extends StatelessWidget {
                   ),
                   Text(
                     endTime,
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -158,17 +158,17 @@ class HistoryBookingWidget extends StatelessWidget {
                 children: [
                   Text(
                     "حالة الحجز : ",
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 16),
-                        fontWeight: FontWeight.w500,
-                        color: Constants.txtColor),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Constants.thirdColor,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   Text(
                     "منتهي",
-                    style: TextStyle(
-                        fontSize: Responsive.textSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),

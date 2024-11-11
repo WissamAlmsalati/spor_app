@@ -40,7 +40,7 @@ class UserLogged extends StatelessWidget {
             icon: AppPhotot.startLg,
             text: 'قيم التطبيق',
             onPressed: () async {
-              const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.example.yourapp';
+              const googlePlayUrl = 'https://play.google.com/store/apps/details?id=spor.app';
               const appStoreUrl = 'https://apps.apple.com/app/id1234567890'; // Replace with your App Store URL
 
               final url = Platform.isIOS ? appStoreUrl : googlePlayUrl;

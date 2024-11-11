@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io'; // Import dart:io for SocketException
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:sport/app/app_packges.dart';
 import 'package:sport/models/reservation.dart';
 import '../../utilits/secure_data.dart';
 import 'reservation_fetch_state.dart';
@@ -48,8 +50,12 @@ class ReservationCubit extends Cubit<ReservationState> {
       } else {
         emit(ReservationError('An error occurred: ${response.reasonPhrase}'));
       }
-    } catch (e) {
-      emit(ReservationError('An error occurred: $e'));
+    } catch (error) {
+      if (error is SocketException) {
+        emit(ReservationSocketExaption());
+      } else {
+        emit(ReservationError('An error occurred: $error'));
+      }
     }
 
     return []; // Return an empty list on failure

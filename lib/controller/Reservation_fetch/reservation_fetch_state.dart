@@ -41,3 +41,7 @@ class ReservationError extends ReservationState {
 
 // Empty state for when there are no reservations
 class ReservationEmpty extends ReservationState {}
+
+
+class ReservationSocketExaption extends ReservationState{}
+
