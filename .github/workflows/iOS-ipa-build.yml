@@ -1,4 +1,4 @@
-name: iOS Build
+name: Flutter CI
 
 on:
   push:
@@ -9,51 +9,26 @@ on:
       - main
 
 jobs:
-  build-ios:
-    name: Build iOS App
-    runs-on: macos-latest
+  build:
+
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: 'stable'
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2.16.0
+      with:
+        flutter-version: '3.3.9'
 
-      - name: Install CocoaPods
-        run: |
-          sudo gem install cocoapods
-          pod repo update
+    - name: Install dependencies
+      run: flutter pub get
 
-      - name: Flutter Pub Get
-        run: flutter pub get
+    - name: Build Android
+      run: flutter build apk --release
 
-      - name: Build iOS
-        env:
-          CI: true
-        run: |
-          flutter build ios --no-codesign
-
-      - name: Archive Build
-        run: |
-          xcodebuild -workspace ios/Runner.xcworkspace \
-                     -scheme Runner \
-                     -sdk iphoneos \
-                     -configuration Release \
-                     -archivePath $PWD/build/Runner.xcarchive \
-                     archive
-
-      - name: Export IPA
-        run: |
-          xcodebuild -exportArchive \
-                     -archivePath $PWD/build/Runner.xcarchive \
-                     -exportOptionsPlist ios/Runner/ExportOptions.plist \
-                     -exportPath $PWD/build
-
-      - name: Upload IPA
-        uses: actions/upload-artifact@v3
-        with:
-          name: ios-app
-          path: build/Runner.ipa
+    - name: Build iOS
+      run: flutter build ios --release
+      env:
+        CI: true
