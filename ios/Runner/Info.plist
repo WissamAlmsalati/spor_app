@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>Spor</string>
+    <string>Spor - سبور</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -45,17 +45,21 @@
     <true/>
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
-    <!-- Add Camera Usage Description -->
+    
+    <!-- Camera Usage Description -->
     <key>NSCameraUsageDescription</key>
     <string>We need access to your camera for taking photos.</string>
-    <!-- Add Photo Library Usage Description -->
+    
+    <!-- Photo Library Usage Descriptions -->
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>We need your permission to save images to your photo library.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to update your profile picture.</string>
+    
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
-    <!-- Add Deep Linking Configuration -->
+    
+    <!-- Deep Linking Configuration -->
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
@@ -71,14 +75,28 @@
     <array>
         <string>https</string>
     </array>
-    <!-- Add Background Modes -->
+    
+    <!-- Background Modes -->
     <key>UIBackgroundModes</key>
     <array>
-        <string>fetch</string>
         <string>remote-notification</string>
     </array>
-    <!-- Add Firebase Configuration -->
+    
+    <!-- Firebase Configuration -->
     <key>FirebaseAppDelegateProxyEnabled</key>
     <false/>
+    <key>FirebaseMessagingAutoInitEnabled</key>
+    <false/>
+    
+    <!-- Notification Usage Description -->
+    <key>NSUserNotificationUsageDescription</key>
+    <string>هذا التطبيق يحتاج إلى إذن للإشعارات لإعلامك بالتحديثات المهمة.</string>
+    
+    <!-- NSAppTransportSecurity -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

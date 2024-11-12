@@ -24,12 +24,12 @@ class OnboardingScreen extends StatelessWidget {
     },
   ];
 
+
+
   const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-
     return BlocProvider(
       create: (BuildContext context) {
         return OnboardingCubit();
@@ -70,34 +70,34 @@ class OnboardingScreen extends StatelessWidget {
                                 Center(
                                   child: Column(
                                     children: [
-                                      Text(
-                                        pages[index]["text"]!,
-                                        textAlign: TextAlign.center,
-                                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                            color: Constants.secondaryColor,
-                                            fontWeight: FontWeight.w700,
-
-                                          )
-                                      ),
+                                      Text(pages[index]["text"]!,
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineLarge
+                                              ?.copyWith(
+                                                color: Constants.secondaryColor,
+                                                fontWeight: FontWeight.w700,
+                                              )),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           SvgPicture.asset(
                                             pages[index]["arrow"]!,
                                             height: Responsive.screenHeight(
-                                                context) *
+                                                    context) *
                                                 0.1,
                                           ),
                                           SizedBox(
                                             width: Responsive.screenHeight(
-                                                context) *
+                                                    context) *
                                                 0.13,
                                           ),
                                           SvgPicture.asset(
                                             pages[index]["reversArrow"]!,
                                             height: Responsive.screenHeight(
-                                                context) *
+                                                    context) *
                                                 0.1,
                                           ),
                                         ],
@@ -122,11 +122,8 @@ class OnboardingScreen extends StatelessWidget {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(0)),
-                  ),
+                child: Container(
+                  color: Colors.white,
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.3,
                     width: MediaQuery.of(context).size.width,
@@ -196,11 +193,12 @@ class OnboardingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List<Widget>.generate(pages.length, (index) {
               return Container(
-                height: Responsive.screenHeight(context)*0.015,
-                width: Responsive.screenWidth(context)*0.07,
+                height: Responsive.screenHeight(context) * 0.015,
+                width: Responsive.screenWidth(context) * 0.07,
                 margin: const EdgeInsets.symmetric(horizontal: 5.2),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Responsive.screenWidth(context)*0.02),
+                  borderRadius: BorderRadius.circular(
+                      Responsive.screenWidth(context) * 0.02),
                   color: currentPage == index
                       ? Constants.mainColor
                       : Constants.thirdColor.withOpacity(0.5),

@@ -15,9 +15,7 @@ class NotificationService {
     await _requestNotificationPermission();
     await _initializeLocalNotifications();
     await _setFirebaseHandlers();
-    await _saveDeviceToken(); // Ensure device token is saved here
-
-    // Check if the app was launched by tapping a notification
+    await _saveDeviceToken();
     _checkInitialMessage();
   }
 
@@ -40,9 +38,22 @@ class NotificationService {
 
   // Initialize local notifications
   static Future<void> _initializeLocalNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const AndroidInitializationSettings initializationSettingsAndroid = 
+      AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+     DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification: (id, title, body, payload) async {
+        // Handle notification received on iOS
+      },
+    );
+
+    final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
 
     await _localNotificationsPlugin.initialize(
       initializationSettings,
@@ -63,6 +74,7 @@ class NotificationService {
       importance: Importance.max,
       priority: Priority.high,
     );
+
     const NotificationDetails platformDetails = NotificationDetails(android: androidDetails);
 
     await _localNotificationsPlugin.show(
@@ -70,7 +82,7 @@ class NotificationService {
       message.notification?.title,
       message.notification?.body,
       platformDetails,
-      payload: message.data['payload'], // Pass any payload data here
+      payload: message.data['payload'],
     );
   }
 
@@ -78,7 +90,6 @@ class NotificationService {
   static Future<void> _saveDeviceToken() async {
     try {
       String? token = await _firebaseMessaging.getToken();
-      // Check if the token is already saved
       String? savedToken = await _secureStorage.read(key: 'deviceToken');
       if (savedToken != token) {
         await _secureStorage.write(key: 'deviceToken', value: token);
@@ -86,7 +97,7 @@ class NotificationService {
       } else {
         print('Device token already saved: $token');
       }
-        } catch (e) {
+    } catch (e) {
       print('Error saving device token: $e');
     }
   }
@@ -95,16 +106,12 @@ class NotificationService {
   static Future<void> _setFirebaseHandlers() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Received a message while in the foreground!');
-      print('Message data: ${message.data}');
-
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
         showLocalNotification(message);
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Message clicked!');
       if (message.data['payload'] != null) {
         _handleNotificationClick(message.data['payload']);
       }
@@ -124,7 +131,7 @@ class NotificationService {
     final context = _navigatorKey.currentState?.overlay?.context;
     if (context != null) {
       print("Notification clicked with payload: $payload");
-      // You can navigate to a specific screen here if desired
+      // Navigate to a specific screen if needed
     }
   }
 }
